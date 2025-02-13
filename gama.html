@@ -1,0 +1,529 @@
+<html>
+<head>
+	<meta charset="utf8">
+</head>
+<style>
+	.enemy-hp {
+		color: black;
+		z-index: 100;
+		display: flex;
+		justify-content: center;
+		top:-60px;
+		flex-direction: row;
+		
+		position: relative;
+		
+	}
+	</style>
+<body>
+	<p>Pénzed: <span id="penz"></span></p>
+	<p>Életed: <span id="hp"></span></p>
+	<div id="canvas">
+	</div>
+<script>
+
+	//TODO JSON FORMÁTUMBAN ELTÁROLNI A PÁLYÁKAT, LEHESSEN CSINÁLNI IS.
+	//Kulcsok, ládák, ajtók, enemy droppok, felvehető tárgyak(fegyver,hp,ruha) (Felvehető valamilyen felüldefiniálása, vagy kibővítése), árusok(bindig of isaacos vagy gama.c-s)
+	//Titkosfalak működése,
+	//fegyverek nem stackelődnek, egyszerre 1 és választani kelljen, ruhák stackelődhetnek.
+	//még nincs lekezelve hogy a titkos falakat lehessen kiütni, majd legyen valami feltétel, pl bomba 
+	function aabbCollision(A, B) {
+	    return (
+			A.x <= B.x+ B.width && 
+			A.x+A.width >= B.x && 
+			A.y <= B.y + B.height &&
+			A.y + A.height >= B.y
+	    )
+	}
+	function agroRangeben(A,B,r) {
+			let Akx = A.x + A.width/2 //A középpont x
+			let Aky = A.y + A.height/2 //A középpont y
+			let Bkx = B.x + B.width/2
+			let Bky =B.y + B.height/2
+			return (
+				Math.sqrt((Akx-Bkx)** 2 +(Aky - Bky) **2) <= r
+			)
+		}
+	let objektek = [];
+	let enemyk = []
+	let kari = null;
+	class Felveheto{
+		constructor(x,y,ertek) {
+		this.ertek = ertek;
+		this.x = x;
+		this.y = y;
+		this.width = 30;
+		this.height = 30;
+		this.div = document.createElement("div")
+		this.div.style.width = this.width;
+		this.div.style.height = this.height
+		this.div.style.position = "absolute"
+		this.div.style.backgroundColor = "yellow"
+		this.div.style.left = this.x;
+		this.div.style.top = this.y;
+		this.vaszon =document.getElementById("canvas")
+		this.vaszon.appendChild(this.div)
+		objektek.push(this)
+		}
+	}
+
+	class Wall {
+			constructor(x,y,type) {
+			this.x = x;
+			this.y = y;
+			this.type = type //1 sima, 2 titkos
+			this.width = 60;
+			this.height = 60;
+			this.div = document.createElement("div")
+			this.div.style.width = this.width;
+			this.div.style.height = this.height
+			this.div.style.position = "absolute"
+			this.div.style.backgroundColor = "yellow"
+			this.div.style.left = this.x;
+			this.div.style.top = this.y;
+			this.vaszon =document.getElementById("canvas")
+			this.vaszon.appendChild(this.div)
+			objektek.push(this)
+		}
+	}
+	class Hitbox {
+		constructor(x,y,width,height) {
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height
+		}
+	}
+	class Enemy {
+		constructor(x,y,hp,nev) {
+			this.x = x;
+			this.y = y;
+			this.nev = nev;
+			this.hp = hp
+			this.width = 60;
+			this.height = 60;
+			this.agroRange = 300;
+			this.div = document.createElement("div")
+			this.div.style.width = this.width 
+			this.div.style.height = this.height 
+			this.div.style.position = "absolute"
+			this.div.style.backgroundColor = "blue"
+			this.div.style.left = this.x;
+			this.div.style.top = this.y;
+			this.div.innerText = this.nev;
+			this.vaszon =document.getElementById("canvas")
+			this.vaszon.appendChild(this.div)
+			objektek.push(this)
+
+			this.tamad = false;
+			this.dmg = 3;
+			this.box = document.createElement("div")
+			this.hitMeret = 50;
+			this.box.style.backgroundColor = "green"
+			this.box.style.position = "absolute"
+			this.vaszon.appendChild(this.box)
+
+			this.hpD = document.createElement("p");
+			this.div.appendChild(this.hpD);
+			this.hpD.innerText = this.hp
+			this.hpD.setAttribute("class","enemy-hp")
+			this.sebesseg = 1;
+			enemyk.push(this)
+		}
+		attack() {
+			if(this.box != null) {
+				this.tamad = true
+				this.box.style.backgroundColor = "grey"
+				let xx = parseInt(this.box.style.left.split("px")[0]);
+				let yy = parseInt(this.box.style.top.split("px")[0]);
+				let ww = parseInt(this.box.style.width.split("px")[0])
+				let hh =parseInt(this.box.style.height.split("px")[0])
+				let h = new Hitbox(xx,yy,ww,hh)
+				if(aabbCollision(h,kari)) {
+					kari.sebzodik(this.dmg);
+				}
+			}
+		}
+
+		mozog() {
+			if(kari != null) {
+				if(agroRangeben(this,kari,120)) {
+					if(this.tamad==false) {
+						console.log("Támad!")
+						this.attack()
+						let b = this.box;
+						var t = this.tamad
+						console.log(`Elötte: ${t}`)
+						setTimeout(() => {
+							if(this.box != null) {
+								this.box.style.backgroundColor = "green"
+								this.tamad = false
+							}
+					
+						},250)
+						
+							console.log(t)
+							
+						}
+				}
+			if(agroRangeben(this,kari,this.agroRange)) {
+				if(this.x > kari.x && Math.abs(this.x-kari.x) <= this.agroRange) {
+					if(this.box != null) {
+						this.box.style.left = this.x-this.hitMeret
+						this.box.style.top = this.y
+						this.box.style.width = this.hitMeret
+						this.box.style.height =this.height
+					}
+			
+				this.x -= this.sebesseg
+				for(let i in objektek) {
+				let obj = objektek[i];
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+						this.x += this.sebesseg;
+					}
+					}
+				
+				}
+			
+			this.div.style.left = this.x;
+			}
+			if(this.x < kari.x && Math.abs(this.x-kari.x) <= this.agroRange) {
+			this.x += this.sebesseg
+			if(this.box != null) {
+				this.box.style.left = this.x+this.hitMeret
+				this.box.style.top = this.y
+				this.box.style.width = this.hitMeret
+				this.box.style.height =this.height
+			}
+			
+			for(let i in objektek) {
+			let obj = objektek[i];
+			if(aabbCollision(this, obj)) {
+				if (obj instanceof Wall) {
+					this.x -= this.sebesseg;
+					}
+				}
+			}
+			this.div.style.left = this.x;
+		}
+			if(this.y > kari.y && Math.abs(this.y-kari.y) <= this.agroRange) {
+			this.y -= this.sebesseg
+			if(this.box != null) {
+			this.box.style.left = this.x;
+			this.box.style.top = this.y-this.hitMeret;
+			this.box.style.width = this.width
+			this.box.style.height = this.hitMeret
+			}
+		
+			for(let i in objektek) {
+			let obj = objektek[i];
+			if(aabbCollision(this, obj)) {
+				if (obj instanceof Wall) {
+					this.y += this.sebesseg;
+				}
+				}
+			
+			}
+			this.div.style.top = this.y;
+		}
+			if(this.y < kari.y && Math.abs(this.y-kari.y) <= this.agroRange) {
+			this.y += this.sebesseg
+			if(this.box != null) {
+			this.box.style.left = this.x;
+			this.box.style.top = this.y+this.hitMeret;
+			this.box.style.width = this.width
+			this.box.style.height = this.hitMeret
+			}
+			
+			this.div.style.top = this.y
+			for(let i in objektek) {
+			let obj = objektek[i];
+			if(aabbCollision(this, obj)) {
+				if (obj instanceof Wall) {
+					this.y -= this.sebesseg;
+				}
+				}
+			
+			};
+		}
+	}
+				}
+			
+		}
+		
+		sebzodik(dmg){
+			this.hp -= dmg;
+			if(this.hp <= 0) {this.die();}
+			this.updateInfo();
+
+		}
+		die() {
+			this.box.remove()
+			this.box = null
+			torol(this) 
+		}
+		updateInfo() {
+			this.hpD.innerText = this.hp
+		}
+	}
+	new Felveheto(50,50,30)
+	new Felveheto(100,50,50)
+	new Felveheto(150,50,70)
+	new Wall(400,250,1)
+	let enenmy = new Enemy(600,400,10,"Józsi")
+	let enenmy2 = new Enemy(800,400,5,"Béla")
+
+	class Karakter{
+		constructor(nev,hp) {
+			this.nev = nev;
+			this.hp = hp;
+			this.penz = 0;
+			this.sebesseg = 3;
+			this.dmg = 2;
+			this.tamad = false
+			this.x = 230;
+			this.y = 230;
+			this.width = 100;
+			this.height = 100;
+			this.iranyok = [false,false,false,false]
+			this.nezesIrany = "";
+			this.karakter = document.createElement("div")
+			this.karakter.style.width = this.width 
+			this.karakter.style.height = this.height 
+			this.karakter.style.position = "absolute"
+			this.karakter.style.backgroundColor = "red"
+			this.karakter.style.left = this.x;
+			this.karakter.style.top = this.y;
+			this.vaszon =document.getElementById("canvas")
+			this.vaszon.appendChild(this.karakter)
+			document.getElementById("penz").innerText = this.penz
+			document.getElementById("hp").innerText = this.hp
+			this.box = document.createElement("div")
+			this.box.setAttribute("id","hitbox")
+			this.hitMeret = 50;
+			this.box.style.backgroundColor = "green"
+			this.box.style.position = "absolute"
+			this.vaszon.appendChild(this.box)
+		
+		}
+		look(irany) {
+			if(irany == "ArrowUp"){
+				this.box.style.left = this.x;
+				this.box.style.top = this.y-this.hitMeret;
+				this.box.style.width = this.width
+				this.box.style.height = this.hitMeret
+			}
+			if(irany == "ArrowDown"){
+				this.box.style.left = this.x;
+			this.box.style.top = this.y+this.width;
+			this.box.style.width = this.width
+			this.box.style.height = this.hitMeret
+			}
+			if(irany == "ArrowLeft"){
+				this.box.style.left = this.x-30;
+			this.box.style.top = this.y;
+			this.box.style.width = this.hitMeret
+			this.box.style.height = this.height
+			}
+			if(irany == "ArrowRight"){
+				this.box.style.left = this.x+this.width;
+			this.box.style.top = this.y;
+			this.box.style.width = this.hitMeret
+			this.box.style.height = this.height
+			}
+		}
+		left() {
+			this.x -= this.sebesseg;
+			
+			for(let i in objektek) {
+				let obj = objektek[i];
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+						this.x += this.sebesseg;
+					} else if(obj instanceof Felveheto) {
+						torol(objektek[i])
+					}
+				}
+				
+			}
+			
+			this.karakter.style.left = this.x;
+		}
+		right() {
+			this.x += this.sebesseg;
+			
+			for(let i in objektek) {
+				let obj = objektek[i];
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+			
+						this.x -= this.sebesseg;
+					} else if(obj instanceof Felveheto) {
+
+						torol(objektek[i])
+					}
+				}
+				
+			}
+			this.karakter.style.left = this.x;
+		}
+		up() {
+			this.y -= this.sebesseg;
+			
+			for(let i in objektek) {
+				let obj = objektek[i];
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+				
+						this.y += this.sebesseg;
+					} else if(obj instanceof Felveheto) {
+						torol(objektek[i])
+					}
+				}
+				
+			}
+
+			this.karakter.style.top = this.y;
+		}
+		down() {
+			this.y += this.sebesseg;
+			
+			for(let i in objektek) {
+				let obj = objektek[i];
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+						this.y -= this.sebesseg;
+					} else if(obj instanceof Felveheto) {
+
+						torol(objektek[i])
+						
+					
+					}
+				}
+				
+			}
+
+
+			this.karakter.style.top = this.y;
+		}
+
+		attack() {
+				this.tamad = true
+				this.box.style.backgroundColor = "grey"
+				let xx = parseInt(this.box.style.left.split("px")[0]);
+				let yy = parseInt(this.box.style.top.split("px")[0]);
+				let ww = parseInt(this.box.style.width.split("px")[0])
+				let hh =parseInt(this.box.style.height.split("px")[0])
+				let h = new Hitbox(xx,yy,ww,hh)
+				for(let i in objektek) {
+					let obj = objektek[i];
+					if(aabbCollision(h,obj)) 
+					{
+						if(obj instanceof Enemy) {
+				
+							obj.sebzodik(this.dmg)
+						}
+						 break
+					}
+				}
+		
+		}
+		sebzodik(dmg){
+			this.hp -= dmg;
+			if(this.hp <= 0) {alert("Meghaltál :/")}
+			this.infoUpdate();
+
+		}
+		infoUpdate() {
+		document.getElementById("penz").innerText = this.penz
+		document.getElementById("hp").innerText = this.hp
+		console.log(this.hp)
+		}
+
+	}
+
+	kari = new Karakter("Sándor",100)
+
+	function torol(obj) {
+			let canvas = document.getElementById("canvas");
+			obj.x = kari.x;
+			obj.y = kari.y
+			if(obj instanceof Felveheto) {
+				kari.penz += obj.ertek
+				kari.infoUpdate()
+			}
+			rendez();
+			obj.div.remove();
+			objektek.shift();
+		
+		}
+	
+	function rendez() {
+		objektek.sort((a, b) => {
+	    const tavA = Math.sqrt((a.x - kari.x) ** 2 + (a.y - kari.y) ** 2);
+	    const tavB = Math.sqrt((b.x - kari.x) ** 2 + (b.y - kari.y) ** 2);
+	    return tavA - tavB;
+		});
+	}
+	document.body.addEventListener("keydown",function(e) {
+		rendez()
+		
+		if(e.key == "w" || e.key == "W") {
+			kari.iranyok[0] = true
+		}
+		if(e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+			kari.nezesIrany = e.key;
+		}
+		
+		if(e.key == "a" || e.key == "A") {
+		kari.iranyok[1] = true
+		}
+		if(e.key == "s" || e.key == "S") {
+			kari.iranyok[2] = true
+		}
+		if(e.key == "d" || e.key == "D") {
+			kari.iranyok[3] = true
+		}
+		if(e.key == " ") {kari.attack()}
+		//console.kog(e.key)
+		
+	})
+
+	document.body.addEventListener("keyup",function(e) {
+		if(e.key == "w" || e.key == "W") {
+			kari.iranyok[0] = false
+		}
+		if(e.key == "a" || e.key == "A") {
+		kari.iranyok[1] = false
+		}
+		if(e.key == "s" || e.key == "S") {
+			kari.iranyok[2] = false
+		}
+		if(e.key == "d" || e.key == "D") {
+			kari.iranyok[3] = false
+		}
+	})
+setInterval(function(){
+	let hit = document.getElementById("hitbox")
+	kari.look(kari.nezesIrany)
+	if(kari.tamad) { //visszaállítja
+		setTimeout(() =>{
+			hit.style.backgroundColor = "green"
+			kari.tamad = false	
+		},250)
+	}
+
+	
+
+if(kari.iranyok[0]) {kari.up();}
+if(kari.iranyok[1]) {kari.left();}
+if(kari.iranyok[2]) {kari.down();}
+if(kari.iranyok[3]) {kari.right();}
+for(let i in enemyk) {
+	enemyk[i].mozog()
+}
+	},10)
+</script>
+</body>
+</html>
