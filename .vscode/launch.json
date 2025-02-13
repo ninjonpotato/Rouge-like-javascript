@@ -6,7 +6,7 @@
     "configurations": [
 
         {
-            "type": "safari",
+            "type": "chrome",
             "request": "launch",
             "name": "Open gama.html",
             "file": "/Users/laurinyeczistvan/Desktop/gama2/gama.html"

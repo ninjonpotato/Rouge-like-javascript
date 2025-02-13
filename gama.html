@@ -23,7 +23,8 @@
 <script>
 
 	//TODO JSON FORMÁTUMBAN ELTÁROLNI A PÁLYÁKAT, LEHESSEN CSINÁLNI IS.
-	//Kulcsok, ládák, ajtók, enemy droppok, felvehető tárgyak(fegyver,hp,ruha) (Felvehető valamilyen felüldefiniálása, vagy kibővítése), árusok(bindig of isaacos vagy gama.c-s)
+	//Kulcsok, ládák, ajtók
+	//felvehető tárgyak(fegyver,hp,ruha) (Felvehető valamilyen felüldefiniálása, vagy kibővítése), árusok(bindig of isaacos vagy gama.c-s)
 	//Titkosfalak működése,
 	//fegyverek nem stackelődnek, egyszerre 1 és választani kelljen, ruhák stackelődhetnek.
 	//még nincs lekezelve hogy a titkos falakat lehessen kiütni, majd legyen valami feltétel, pl bomba 
@@ -48,8 +49,7 @@
 	let enemyk = []
 	let kari = null;
 	class Felveheto{
-		constructor(x,y,ertek) {
-		this.ertek = ertek;
+		constructor(x,y) {
 		this.x = x;
 		this.y = y;
 		this.width = 30;
@@ -64,6 +64,12 @@
 		this.vaszon =document.getElementById("canvas")
 		this.vaszon.appendChild(this.div)
 		objektek.push(this)
+		}
+	}
+	class Coin extends Felveheto {
+		constructor(x,y,ertek) {
+			super(x,y);
+			this.ertek = ertek;
 		}
 	}
 	class Wall {
@@ -129,6 +135,9 @@
 			this.hpD.setAttribute("class","enemy-hp")
 			this.sebesseg = 1;
 			enemyk.push(this)
+
+			this.mozoghat = true;
+			this.iranyok = [false,false,false,false]
 		}
 		attack() {
 			if(this.box != null) {
@@ -150,83 +159,145 @@
 				},this.atkDelay)	
 			}
 		}
-		left() {
-			this.x -= this.sebesseg
-				for(let i in objektek) {
-				let obj = objektek[i];
+		stunned() {
+			this.mozoghat = false;
+			setTimeout(()=> {
+				this.mozoghat = true;
+				},100)
+		}
+
+		hitboxUpdate(x,y,w,h) {
+			if(this.box != null) {
+			this.box.style.left = x 
+			this.box.style.top = y 
+			this.box.style.width =w 
+			this.box.style.height =h 
+			}
+			
+		}
+		left(lokes = 0) {
+			if(lokes != 0) {
+				this.x -= lokes
+				this.div.style.left = this.x;
+				for(let obj of objektek) {
 					if(aabbCollision(this, obj)) {
 						if (obj instanceof Wall) {
-							this.x += this.sebesseg;
+							while(!aabbCollision(this, obj)) {
+								this.x += this.lokes
+							}
+							console.log("falban vagyok")
 						}
 					}
 				}
-			this.div.style.left = this.x;
-					if(this.box != null) { //updateljük a hitboxot
-						this.box.style.left = this.x-this.hitMeret
-						this.box.style.top = this.y
-						this.box.style.width = this.hitMeret
-						this.box.style.height =this.height
+				this.hitboxUpdate(this.x-this.hitMeret,this.y , this.hitMeret,this.height)
+				this.stunned();
+			}
+			this.x -= this.sebesseg
+			for(let obj of objektek) {
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+						this.x += this.sebesseg	
 					}
+					break;
+				}
+			}
+				this.div.style.left = this.x;
+				this.hitboxUpdate(this.x-this.hitMeret,this.y , this.hitMeret,this.height)			
 		}
-		right(){
+		right(lokes = 0){
+			if(lokes != 0) {
+				this.x += lokes
+				for(let obj of objektek) {
+					if(aabbCollision(this, obj)) {
+						if (obj instanceof Wall) {
+							while(!aabbCollision(this, obj)) {
+								this.x -= this.lokes
+							}
+						}
+					}
+				}
+				this.div.style.left = this.x;
+				this.hitboxUpdate(this.x+this.hitMeret,this.y , this.hitMeret,this.height)
+				this.stunned();
+				
+			}else {
 			this.x += this.sebesseg
-			for(let i in objektek) {
-				let obj = objektek[i];
-				if(aabbCollision(this, obj)) {
-					if (obj instanceof Wall) {
-						this.x -= this.sebesseg;
+			for(let obj of objektek) {
+					if(aabbCollision(this, obj)) {
+						if (obj instanceof Wall) {
+							this.x -= this.sebesseg
 						}
-					}
-			}
-			this.div.style.left = this.x;
-			if(this.box != null) {
-				this.box.style.left = this.x+this.hitMeret
-				this.box.style.top = this.y
-				this.box.style.width = this.hitMeret
-				this.box.style.height =this.height
-			}
-
-		}
-		up() {
-			this.y -= this.sebesseg
-			for(let i in objektek) {
-				let obj = objektek[i];
-				if(aabbCollision(this, obj)) {
-					if (obj instanceof Wall) {
-						this.y += this.sebesseg;
+						break;
 					}
 				}
+			this.div.style.left = this.x;
+			this.hitboxUpdate(this.x+this.hitMeret,this.y , this.hitMeret,this.height)
+
+			}
+			
+		}
+		up(lokes = 0) {
+			if(lokes != 0) {
+				this.y -= lokes
+				for(let obj of objektek) {
+					if(aabbCollision(this, obj)) {
+						if (obj instanceof Wall) {
+							while(!aabbCollision(this, obj)) {
+								this.y += this.lokes
+							}
+						
+						}
+						break;
+					}
+				}
+				this.div.style.left = this.x;
+				this.hitboxUpdate(this.x,this.y-this.hitMeret, this.width,this.hitMeret)
+				this.stunned();
+				
+			}
+			this.y -= this.sebesseg
+			for(let obj of objektek) {
+					if(aabbCollision(this, obj)) {
+						if (obj instanceof Wall) {
+							this.y += this.sebesseg
+						}
+					}
 			}
 			this.div.style.top = this.y;
-			if(this.box != null) {
-			this.box.style.left = this.x;
-			this.box.style.top = this.y-this.hitMeret;
-			this.box.style.width = this.width
-			this.box.style.height = this.hitMeret
-			}
+			this.hitboxUpdate(this.x,this.y-this.hitMeret, this.width,this.hitMeret)
 		}
-		down() {
-			this.y += this.sebesseg
-			for(let i in objektek) {
-				let obj = objektek[i];
-				if(aabbCollision(this, obj)) {
-					if (obj instanceof Wall) {
-						this.y -= this.sebesseg;
+		down(lokes = 0) {
+			if(lokes != 0) {
+				this.y += lokes
+				for(let obj of objektek) {
+					if(aabbCollision(this, obj)) {
+						if (obj instanceof Wall) {
+							while(!aabbCollision(this, obj)) {
+								this.y -= this.sebesseg
+							}
+						}
+						break;
 					}
-				}
-			
-			};
-			if(this.box != null) {
-				this.box.style.left = this.x;
-				this.box.style.top = this.y+this.hitMeret;
-				this.box.style.width = this.width
-				this.box.style.height = this.hitMeret
 			}
-			
+				this.div.style.left = this.x;
+				this.hitboxUpdate(this.x,this.y+this.hitMeret, this.width,this.hitMeret)
+				this.stunned();
+				
+			}
+			this.y += this.sebesseg
+			for(let obj of objektek) {
+					if(aabbCollision(this, obj)) {
+						if (obj instanceof Wall) {
+							this.y -= this.sebesseg
+						}
+					}
+			}
+			this.hitboxUpdate(this.x,this.y+this.hitMeret, this.width,this.hitMeret)
 			this.div.style.top = this.y
 		}
 		mozog() {
-			if(kari != null) {
+
+			if(kari != null && this.mozoghat) {
 				if(agroRangeben(this,kari,this.width*2)) {
 					let esely = 0.7;
 					if(this.tamad==false) {
@@ -238,21 +309,32 @@
 				//Ne álljanak beléd
 				if(agroRangeben(this,kari,this.agroRange) && agroRangeben(this,kari,this.width+this.width/2) == false) {
 					if(this.x > kari.x) {
+						this.iranyok[1] = true;
 						this.left();
-					}
+					}else {this.iranyok[1] = false;}
 					if(this.x < kari.x) {
+						this.iranyok[3] = true;
 						this.right();
-					}
+					}else {this.iranyok[3] = false;}
 					if(this.y > kari.y) {
+						this.iranyok[0] = true;
 						this.up();
-					}	
+					}else {this.iranyok[0] = false;}
 					if(this.y < kari.y) {
+						this.iranyok[2] = true;
 						this.down();
-					}
+					}else {this.iranyok[2] = false;}
+					
 				}
 			}	
 		}
-		
+		visszalok(lokes) {
+			if(this.iranyok[0]) {this.up(lokes*-1)}
+			if(this.iranyok[1]) {this.left(lokes*-1);}
+			if(this.iranyok[2]) {this.down(lokes*-1)}
+			if(this.iranyok[3]) {this.right(lokes*-1)}
+
+		}
 		sebzodik(dmg){
 			this.hp -= dmg;
 			if(this.hp <= 0) {this.die();}
@@ -261,18 +343,30 @@
 		die() {
 			this.box.remove()
 			this.box = null
+			let rand = Math.random();
+			if(rand < 0.4 && rand > 0.1) {
+				new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+			}
+			else if(rand < 0.6) {
+				new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+				new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+			}else if(rand < 0.9) {
+				new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+				new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+				new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+			}
+			
 			torol(this) 
 		}
 		updateInfo() {
 			this.hpD.innerText = this.hp
 		}
 	}
-	new Felveheto(50,50,30)
-	new Felveheto(100,50,50)
-	new Felveheto(150,50,70)
+	new Coin(50,50,30)
+	new Coin(100,50,50)
+	new Coin(150,50,70)
 	new Wall(400,250,1)
-	let enenmy = new Enemy(600,400,10,"Józsi")
-	let enenmy2 = new Enemy(800,400,5,"Béla")
+	let enenmy = new Enemy(390,250,10,"Józsi")
 
 	class Karakter{
 		constructor(nev,hp) {
@@ -280,7 +374,7 @@
 			this.hp = hp;
 			this.penz = 0;
 			this.sebesseg = 3;
-			this.dmg = 2;
+			this.dmg = 3;
 			this.tamad = false
 			this.x = 230;
 			this.y = 230;
@@ -288,6 +382,7 @@
 			this.height = 100;
 			this.iranyok = [false,false,false,false]
 			this.nezesIrany = "";
+			this.lokes = 50;
 			this.karakter = document.createElement("div")
 			this.karakter.style.width = this.width 
 			this.karakter.style.height = this.height 
@@ -297,12 +392,14 @@
 			this.karakter.style.top = this.y;
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.karakter)
+
 			document.getElementById("penz").innerText = this.penz
 			document.getElementById("hp").innerText = this.hp
+
 			this.box = document.createElement("div")
 			this.box.setAttribute("id","hitbox")
 			this.hitMeret = 50;
-			this.box.style.backgroundColor = "green"
+			
 			this.box.style.position = "absolute"
 			this.vaszon.appendChild(this.box)
 		
@@ -410,7 +507,6 @@
 
 		attack() {
 				this.tamad = true
-				this.box.style.backgroundColor = "grey"
 				let xx = parseInt(this.box.style.left.split("px")[0]);
 				let yy = parseInt(this.box.style.top.split("px")[0]);
 				let ww = parseInt(this.box.style.width.split("px")[0])
@@ -421,10 +517,9 @@
 					if(aabbCollision(h,obj)) 
 					{
 						if(obj instanceof Enemy) {
-				
 							obj.sebzodik(this.dmg)
+							obj.visszalok(this.lokes)
 						}
-						 break
 					}
 				}
 		
@@ -508,7 +603,6 @@ setInterval(function(){
 	kari.look(kari.nezesIrany)
 	if(kari.tamad) { //visszaállítja
 		setTimeout(() =>{
-			hit.style.backgroundColor = "green"
 			kari.tamad = false	
 		},250)
 	}
@@ -519,8 +613,8 @@ if(kari.iranyok[0]) {kari.up();}
 if(kari.iranyok[1]) {kari.left();}
 if(kari.iranyok[2]) {kari.down();}
 if(kari.iranyok[3]) {kari.right();}
-for(let i in enemyk) {
-	enemyk[i].mozog()
+for(let enemy of enemyk) {
+	enemy.mozog()
 }
 	},10)
 </script>
