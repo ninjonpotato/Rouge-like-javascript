@@ -10,7 +10,6 @@
 		justify-content: center;
 		top:-60px;
 		flex-direction: row;
-		
 		position: relative;
 		
 	}
@@ -18,6 +17,7 @@
 <body>
 	<p>Pénzed: <span id="penz"></span></p>
 	<p>Életed: <span id="hp"></span></p>
+	<p>Sebzésed: <span id="dmg"></span></p>
 	<div id="canvas">
 	</div>
 	<script src="gameLogic.js"></script>
@@ -25,24 +25,21 @@
 	<script src="wall.js"></script>
 	<script src="enemy.js"></script>
 	<script src="karakter.js"></script>
+	<script src="lada.js"></script>
 	
 
 <script>
 
 	//TODO JSON FORMÁTUMBAN ELTÁROLNI A PÁLYÁKAT, LEHESSEN CSINÁLNI IS.
-	//Az osztályok külön fájlokba rendezése.
-	//Kulcsok, ládák, ajtók
-	//felvehető tárgyak(fegyver,hp,ruha) (Felvehető valamilyen felüldefiniálása, vagy kibővítése), árusok(bindig of isaacos vagy gama.c-s)
+	//Kulcsok, ajtók
 	//Titkosfalak működése,
-	//fegyverek nem stackelődnek, egyszerre 1 és választani kelljen, ruhák stackelődhetnek.
 	//még nincs lekezelve hogy a titkos falakat lehessen kiütni, majd legyen valami feltétel, pl bomba 
 	
-	new Coin(50,50,30)
-	new Coin(100,50,50)
-	new Coin(150,50,70)
-	new Wall(400,250,1)
-	let enenmy = new Enemy(390,250,10,"Józsi")
+
+	let f = new Ruha(-1,-1,"Ruha",35)
+	new Lada(300,50,f)
 	kari = new Karakter("Sándor",100)
+	console.log(objektek)
 
 </script>
 </body>

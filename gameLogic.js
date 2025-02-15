@@ -28,6 +28,7 @@ class Hitbox {
         this.y = y;
         this.width = width;
         this.height = height
+        objektek.push(this)
     }
 }
 
@@ -35,13 +36,24 @@ function torol(obj) {
     let canvas = document.getElementById("canvas");
     obj.x = kari.x;
     obj.y = kari.y
-    if(obj instanceof Felveheto) {
+    if(obj instanceof Coin) {
         kari.penz += obj.ertek
-        kari.infoUpdate()
     }
+    if(obj instanceof Item) {
+        kari.itemek.push(obj);
+        if(obj instanceof Fegyver) {
+            kari.dmg += obj.dmg
+        }
+        if(obj instanceof Ruha) {
+            kari.hp += obj.hp
+        }
+    }
+    
+    
     rendez();
     obj.div.remove();
     objektek.shift();
+    kari.infoUpdate()
 
 }
 
@@ -73,6 +85,18 @@ if(e.key == "d" || e.key == "D") {
 }
 if(e.key == " ") {
     if(kari.tamad == false) {kari.attack()}
+    
+}
+if(e.key == "e" || e.key == "E") {
+    for(let obj of objektek) {
+    if(aabbCollision(obj, kari)) { 
+        console.log("Kinyit!")
+        if(obj instanceof Lada) {
+            obj.kinyit();
+            console.log(objektek)
+        }
+    }
+}
     
 }
 //console.kog(e.key)

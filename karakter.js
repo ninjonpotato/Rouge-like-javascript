@@ -25,6 +25,7 @@ class Karakter{
 
 			document.getElementById("penz").innerText = this.penz
 			document.getElementById("hp").innerText = this.hp
+			document.getElementById("dmg").innerText = this.dmg
 
 			this.box = document.createElement("div")
 			this.box.setAttribute("id","hitbox")
@@ -33,13 +34,15 @@ class Karakter{
 			this.box.style.backgroundColor = "green"
 			this.vaszon.appendChild(this.box)	
 
-			this.recovery = 10000 //ms;
+			this.recovery = 1000 //ms;
 			this.recoveryP = document.createElement("p")
 			this.recoveryP.innerText = " "
 			this.recoveryP.style.position = "relative"
 			this.recoveryP.style.textAlign = "center";
 			this.recoveryP.style.top = -30;
 			this.karakter.appendChild(this.recoveryP)
+
+			this.itemek = [];
 		}
 		look(irany) {
 			if(irany == "ArrowUp"){
@@ -192,6 +195,7 @@ class Karakter{
 		infoUpdate() {
 		document.getElementById("penz").innerText = this.penz
 		document.getElementById("hp").innerText = this.hp
+		document.getElementById("dmg").innerText = this.dmg
 		}
 
 	}

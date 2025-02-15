@@ -1,5 +1,5 @@
 class Enemy {
-		constructor(x,y,hp,nev) {
+		constructor(x,y,hp=100,nev="Béla") {
 			this.x = x;
 			this.y = y;
 			this.nev = nev;
