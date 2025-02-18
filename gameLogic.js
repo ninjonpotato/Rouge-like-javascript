@@ -39,6 +39,9 @@ function torol(obj) {
     if(obj instanceof Coin) {
         kari.penz += obj.ertek
     }
+    if(obj instanceof Kulcs) {
+        kari.kulcs++;
+    }
     if(obj instanceof Item) {
         kari.itemek.push(obj);
         if(obj instanceof Fegyver) {
@@ -47,6 +50,7 @@ function torol(obj) {
         if(obj instanceof Ruha) {
             kari.hp += obj.hp
         }
+       
     }
     
     
@@ -90,10 +94,21 @@ if(e.key == " ") {
 if(e.key == "e" || e.key == "E") {
     for(let obj of objektek) {
     if(aabbCollision(obj, kari)) { 
-        console.log("Kinyit!")
         if(obj instanceof Lada) {
-            obj.kinyit();
-            console.log(objektek)
+            if(obj.nyitva == false) {
+                if(obj.kulcsos) {
+                    if(obj.vanEkulcs(kari)) {
+                        console.log("Kulcsal lett kinyitva")
+                        obj.kinyit();
+                        kari.infoUpdate();
+                    }else {
+                        console.log("nincs kulcsod")
+                    }
+                }else {
+                    obj.kinyit();
+                }
+            }
+           
         }
     }
 }

@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pálya keszitő</title>
+</head>
+<style>
+    #obj-menu {
+        position: absolute;
+        top: 610px;
+        label {
+            margin-left: 20px;
+        }
+        
+    }
+    #menu {
+        float: right;
+        width: 250px;
+        margin: 0;
+        text-align: left;
+        padding-left: 10px;
+        padding-right: 10px;
+        border: 2px solid black;
+        font-family: sans-serif;
+    }
+    #kivalasztva {
+        border: 2px dotted white !important;
+    }
+    #menu h2{
+        text-align: center;
+        font-size: 20px;
+        text-decoration: underline;
+    }
+    #menu p input[type = "number"] {
+       width: 40px;
+    }
+    #menu p input[type = "text"] {
+       width: 80px;
+    }
+    #menu button {
+        text-align: center;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+</style>
+<body>
+    <div id="canvas">
+	</div>
+    <div id="obj-menu">
+    <label>Select:<input type="radio" name="box" id="cursor" onclick="kivalaszt('cursor')" checked></label>
+    <label>Törlés:<input type="radio" name="box" id="cursor" onclick="kivalaszt('delete')"></label>
+    <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
+    <label>Fegyver:<input type="radio" name="box" id="fegy" onclick="kivalaszt('Fegyver')" ></label> 
+    <label>Ruha:<input type="radio" name="box" id="ruha" onclick="kivalaszt('Ruha')" ></label>
+    <label>Láda:<input type="radio" name="box" id="lada" onclick="kivalaszt('Lada')" ></label>
+    <label>Kulcs: <input type="radio" name="box" id="kulcs" onclick="kivalaszt('Kulcs')" ></label>
+    <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
+    <button id="save">Mentés</button>
+    </div>
+    <div id="menu">
+        <h2>Attribútumok</h2>
+    </div>
+    <script src="editorLogic.js"></script>
+	<script src="felveheto.js"></script>
+	<script src="wall.js"></script>
+	<script src="enemy.js"></script>
+	<script src="karakter.js"></script>
+	<script src="lada.js"></script>
+    <script src="readfile.js"></script>
+    
+</body>
+</html>

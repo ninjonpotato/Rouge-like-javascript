@@ -23,9 +23,11 @@ class Karakter{
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.karakter)
 
+			this.kulcs = 0;
 			document.getElementById("penz").innerText = this.penz
 			document.getElementById("hp").innerText = this.hp
 			document.getElementById("dmg").innerText = this.dmg
+			document.getElementById("kulcs").innerText = this.kulcs
 
 			this.box = document.createElement("div")
 			this.box.setAttribute("id","hitbox")
@@ -43,6 +45,7 @@ class Karakter{
 			this.karakter.appendChild(this.recoveryP)
 
 			this.itemek = [];
+	
 		}
 		look(irany) {
 			if(irany == "ArrowUp"){
@@ -196,6 +199,7 @@ class Karakter{
 		document.getElementById("penz").innerText = this.penz
 		document.getElementById("hp").innerText = this.hp
 		document.getElementById("dmg").innerText = this.dmg
+		document.getElementById("kulcs").innerText = this.kulcs
 		}
 
 	}

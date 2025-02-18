@@ -55,7 +55,6 @@
 		constructor(x,y,nev,dmg) {
 			super(x,y,nev);
 			this.dmg = dmg;
-			console.log(this.nev)
 			this.div.style.backgroundColor = "green"
 			this.div.style.border = "1px solid blue"
 			this.div.innerText = this.nev
@@ -70,4 +69,13 @@
 			this.div.style.border = "1px solid green"
 			this.div.innerText = this.nev
 		}
+	}
+
+	class Kulcs extends Felveheto {
+		constructor(x,y) {
+			super(x,y)
+			this.div.style.backgroundColor = "red"
+			this.div.style.border = "2px solid yellow"
+		}
+
 	}

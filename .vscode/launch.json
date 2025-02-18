@@ -7,8 +7,8 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Open gama.html",
-            "file": "/Users/laurinyeczistvan/Desktop/gama/Rouge-like-javascript/gama.html"
+            "name": "Open mapEditor.html",
+            "file": "/Users/laurinyeczistvan/Desktop/gama/Rouge-like-javascript/MapEditor/mapEditor.html"
         }
     ]
 }

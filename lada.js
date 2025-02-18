@@ -1,5 +1,5 @@
 class Lada {
-    constructor(x,y,item) {
+    constructor(x,y,item,kulcsos=false) {
         this.x = x;
         this.y = y;
         this.width = 60;
@@ -19,11 +19,21 @@ class Lada {
 
         this.nyitva = false
         objektek.push(this)
+
+        this.kulcsos = kulcsos;
     }
 
+    vanEkulcs(kari) {
+       if(kari.kulcs > 0) {
+        kari.kulcs--;
+        return true;
+       }
+       return false;
+    }
     kinyit() {
         if(this.nyitva == false) {
         this.nyitva = true;
+        this.div.innerText += "Nyitva"
         this.item.kirajzol(this.x,this.y);}
     }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "rouge-like-javascript",
+  "version": "1.0.0",
+  "main": "mapEditor.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ninjonpotato/Rouge-like-javascript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ninjonpotato/Rouge-like-javascript/issues"
+  },
+  "homepage": "https://github.com/ninjonpotato/Rouge-like-javascript#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cros": "^1.0.1",
+    "express": "^4.21.2"
+  }
+}

@@ -18,6 +18,7 @@
 	<p>Pénzed: <span id="penz"></span></p>
 	<p>Életed: <span id="hp"></span></p>
 	<p>Sebzésed: <span id="dmg"></span></p>
+	<p>Kulcsok: <span id="kulcs"></span></p>
 	<div id="canvas">
 	</div>
 	<script src="gameLogic.js"></script>
@@ -31,15 +32,14 @@
 <script>
 
 	//TODO JSON FORMÁTUMBAN ELTÁROLNI A PÁLYÁKAT, LEHESSEN CSINÁLNI IS.
-	//Kulcsok, ajtók
-	//Titkosfalak működése,
+	//ajtók.
 	//még nincs lekezelve hogy a titkos falakat lehessen kiütni, majd legyen valami feltétel, pl bomba 
 	
-
-	let f = new Ruha(-1,-1,"Ruha",35)
-	new Lada(300,50,f)
 	kari = new Karakter("Sándor",100)
-	console.log(objektek)
+	new Enemy(200,30)
+	new Enemy(300,30)
+	new Enemy(400,30)
+	new Kulcs(270,50)
 
 </script>
 </body>
