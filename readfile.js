@@ -10,7 +10,7 @@ app.post('/mentes',(req,res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Szerver fut a http://localhost:${port} címen`);
+    console.log(`Szerver fut a http://localhost:${port}/mapEditor.html címen`);
   });
 /*
 fs.writeFile("example.txt","Ez van benne", (err) =>{
