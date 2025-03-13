@@ -142,3 +142,10 @@ for(let enemy of enemyk) {
 enemy.mozog()
 }
 },10)
+
+
+//A játék elinduláskor beolvassa az első pályát.
+//Az exiteket össze lehessen kötni más pályákkal:
+// a) az összes pályát betöltjük b) akkor töltünk be következő pályát, amikor egy exitre lépünk
+//lehetséges problémák:hogyan töltök be úgy pályákat, hogy ne legyen minden egymásra dobálva?
+//Csináli egy pálya osztályt ami a pályához tartozó objektetek tartalmazza. így könnyű őket linkelni.

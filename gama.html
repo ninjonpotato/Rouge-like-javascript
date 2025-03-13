@@ -29,17 +29,16 @@
 	<script src="lada.js"></script>
 	
 
-<script>
-
-	//TODO JSON FORMÁTUMBAN ELTÁROLNI A PÁLYÁKAT, LEHESSEN CSINÁLNI IS.
-	//ajtók.
-	//még nincs lekezelve hogy a titkos falakat lehessen kiütni, majd legyen valami feltétel, pl bomba 
-	
+<script>	
 	kari = new Karakter("Sándor",100)
-	new Enemy(200,30)
-	new Enemy(300,30)
-	new Enemy(400,30)
-	new Kulcs(270,50)
+	
+	new Wall(250,50)
+	new Lada(100,50,new Fegyver(0,0,"Fegyo",100),true)
+	new Kulcs(270,100)
+	new Enemy(500,50)
+
+
+
 
 </script>
 </body>

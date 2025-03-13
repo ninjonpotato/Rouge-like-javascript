@@ -61,7 +61,7 @@
                 width: 60px;
             }
             input[type="text"] {
-                width: 100px;
+                width: fit-content;
             }
         }
     }
@@ -73,22 +73,21 @@
     <label>Select:<input type="radio" name="box" id="cursor" onclick="kivalaszt('cursor')" checked></label>
     <label>Törlés:<input type="radio" name="box" id="cursor" onclick="kivalaszt('delete')"></label>
     <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
+    <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
+    <label>Exit:<input type="radio" name="box" id="exit" onclick="kivalaszt('Exit')" ></label> 
     <label>Fegyver:<input type="radio" name="box" id="fegy" onclick="kivalaszt('Fegyver')" ></label> 
     <label>Ruha:<input type="radio" name="box" id="ruha" onclick="kivalaszt('Ruha')" ></label>
     <label>Láda:<input type="radio" name="box" id="lada" onclick="kivalaszt('Lada')" ></label>
     <label>Kulcs: <input type="radio" name="box" id="kulcs" onclick="kivalaszt('Kulcs')" ></label>
-    <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
-    <button id="save">Mentés</button>
+    <label>Pénz: <input type="radio" name="box" id="penz" onclick="kivalaszt('Penz')" ></label><br>
+    <button id="save" value="save">Mentés</button>
+    <button id="save" value="export">export</button>
+    <input type="file" value="Beolvasás fájlból" id="loadFile">
     </div>
     <div id="menu">
         <h2>Attribútumok</h2>
     </div>
     <script src="editorLogic.js"></script>
-	<script src="felveheto.js"></script>
-	<script src="wall.js"></script>
-	<script src="enemy.js"></script>
-	<script src="karakter.js"></script>
-	<script src="lada.js"></script>
     <script src="readfile.js"></script>
     
 </body>

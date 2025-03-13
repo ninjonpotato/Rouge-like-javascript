@@ -8,8 +8,8 @@ class Karakter{
 			this.tamad = false
 			this.x = 230;
 			this.y = 230;
-			this.width = 100;
-			this.height = 100;
+			this.width = 60;
+			this.height = 60;
 			this.iranyok = [false,false,false,false]
 			this.nezesIrany = "";
 			this.lokes = 50;
