@@ -13,12 +13,21 @@
 		position: relative;
 		
 	}
+	#kari_adatok {
+		position: absolute;
+		z-index: 100;
+        p {
+            font-size: 20px;
+        }
+	}
 	</style>
 <body>
+	<div id="kari_adatok">
 	<p>Pénzed: <span id="penz"></span></p>
 	<p>Életed: <span id="hp"></span></p>
 	<p>Sebzésed: <span id="dmg"></span></p>
 	<p>Kulcsok: <span id="kulcs"></span></p>
+	</div>
 	<div id="canvas">
 	</div>
 	<script src="gameLogic.js"></script>
@@ -27,19 +36,9 @@
 	<script src="enemy.js"></script>
 	<script src="karakter.js"></script>
 	<script src="lada.js"></script>
+	<script src="exit.js"></script>
+<script>
 	
-
-<script>	
-	kari = new Karakter("Sándor",100)
-	
-	new Wall(250,50)
-	new Lada(100,50,new Fegyver(0,0,"Fegyo",100),true)
-	new Kulcs(270,100)
-	new Enemy(500,50)
-
-
-
-
 </script>
 </body>
 </html>

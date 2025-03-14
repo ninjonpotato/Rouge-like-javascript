@@ -1,0 +1,14 @@
+fegyver,0,0,|Giga-megyfegyver,30,Nincs
+fegyver,0,0,|Mega-megyfegyver,15,Nincs
+fegyver,0,0,|Sima-megyfegyver,7,Nincs
+ruha,0,0,|Giga-hagymaruha,30,nincs
+ruha,0,0,|Mega-hagymaruha,15,nincs
+ruha,0,0,|Sima-hagymaruha,7,nincs
+wall,200,580,|true,titkosfal.png
+wall,200,520,|false,fal4.png
+wall,200,460,|false,fal4.png
+wall,200,400,|false,fal4.png
+wall,200,340,|false,fal4.png
+wall,140,340,|false,fal4.png
+wall,80,340,|false,fal4.png
+wall,20,340,|false,fal4.png

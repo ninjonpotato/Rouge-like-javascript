@@ -11,8 +11,6 @@
 			this.div.style.top = this.y;
 			if(this.x > 0 && this.y > 0) {
 			this.div.style.position = "absolute"
-			this.div.style.backgroundColor = "white"
-			this.div.style.border = "1px solid black"
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
 			objektek.push(this)
@@ -25,18 +23,21 @@
 		constructor(x,y,ertek) {
 			super(x,y);
 			this.ertek = ertek;
-			this.div.style.backgroundColor = "yellow"
-			this.div.style.border = "none"
+			this.div.style.backgroundImage = "url(Textures/penz.png)"
+			//this.div.style.backgroundColor = "yellow"
+			//this.div.style.border = "none"
 		}
 	}
 
 	class Item extends Felveheto {
-		constructor(x,y,nev) {
+		constructor(x,y,nev,texture) {
 			super(x,y);
 			this.nev = nev;
-			this.div.style.backgroundColor = "pink"
-			this.div.style.border = "1px solid black"
-			this.div.innerText = this.nev
+			this.texture = texture
+			this.div.style.backgroundImage = `url(Textures/${texture})`;
+			//this.div.style.backgroundColor = "pink"
+			//this.div.style.border = "1px solid black"
+		//	this.div.innerText = this.nev
 		}
 
 		kirajzol(x,y) {
@@ -45,6 +46,8 @@
 			this.y = y;
 			this.div.style.left = x
 			this.div.style.top = y
+			this.div.style.zIndex = "100"
+			this.div.style.backgroundImage = `url(Textures/${this.texture})`;
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
 			objektek.push(this)
@@ -52,30 +55,28 @@
 	}
 
 	class Fegyver extends Item {
-		constructor(x,y,nev,dmg) {
-			super(x,y,nev);
+		constructor(x,y,nev,dmg,texture) {
+			super(x,y,nev,texture);
 			this.dmg = dmg;
-			this.div.style.backgroundColor = "green"
-			this.div.style.border = "1px solid blue"
-			this.div.innerText = this.nev
+		//	this.div.style.backgroundColor = "green"
+		//	this.div.style.border = "1px solid blue"
 		}
 	}
 
 	class Ruha extends Item {
-		constructor(x,y,nev,hp) {
-			super(x,y,nev);
+		constructor(x,y,nev,hp,texture) {
+			super(x,y,nev,texture);
 			this.hp = hp;
-			this.div.style.backgroundColor = "blue"
-			this.div.style.border = "1px solid green"
-			this.div.innerText = this.nev
+			//this.div.style.backgroundColor = "blue"
+		//	this.div.style.border = "1px solid green"
 		}
 	}
 
-	class Kulcs extends Felveheto {
-		constructor(x,y) {
-			super(x,y)
-			this.div.style.backgroundColor = "red"
-			this.div.style.border = "2px solid yellow"
+	class Kulcs extends Item {
+		constructor(x,y,nev,texture) {
+			super(x,y,nev,texture)
+		//	this.div.style.backgroundColor = "red"
+		//	this.div.style.border = "2px solid yellow"
 		}
 
 	}

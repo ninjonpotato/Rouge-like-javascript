@@ -16,6 +16,9 @@ let global_enemy ="enemy.png";
 let global_exit ="exit.png"
 let global_lada ="lada.png"
 let global_penz ="penz.png"
+let global_ruha = "ruha.png"
+let global_fegyver = "kard.png"
+let global_kulcs = "kulcs.png"
 
 
 class Objekt {
@@ -34,9 +37,11 @@ class Objekt {
         this.div.style.opacity = 0.1;
         this.atributumok = null;
         this.texture = texture
-        this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         this.div.style.border = "1px solid black"
         objektek.push(this)
+    }
+    textureBeallit(obj,texture) {
+    obj.div.style.backgroundImage = "url(../Textures/"+texture+")"
     }
     menuLista() {
         if(this.atributumok != null) {
@@ -56,7 +61,7 @@ class Objekt {
                     let texture =split[split.length-1];
                     this.atributumok[i] = texture;
                     t_name.innerText = this.atributumok[i]
-                    this.div.style.backgroundImage = "url("+texture+")"
+                    this.textureBeallit(this,texture)
 
                 })
             }else {
@@ -82,17 +87,19 @@ class Tile extends Objekt {
     }
 }
 class Wall extends Objekt{
-        constructor(x,y,texture=global_wall) {
+        constructor(x,y,texture=global_wall,titkos=false) {
             super(x,y)
             this.div.style.backgroundColor = "yellow"
             this.div.style.zIndex = 1
             this.div.style.opacity = 1;
             this.texture = texture
             this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
+            this.titkos = (titkos == "true")
             if(this.texture != "nincs") {
                 this.div.style.border = "none"
             }
             this.atributumok = {
+                "Titkos": this.titkos,
                 "Textúra": this.texture
             }
             ujObjektej.push(this)
@@ -101,7 +108,7 @@ class Wall extends Objekt{
 }
     
 class Enemy extends Objekt{
-        constructor(x,y,nev="Béla",dmg=3,hp = 100,speed=1, drop = 3,texture=global_enemy) {
+        constructor(x,y,nev="Béla",dmg=3,hp =15,speed=1, drop = 3,texture=global_enemy) {
             super(x,y)
             this.div.style.backgroundColor = "red"
             this.div.style.zIndex = 1
@@ -392,17 +399,20 @@ class Lada extends Objekt{
 }
 
 class Exit extends Objekt {
-    constructor(x,y,location="0",id=exits, texture=global_exit) { //id alapján tudjuk majd megadni hogy hova vigyen minket
+    constructor(x,y,location="0",id=exits, texture=global_exit,isSpawn=true) { //id alapján tudjuk majd megadni hogy hova vigyen minket
         super(x,y)
-        this.div.style.backgroundColor = "black"
+      //  this.div.style.backgroundColor = "black"
         this.div.style.opacity = 1;
         this.location = location
         this.id = id;
         this.texture = texture
+        this.isSpawn = isSpawn;
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
+        this.div.style.border = ""
         this.atributumok = {
             "id":this.id,
             "location":this.location,
+            "Spanw hely": this.isSpawn,
             "Textúra": this.texture
          }
          exits++;
@@ -410,8 +420,9 @@ class Exit extends Objekt {
     }
     atrUpdate() {
         this.atributumok = {
-            "id":exits,
+            "id":this.id,
             "location":this.location,
+            "isSpawn": this.isSpawn,
             "Textúra": this.texture
         }
     }
@@ -439,7 +450,7 @@ class Exit extends Objekt {
                     let texture =split[split.length-1];
                     this.atributumok[i] = texture;
                     t_name.innerText = this.atributumok[i]
-                    this.div.style.backgroundImage = "url("+texture+")"
+                    this.textureBeallit(this,texture)
                 })
             }else {
                 input.value = this.atributumok[i]
@@ -460,17 +471,15 @@ class Exit extends Objekt {
 
 class Item extends Objekt{
     constructor(x = 0,y = 0,nev = "Item",manual = true, texture  = "nincs") {
-        if(x != 0 && y != 0)  {
+        if(x == 0 && y == 0) {
+            super(0,0,0,0)
+        }else { //850 0
             if(manual) {
                 super(x+30/2,y+30/2,30,30)
             }else {
                 super(x,y,30,30)
             }
-        
-    }
-        else {
-        super(0,0,0,0)
-    }
+        }
          this.div.style.backgroundColor = "brow"
          this.div.style.zIndex = 1
          this.div.style.opacity = 1;
@@ -485,7 +494,7 @@ class Item extends Objekt{
 }
 
 class Kulcs extends Item{
-    constructor(x,y,nev="kulcs",texture="nincs",manual = true) {
+    constructor(x,y,nev="kulcs",texture=global_kulcs,manual = true) {
         super(x,y,nev, manual)
         this.texture = texture;
         if(this.texture != "nincs") {
@@ -496,7 +505,7 @@ class Kulcs extends Item{
             "Név":this.nev,
             "Textúra":this.texture
          }
-         this.div.style.backgroundColor = "cyan"   
+        // this.div.style.backgroundColor = "cyan"   
     }
 }
 
@@ -524,9 +533,9 @@ class Penz extends Item{
 
 
 class Fegyver extends Item{
-    constructor(x,y,dmg = 3,nev="Fegyver",textura="Nincs",manual = true) {
+    constructor(x,y,dmg = 3,nev="Fegyver",textura=global_fegyver,manual = true) {
         super(x,y,nev,manual)
-        this.div.style.backgroundColor = "red"
+       // this.div.style.backgroundColor = "red"
         this.dmg = dmg;
         this.texture = textura
         if(this.texture != "nincs") {
@@ -550,9 +559,9 @@ class Fegyver extends Item{
 }
 
 class Ruha extends Item{
-    constructor(x,y,ved = 3,nev = "Ruha",textura="nincs",manual = true) {
+    constructor(x,y,ved = 3,nev = "Ruha",textura=global_ruha,manual = true) {
         super(x,y,nev,manual)
-        this.div.style.backgroundColor = "yellow"
+       // this.div.style.backgroundColor = "yellow"
         this.ved = ved;
         this.texture = textura
         if(this.texture != "nincs") {
@@ -607,6 +616,9 @@ function aabbCollision(A, B) {
 
 
 function torol(obj) {
+    if(obj instanceof Exit) {
+        exits--;
+    }
     objektek = objektek.filter(item => item !== obj);
     ujObjektej = ujObjektej.filter(item => item !== obj);
 }
@@ -679,7 +691,6 @@ vaszon.addEventListener("mouseup",(ev)=>{
      
 })
 
-
 vaszon.addEventListener("click",(ev)=>{
     let e = new Hit(ev.clientX,ev.clientY,1,1)
 
@@ -692,7 +703,7 @@ if(kurzor == "delete") {
             }
         }
      }
-     if(ucso instanceof Tile) {} else {    ucso.div.remove();}
+     if(ucso instanceof Tile) {} else {ucso.div.remove();}
  
      torol(ucso);
 }
@@ -746,28 +757,56 @@ function kivalaszt(i) { //Ezt a radio buttonok hivják meg
     kurzor = i;
 }
 
+function info() {
+
+
+    alert(`
+        Ez egy pálya készítő és szerkesztő program. a pályákat a Maps-be ment a megadott néven és onnan olvassa be.
+        Textúrákat a Textures mappából olvassa be.
+        A pályát egy szövegszerkesztővel meglehet nyitni.
+        Tippek:
+        -Ha több objektumot egymásra tettél, vagy csak arréb akarod mozgatni csak tartsd lenyomva a bal egérgombot és a kívánt helyen engedd el.
+        -Használj exportot ha a pályát más néven szeretnéd elmenteni, használj mentést ha a meglévő néven akarod elmenteni.
+        -Az alapértelmezett textúrákat a beállításokban tudod megváltoztatni TODO.
+        `)
+}
+
 //Pálya elkészítése, valahogy legyen dinamikusabb
-        let x = 0;
-        let y = 0;
-        let w = 60;
-        let h = 60;
- for(let i = 0; i < 10; i++) {
-    for(let j = 0; j < 15; j++) {
-        let tile =  new Tile(x,y,w,h);
-        tile.div.setAttribute("id","tile")
-        tile.div.addEventListener("click",(e)=>{ //A rácsoknak adunk kattintás eventet 
-            let o = kivalaszott(kurzor,tile.x,tile.y)
-            if(o instanceof Objekt) {
-                vaszon.appendChild(o.div)
-            }
- 
-        })
-       vaszon.appendChild(tile.div)
-        x+=w;
-            }
-        x= 0;
-        y+= h;
-    }
+createGrid(10,15)
+function createGrid(gridw,gridh) {
+
+    let w = 60;
+    let h = 60;
+    let offsetX = (window.screen.width/2)-gridw*w+(1.5*w);
+    let offsetY = (window.screen.height/2)-((gridh*h)/2)+1.5*w;
+    let x = offsetX;
+    let y = offsetY;
+
+for(let i = 0; i < gridw; i++) {
+for(let j = 0; j < gridh; j++) {
+    let tile =  new Tile(x,y,w,h);
+    tile.div.setAttribute("id","tile")
+    //860px
+    tile.div.addEventListener("click",()=>{ //A rácsoknak adunk kattintás eventet 
+        let o = kivalaszott(kurzor,tile.x,tile.y)
+        if(o instanceof Objekt) {
+            vaszon.appendChild(o.div)
+        }
+
+    })
+    if(i == 0 || j == 0 || i == gridw-1 || j == gridh-1) {
+        let wall = new Wall(x,y)
+        vaszon.appendChild(wall.div)
+       }
+   vaszon.appendChild(tile.div)
+    x+=w;
+        }
+    x= offsetX;
+    y+= h;
+}
+
+}
+        
     let palyaNev = null;
 let save = document.getElementById("save");
 save.addEventListener("click",()=> {
@@ -879,7 +918,12 @@ function palyaKeszitesFajlbol(palyaText) {
             vaszon.appendChild(objekt.div)
         }
         if(type == "wall" || type=="lada" || type =="exit" || type=="enemy") {   
-            if(type=="wall") { let textura = objAtr[1]; objekt = new Wall(x,y,textura)}
+            if(type=="wall") { 
+                //wall,500,100,|false,fal4.png
+                let objParam = objAtr[1].split(",");
+                let titkos = objParam[0];
+                let textura = objParam[1];
+                objekt = new Wall(x,y,textura,titkos)}
             if(type=="lada") {
                 let objParam = objAtr[1].split(",");
                 let kulcsos = objParam[0]
@@ -904,9 +948,9 @@ function palyaKeszitesFajlbol(palyaText) {
                 let objParam = objAtr[1].split(",")
                 let loc = parseInt(objParam[0]);
                 let id = parseInt(objParam[1]);
-                let textura = objParam[2];
-                objekt = new Exit(x,y,loc,id,textura)    
-                ///exit,660,540,|0,0,nincs
+                let spawn = objParam[2];
+                let textura = objParam[3];
+                objekt = new Exit(x,y,loc,id,textura,spawn)    //Ha több spawn van azt majd lekell kezelni.
             }
             if(type=="enemy") {
                 //enemy,660,540,|Béla,3,100,9,300,enemy.png

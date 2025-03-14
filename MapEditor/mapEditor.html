@@ -7,21 +7,25 @@
 <style>
     #obj-menu {
         position: absolute;
-        top: 610px;
         label {
+            margin-left: 20px;
+        }
+        button,input[type="file"] {
+            margin-top: 20px;
+            font-size: 20px;
             margin-left: 20px;
         }
         
     }
     #menu {
         float: right;
-        width: 250px;
-        margin: 0;
-        text-align: left;
-        padding-left: 10px;
-        padding-right: 10px;
-        border: 2px solid black;
         font-family: sans-serif;
+            width: 250px;
+            margin: 0;
+            text-align: left;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: 2px solid black;
     }
     #kivalasztva {
         border: 2px dotted white !important;
@@ -65,27 +69,41 @@
             }
         }
     }
+
+    #info {
+        font-size: 20px;
+        top: 97%;
+        left: 97%;
+        position: absolute;
+
+        
+    } 
 </style>
 <body>
-    <div id="canvas">
+    <div id="container">
+        <a href="../index.html" id="back">&lt-- Vissza a főmenübe</a>
+        <div id="canvas"></div>
 	</div>
-    <div id="obj-menu">
-    <label>Select:<input type="radio" name="box" id="cursor" onclick="kivalaszt('cursor')" checked></label>
-    <label>Törlés:<input type="radio" name="box" id="cursor" onclick="kivalaszt('delete')"></label>
-    <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
-    <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
-    <label>Exit:<input type="radio" name="box" id="exit" onclick="kivalaszt('Exit')" ></label> 
-    <label>Fegyver:<input type="radio" name="box" id="fegy" onclick="kivalaszt('Fegyver')" ></label> 
-    <label>Ruha:<input type="radio" name="box" id="ruha" onclick="kivalaszt('Ruha')" ></label>
-    <label>Láda:<input type="radio" name="box" id="lada" onclick="kivalaszt('Lada')" ></label>
-    <label>Kulcs: <input type="radio" name="box" id="kulcs" onclick="kivalaszt('Kulcs')" ></label>
-    <label>Pénz: <input type="radio" name="box" id="penz" onclick="kivalaszt('Penz')" ></label><br>
-    <button id="save" value="save">Mentés</button>
-    <button id="save" value="export">export</button>
-    <input type="file" value="Beolvasás fájlból" id="loadFile">
-    </div>
-    <div id="menu">
+    <div id="menus">
+        <div id="menu">
         <h2>Attribútumok</h2>
+        </div>
+    </div>
+    <button onclick="info()" id="info">info</button>
+    <div id="obj-menu">
+        <label>Select:<input type="radio" name="box" id="cursor" onclick="kivalaszt('cursor')" checked></label>
+        <label>Törlés:<input type="radio" name="box" id="cursor" onclick="kivalaszt('delete')"></label>
+        <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
+        <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
+        <label>Exit:<input type="radio" name="box" id="exit" onclick="kivalaszt('Exit')" ></label> 
+        <label>Fegyver:<input type="radio" name="box" id="fegy" onclick="kivalaszt('Fegyver')" ></label> 
+        <label>Ruha:<input type="radio" name="box" id="ruha" onclick="kivalaszt('Ruha')" ></label>
+        <label>Láda:<input type="radio" name="box" id="lada" onclick="kivalaszt('Lada')" ></label>
+        <label>Kulcs: <input type="radio" name="box" id="kulcs" onclick="kivalaszt('Kulcs')" ></label>
+        <label>Pénz: <input type="radio" name="box" id="penz" onclick="kivalaszt('Penz')" ></label><br>
+        <button id="save" value="save">Mentés</button>
+        <button id="save" value="export">export</button>
+        <input type="file" value="Beolvasás fájlból" id="loadFile">
     </div>
     <script src="editorLogic.js"></script>
     <script src="readfile.js"></script>

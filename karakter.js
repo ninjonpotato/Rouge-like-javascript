@@ -1,25 +1,30 @@
+
 class Karakter{
-		constructor(nev,hp) {
+		constructor(nev,hp=15,x=0,y=0) {
 			this.nev = nev;
 			this.hp = hp;
 			this.penz = 0;
 			this.sebesseg = 3;
 			this.dmg = 3;
 			this.tamad = false
-			this.x = 230;
-			this.y = 230;
-			this.width = 60;
-			this.height = 60;
+			this.x = x;
+			this.y = y;
+			this.width = 50;
+			this.height = 50;
 			this.iranyok = [false,false,false,false]
+			this.lookIrany = 0
 			this.nezesIrany = "";
-			this.lokes = 50;
+			this.lokes =30;
 			this.karakter = document.createElement("div")
 			this.karakter.style.width = this.width 
 			this.karakter.style.height = this.height 
 			this.karakter.style.position = "absolute"
-			this.karakter.style.backgroundColor = "red"
-			this.karakter.style.left = this.x;
+			//this.karakter.style.backgroundColor = "red"
+			this.karakter.style.backgroundImage = "url(Textures/elore.png)"
+			this.lastIrany = "";
+			this.karakter.style.left = this.x
 			this.karakter.style.top = this.y
+
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.karakter)
 
@@ -31,12 +36,12 @@ class Karakter{
 
 			this.box = document.createElement("div")
 			this.box.setAttribute("id","hitbox")
-			this.hitMeret = 50;
+			this.hitMeret = this.width;
 			this.box.style.position = "absolute"
-			this.box.style.backgroundColor = "green"
+			//this.box.style.backgroundColor = "green"
 			this.vaszon.appendChild(this.box)	
 
-			this.recovery = 1000 //ms;
+			this.recovery = 150 //ms;
 			this.recoveryP = document.createElement("p")
 			this.recoveryP.innerText = " "
 			this.recoveryP.style.position = "relative"
@@ -49,38 +54,61 @@ class Karakter{
 		}
 		look(irany) {
 			if(irany == "ArrowUp"){
+				this.lookIrany = 1
 				this.box.style.left = this.x;
 				this.box.style.top = this.y-this.hitMeret;
 				this.box.style.width = this.width
 				this.box.style.height = this.hitMeret
-			}
+				if(!(kari.iranyok[0] ||  kari.iranyok[1] ||  kari.iranyok[2] ||  kari.iranyok[3] )) {
+       			 this.karakter.style.backgroundImage = "url(Textures/elore.png)"
+				}
+				
+			}else 
 			if(irany == "ArrowDown"){
+				this.lookIrany = 3
 				this.box.style.left = this.x;
 				this.box.style.top = this.y+this.width;
 				this.box.style.width = this.width
 				this.box.style.height = this.hitMeret
-			}
+				if(!(kari.iranyok[0] ||  kari.iranyok[1] ||  kari.iranyok[2] ||  kari.iranyok[3] )) {
+       			this.karakter.style.backgroundImage = "url(Textures/hatra.png)"
+				}
+				
+			}else
 			if(irany == "ArrowLeft"){
-				this.box.style.left = this.x-30;
+				this.lookIrany = 2
+				this.box.style.left = this.x-this.width;
 				this.box.style.top = this.y;
 				this.box.style.width = this.hitMeret
 				this.box.style.height = this.height
-			}
+				if(!(kari.iranyok[0] ||  kari.iranyok[1] ||  kari.iranyok[2] ||  kari.iranyok[3] )) {
+					this.karakter.style.backgroundImage = "url(Textures/balra.png)"
+				 }
+			}else
 			if(irany == "ArrowRight"){
+				this.lookIrany = 4
 				this.box.style.left = this.x+this.width;
 				this.box.style.top = this.y;
 				this.box.style.width = this.hitMeret
 				this.box.style.height = this.height
+				if(!(kari.iranyok[0] ||  kari.iranyok[1] ||  kari.iranyok[2] ||  kari.iranyok[3] )) {
+					this.karakter.style.backgroundImage = "url(Textures/jobbra.png)"
+				 }
+			}else {
+				this.lookIrany = 0
 			}
 		}
 		left() {
 			this.x -= this.sebesseg;
+			if(!(this.iranyok[0] || this.iranyok[3] || this.iranyok[2])) {this.karakter.style.backgroundImage = "url(Textures/balra.gif)"}
 			
 			for(let i in objektek) {
 				let obj = objektek[i];
 				if(aabbCollision(this, obj)) {
 					if (obj instanceof Wall) {
-						this.x += this.sebesseg;
+						if(obj.titkos) {
+							this.x += this.sebesseg;
+						}
 					} else if(obj instanceof Felveheto) {
 						torol(objektek[i])
 					}
@@ -92,13 +120,14 @@ class Karakter{
 		}
 		right() {
 			this.x += this.sebesseg;
+			if(!(this.iranyok[0] || this.iranyok[1] || this.iranyok[2])) {this.karakter.style.backgroundImage = "url(Textures/jobbra.gif)"}
 			
 			for(let i in objektek) {
 				let obj = objektek[i];
 				if(aabbCollision(this, obj)) {
 					if (obj instanceof Wall) {
-			
-						this.x -= this.sebesseg;
+						if(obj.titkos) {
+						this.x -= this.sebesseg;}
 					} else if(obj instanceof Felveheto) {
 
 						torol(objektek[i])
@@ -111,12 +140,13 @@ class Karakter{
 		up() {
 			this.y -= this.sebesseg;
 			
+			if(!(this.iranyok[1] || this.iranyok[2] || this.iranyok[3])) {this.karakter.style.backgroundImage = "url(Textures/elore.gif)"}
 			for(let i in objektek) {
 				let obj = objektek[i];
 				if(aabbCollision(this, obj)) {
 					if (obj instanceof Wall) {
-				
-						this.y += this.sebesseg;
+						if(obj.titkos) {
+						this.y += this.sebesseg;}
 					} else if(obj instanceof Felveheto) {
 						torol(objektek[i])
 					}
@@ -128,12 +158,14 @@ class Karakter{
 		}
 		down() {
 			this.y += this.sebesseg;
+			if(!(this.iranyok[0] || this.iranyok[1] || this.iranyok[3])) {this.karakter.style.backgroundImage = "url(Textures/hatra.gif)"}
 			
 			for(let i in objektek) {
 				let obj = objektek[i];
 				if(aabbCollision(this, obj)) {
 					if (obj instanceof Wall) {
-						this.y -= this.sebesseg;
+						if(obj.titkos) {
+						this.y -= this.sebesseg;}
 					} else if(obj instanceof Felveheto) {
 
 						torol(objektek[i])
@@ -161,15 +193,21 @@ class Karakter{
 					{
 						if(obj instanceof Enemy) {
 							obj.sebzodik(this.dmg)
-							obj.visszalok(this.lokes)
+							console.log(this.nezesIrany)
+							obj.visszalok(this.lokes,this.lookIrany)
 						}
 					}
 				}
-				if(kari.tamad) { 
-				this.box.style.backgroundColor = "grey"
+				if(kari.tamad) {
+					if(this.lookIrany == 1) {this.box.style.backgroundImage=`url(Textures/hitUp.gif)` }
+					if(this.lookIrany == 2) {this.box.style.backgroundImage=`url(Textures/hitLeft.gif)` }
+					if(this.lookIrany == 3) {this.box.style.backgroundImage=`url(Textures/hitDown.gif)` }
+					if(this.lookIrany == 4) {this.box.style.backgroundImage=`url(Textures/hitRight.gif)` }
+				
+				//this.box.style.backgroundColor = "grey"
 				let s = this.recovery/100// 1s
 				let interv = setInterval(()=> {
-					if(this.tamad) {
+ 					if(this.tamad) {
 					this.recoveryP.innerText =  s/10 +"s";
 					if(s > 0) {
 						s-=1;
@@ -182,7 +220,8 @@ class Karakter{
 				console.log(this.recovery/1000+"s")
 				setTimeout(() =>{
 					this.tamad = false	
-					this.box.style.backgroundColor = "green"
+					//this.box.style.backgroundColor = "green"
+					this.box.style.backgroundImage=""
 					this.recoveryP.innerText = Math.floor(s/10) + "s";
 			
 				},this.recovery) 
@@ -191,7 +230,10 @@ class Karakter{
 		}
 		sebzodik(dmg){
 			this.hp -= dmg;
-			if(this.hp <= 0) {alert("Meghaltál :/")}
+			if(this.hp <= 0) {
+				alert("Meghaltál.")
+				window.location.href = "index.html"
+			}
 			this.infoUpdate();
 
 		}
