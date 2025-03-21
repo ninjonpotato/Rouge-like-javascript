@@ -50,10 +50,4 @@ wall,885,658,|false,fal4.png
 wall,945,658,|false,fal4.png
 wall,1005,658,|false,fal4.png
 wall,1065,658,|false,fal4.png
-ruha,0,0,|LadaItem,null,
-ruha,0,0,|LadaItem,null,
-lada,285,358,|false,,false,lada.png,fegyver,|Fegyver,3,kard.png,
-enemy,345,178,|Béla1,31,151,1,31,enemy.png
-uzenet,465,178,|Ez egy nagyon hosszú üzenet amit mire végigolvasol le megy a nap lol,uzenet.png
-exit,765,478,|0,0,null,true,exit.png
-fegyver,0,0,|Fegyver,3,kard.png
+exit,285,358,|2,0,0,true,spawn.png

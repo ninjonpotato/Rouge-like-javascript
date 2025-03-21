@@ -50,10 +50,21 @@ wall,885,658,|false,fal4.png
 wall,945,658,|false,fal4.png
 wall,1005,658,|false,fal4.png
 wall,1065,658,|false,fal4.png
-ruha,0,0,|LadaItem,null,
-ruha,0,0,|LadaItem,null,
-lada,285,358,|false,,false,lada.png,fegyver,|Fegyver,3,kard.png,
-enemy,345,178,|Béla1,31,151,1,31,enemy.png
-uzenet,465,178,|Ez egy nagyon hosszú üzenet amit mire végigolvasol le megy a nap lol,uzenet.png
-exit,765,478,|0,0,null,true,exit.png
-fegyver,0,0,|Fegyver,3,kard.png
+wall,525,478,|false,fal4.png
+wall,525,418,|false,fal4.png
+wall,885,238,|false,fal4.png
+wall,885,298,|false,fal4.png
+wall,405,298,|false,fal4.png
+wall,405,238,|false,fal4.png
+wall,465,238,|false,fal4.png
+wall,705,598,|false,fal4.png
+wall,765,598,|false,fal4.png
+wall,765,538,|false,fal4.png
+enemy,705,358,|Téglafal tibi,10,100,2,3,enemy.png
+kulcs,300,521.5,|kulcs,kulcs.png
+wall,945,598,|false,fal4.png
+wall,1005,538,|true,fal4.png
+wall,945,538,|false,fal4.png
+ruha,960,193,|Cuki szoknya,10,ruha.png
+exit,285,418,|2,2,0,true,spawn.png
+enemy,585,238,|Kémény Kelemen,10,100,2,3,enemy.png

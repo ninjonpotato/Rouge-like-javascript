@@ -10,7 +10,6 @@ let menuBox =document.createElement("div")
 let menu = document.getElementById("menu")
 let itemBox = document.createElement("div");
 let itemListaDiv = document.createElement("div")
-let exits = 0;
 let global_wall = "fal4.png";
 let global_enemy ="enemy.png";
 let global_exit ="exit.png"
@@ -19,6 +18,8 @@ let global_penz ="penz.png"
 let global_ruha = "ruha.png"
 let global_fegyver = "kard.png"
 let global_kulcs = "kulcs.png"
+let global_uzenet = "uzenet.png"
+let global_arus = "arus.png"
 
 
 class Objekt {
@@ -57,8 +58,7 @@ class Objekt {
                 t_name.innerText = this.atributumok[i]
                 input.setAttribute("type","file")
                 input.addEventListener("change",()=>{
-                     let split = input.value.split("\\")
-                    let texture =split[split.length-1];
+                     let texture =input.files[0].name
                     this.atributumok[i] = texture;
                     t_name.innerText = this.atributumok[i]
                     this.textureBeallit(this,texture)
@@ -89,7 +89,7 @@ class Tile extends Objekt {
 class Wall extends Objekt{
         constructor(x,y,texture=global_wall,titkos=false) {
             super(x,y)
-            this.div.style.backgroundColor = "yellow"
+          //  this.div.style.backgroundColor = "yellow"
             this.div.style.zIndex = 1
             this.div.style.opacity = 1;
             this.texture = texture
@@ -106,7 +106,29 @@ class Wall extends Objekt{
         
         }
 }
+
+class Uzenet extends Objekt{
+    constructor(x,y,msg="üdv", texture=global_uzenet) {
+        super(x,y)
+     //   this.div.style.backgroundColor = "yellow"
+        this.div.style.zIndex = 1
+        this.div.style.opacity = 1;
+        this.texture = texture
+        this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
+        this.msg = msg;
+        if(this.texture != "nincs") {
+            this.div.style.border = "none"
+        }
+        this.atributumok = {
+            "Üzenet": this.msg, 
+            "Textúra": this.texture
+        }
+        ujObjektej.push(this)
     
+    }
+}
+
+
 class Enemy extends Objekt{
         constructor(x,y,nev="Béla",dmg=3,hp =15,speed=1, drop = 3,texture=global_enemy) {
             super(x,y)
@@ -155,7 +177,8 @@ class Lada extends Objekt{
         this.item = item;
         this.isRandom = isRandom;
         this.texture = texture;
-        this.kulcsos = kulcsos
+        this.kulcsos = kulcsos;
+
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         if(this.texture != "nincs") {
             this.div.style.border = "none"
@@ -169,19 +192,12 @@ class Lada extends Objekt{
         ujObjektej.push(this)
     }
 
-    atrUpdate() {
-        this.atributumok = {
-            "Kulcsos":this.kulcsos,
-            "Item":this.item.nev,
-            "Random": this.isRandom,
-            "Textúra": this.texture
-        }
-    }
-
     menuLista() {
-        this.atrUpdate()
         if(this.atributumok != null) {
         menuBox.remove();
+        let itemDiv = document.createElement("div");
+        itemDiv.style.border = "1px solid black"
+        itemDiv.style.textAlign = "center"
         menuBox =document.createElement("div")
         for(let i in this.atributumok) {
             let p = document.createElement("p")
@@ -192,11 +208,10 @@ class Lada extends Objekt{
                 t_name.innerText = this.atributumok[i]
                 input.setAttribute("type","file")
                 input.addEventListener("change",()=>{
-                     let split = input.value.split("\\")
-                    let texture =split[split.length-1];
+                    let texture =input.files[0].name
                     this.atributumok[i] = texture;
                     t_name.innerText = this.atributumok[i]
-                    this.div.style.backgroundImage = "url("+texture+")"
+                    this.div.style.backgroundImage = "url(../Textures/"+texture+")"
                 })
             }else {
                 input.value = this.atributumok[i]
@@ -205,11 +220,26 @@ class Lada extends Objekt{
                 })
             }
             if(i == "Item") {
-                input.disabled = true
+                let p = document.createElement("p")
+                p.innerHTML = "Tartalma"
+                itemDiv.append(p)
+                for(let atr in this.item.atributumok) {
+                    let p = document.createElement("p")
+                    p.innerText = atr+":";
+                    let input = document.createElement("input")
+                    input.value = this.item.atributumok[atr]
+                    input.disabled = true
+                    p.appendChild(input)
+                    itemDiv.append(p)
             }
+            menuBox.appendChild(itemDiv)
+        }else {
             p.appendChild(t_name)
             p.appendChild(input)
             menuBox.appendChild(p);
+        }
+
+
             menu.appendChild(menuBox)
         }
         //box
@@ -323,7 +353,9 @@ class Lada extends Objekt{
             
                     save.addEventListener("click",()=>{
                             this.item = item;
+                            console.log(this.item)
                             this.menuLista();
+                            this.atrUpdate()
                     })
                     
                     itemListaDiv.appendChild(save)
@@ -349,9 +381,18 @@ class Lada extends Objekt{
         itemBox.appendChild(typeLista);
         menuBox.appendChild(itemBox);
     }
-
-    itemListaBox(parent,tipus) {
+    atrUpdate() {
+        this.atributumok = {
+            "Kulcsos":this.kulcsos,
+            "Item":this.item.nev,
+            "Random": this.isRandom,
+            "Textúra": this.texture
+        }
+    }
+    //Sajátnál
+    itemListaBox(parent,tipus,) {
         itemListaDiv = document.createElement("div")
+        
         let item;
         if(tipus =="fegyver") {
             item = new Fegyver();
@@ -359,7 +400,6 @@ class Lada extends Objekt{
         if(tipus =="ruha") {
             item = new Ruha();
         }
-
             for(let atr in item.atributumok) {
                 let p = document.createElement("p")
                 p.innerText = atr+":";
@@ -388,7 +428,9 @@ class Lada extends Objekt{
                 item.seb = document.getElementById("Védelem").value
                 this.item = item;
             }
+            this.atrUpdate()
             this.menuLista();
+   
 
         })
         
@@ -398,8 +440,262 @@ class Lada extends Objekt{
 
 }
 
+class Arus extends Objekt {
+    constructor(x,y,items = [{"item":new Fegyver(),"ar":10},{"item":new Ruha(),"ar":10}],nev="Marika néni", texture = global_arus) {
+        super(x,y)
+        this.items = items;
+        this.nev = nev
+     //   this.div.style.backgroundColor = "purple"
+        this.div.style.zIndex = 1
+        this.div.style.opacity = 1;
+        this.texture = texture
+        this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
+        if(this.texture != "nincs") {
+            this.div.style.border = "none"
+        }
+        this.atributumok = {
+            "Név": this.nev,
+            "Áruk": this.items,
+            "Textúra": this.texture
+        }
+        ujObjektej.push(this)
+    }
+
+    ermeIkon(parent) {
+        let ikon = document.createElement("div")
+        ikon.setAttribute("class","arusIkon")
+        ikon.style.backgroundImage = `url(../Textures/${global_penz})`
+        parent.appendChild(ikon)
+
+    }
+
+    add_item_selector(parent,tipus) {
+        //beirjuk az itemhez illő adatokat + ár és a mentéssel beleteszi az items tömbbe
+         parent.innerHTML = "";
+        let div = document.createElement("div")
+        div.setAttribute("class","add_item_selector")
+        let item = null;
+        if(tipus == "fegyver") {
+            item = new Fegyver();
+        }
+        if(tipus == "ruha") {
+            item = new Ruha();
+        }
+
+        for(let atr in item.atributumok) {
+            let p = document.createElement("label")
+            p.innerText = atr+":";
+            let input = document.createElement("input")
+            input.setAttribute("id",atr)
+            if(!isNaN(item.atributumok[atr])) {
+                input.setAttribute("type","number")
+                p.appendChild(input);
+            }else {
+                if(atr == "Textúra") {
+                    p.innerText = atr;
+                    input.setAttribute("type","file")
+                    let img = document.createElement("img")
+
+                    img.setAttribute("alt","Kép helye")
+                    input.addEventListener("change",()=>{
+                        img.setAttribute("src",`../Textures/${input.files[0].name}`)
+                    })
+                    p.setAttribute("for",atr)
+                    p.setAttribute("class","inputHide")
+                    p.appendChild(img)
+                    div.appendChild(input);
+                   
+                    
+                }else {
+                    input.setAttribute("type","text")
+                    p.appendChild(input);
+                }
+
+            }
+            
+            div.append(p)
+        }
+        let arText = document.createElement("label")
+        arText.innerText ="Ár:"
+        let arInput = document.createElement("input")
+        arInput.setAttribute("type","number");
+        arText.appendChild(arInput)
+        div.append(arText)
+        let save = document.createElement("button")
+    
+        save.addEventListener("click",()=>{
+            let nev = document.getElementById("Név").value;
+            let texture;
+            if(document.getElementById("Textúra").files == undefined) {
+                texture = document.getElementById("Textúra").files[0].name;
+            }
+            let ar = arInput.value
+            item.nev = nev;
+            item.te = texture;
+             if(tipus == "fegyver") {
+                if(document.getElementById("Textúra").files == undefined) {
+                    texture = global_fegyver
+                }
+                let dmg =  document.getElementById("Sebzés").value;
+                item.dmg = dmg;
+               
+             }
+             if(tipus == "ruha") {
+                let ved =  document.getElementById("Védelem").value;
+                item.ved = ved;
+                if(document.getElementById("Textúra").files == undefined) {
+                    texture = global_ruha
+                }
+               
+             }
+             this.items.push({item,ar})
+             this.menuLista();
+        })
+        save.innerText="Hozzáad"
+        div.appendChild(save)
+        parent.appendChild(div)
+
+    }
+
+    arsu_add_item(parent) {
+        let div = document.createElement("div") // fő doboz
+        div.style.position = "absolute"
+        div.setAttribute("class","aru_add_div")
+
+        //Opciók
+        let opcio = document.createElement("input")
+        opcio.setAttribute("type","radio")
+        opcio.setAttribute("name","opcio")
+
+        let label = document.createElement("label")
+        opcio.setAttribute("type","radio")
+        opcio.setAttribute("name","opcio")
+        let itemDiv = document.createElement("div")
+        //fegyver opcio
+        label.innerText="Fegyver"
+        opcio.addEventListener("change",()=>{
+           this.add_item_selector(itemDiv,"fegyver")
+        })
+        label.appendChild(opcio)
+        div.appendChild(label)
+        //ruha opcio
+        label = document.createElement("label")
+        label.innerText="Ruha"
+        opcio = document.createElement("input")
+        opcio.setAttribute("type","radio")
+        opcio.setAttribute("name","opcio")
+
+        opcio.addEventListener("change",()=>{
+            this.add_item_selector(itemDiv,"ruha")
+        })
+        label.appendChild(opcio)
+        div.appendChild(label)
+
+        div.appendChild(itemDiv)
+        parent.appendChild(div)
+    }
+
+    menuLista() {
+        if(this.atributumok != null) {
+        menuBox.remove();
+        menuBox =document.createElement("div")
+        for(let i in this.atributumok) {
+
+            let p = document.createElement("p")
+            p.innerText = i+": ";
+            let input = document.createElement("input")
+            let t_name = document.createElement("span")
+        
+            if(i == "Textúra") {
+                t_name.innerText = this.atributumok[i]
+                input.setAttribute("type","file")
+                input.addEventListener("change",()=>{
+                    let texture =input.files[0].name
+                    this.atributumok[i] = texture;
+                    t_name.innerText = this.atributumok[i]
+                    this.textureBeallit(this,texture)
+
+                }) 
+                p.appendChild(t_name)
+                p.appendChild(input)
+                menuBox.appendChild(p);
+            }else if(i == "Áruk") {
+                let aruDiv = document.createElement("div");
+                if(this.items.length > 0) {
+                   
+                    aruDiv.style.border = "1px solid black"
+                    aruDiv.style.textAlign = "center"
+                    aruDiv.setAttribute("class","aruDiv")
+                    aruDiv.appendChild(p);
+                    let index = 0;
+                    //Felsoroljuk a benne lévő tárgyakat
+                    for(let termek of this.items) {
+                        let item = termek.item
+                        let ar = termek.ar
+                        let pNev = document.createElement("p")
+                        pNev.innerText = item.nev + ": "
+                        if(item instanceof Fegyver) {
+                            pNev.innerText += `🗡️: ${item.dmg} dmg`
+                        }
+                        if(item instanceof Ruha) {
+                            pNev.innerText += `🛡️: ${item.ved}`
+                        }
+                        let span = document.createElement("span")
+                        span.style.display = "block"
+                        
+                        pNev.appendChild(span)
+                        span.innerText = `Ára: ${ar} `
+                        this.ermeIkon(span)
+                        let torol = document.createElement("span")
+                        torol.innerText = "-"
+                        torol.setAttribute("class","torolButton")
+                        torol.setAttribute("id",index);
+                        torol.addEventListener("click",()=>{
+                          this.items.splice(parseInt(torol.getAttribute("id")),1)
+                          console.log(this.items);
+                          this.menuLista()
+                            
+                        })
+                        pNev.appendChild(torol)
+                        aruDiv.appendChild(pNev)
+                        index++;
+                    }
+                    let add = document.createElement("button")
+                    add.innerText="Áru Hozzáadás"
+                    add.addEventListener("click",()=>{this.arsu_add_item(menuBox)})
+                    aruDiv.appendChild(add);
+                    menuBox.appendChild(aruDiv);
+                }else {
+                    let add = document.createElement("button")
+                    add.innerText="Áru Hozzáadás"
+                    add.addEventListener("click",()=>{this.arsu_add_item(menuBox)})
+                    aruDiv.appendChild(add);
+                    menuBox.appendChild(aruDiv);
+                }
+               
+            }
+             else {
+                input.value = this.atributumok[i]
+                input.addEventListener("input",()=>{
+                    this.atributumok[i] = input.value
+                })
+                p.appendChild(t_name)
+                p.appendChild(input)
+                menuBox.appendChild(p);
+            }
+
+            menu.appendChild(menuBox)
+          
+
+        }
+    }
+
+}
+
+}
+
 class Exit extends Objekt {
-    constructor(x,y,location="0",id=exits, texture=global_exit,isSpawn=true) { //id alapján tudjuk majd megadni hogy hova vigyen minket
+    constructor(x,y,location=0,id=0, texture=global_exit,isSpawn=true,elozoPalya=null) { //id alapján tudjuk majd megadni hogy hova vigyen minket
         super(x,y)
       //  this.div.style.backgroundColor = "black"
         this.div.style.opacity = 1;
@@ -409,13 +705,14 @@ class Exit extends Objekt {
         this.isSpawn = isSpawn;
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         this.div.style.border = ""
+        this.elozoPalya = elozoPalya
         this.atributumok = {
             "id":this.id,
             "location":this.location,
+            "előző szoba":this.elozoPalya,
             "Spanw hely": this.isSpawn,
             "Textúra": this.texture
-         }
-         exits++;
+         }  
          ujObjektej.push(this)
     }
     atrUpdate() {
@@ -583,7 +880,24 @@ class Ruha extends Item{
     }
 }
 
-
+class UniverzalItem extends Item {
+    constructor(x,y,dmg = 3, ved=0, nev="Fegyver",textura=global_fegyver,manual = true) {
+        super(x,y,nev,manual)
+       // this.div.style.backgroundColor = "red"
+        this.dmg = dmg;
+        this.ved = ved;
+        this.texture = textura
+        if(this.texture != "nincs") {
+            this.div.style.border = "none"
+        }
+        this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
+        this.atributumok = {
+            "Név":this.nev,
+            "Sebzés":this.dmg,
+            "Textúra": this.texture,
+         }
+    }
+}
 //Ezt majd valahogy fel kell tölteni felgyverekkel, talán a pálya betöltésekor.
 let itemekNagylistaja = [
     new Fegyver(0,0,30,"Giga-megyfegyver"),
@@ -677,13 +991,11 @@ vaszon.addEventListener("mouseup",(ev)=>{
                             ucso.div.style.left = ucso.x
                             ucso.div.style.top = ucso.y
                         }
-                        
                         break;
                     }
-               
-          
             }
         }
+        
      }
      nyomva = 1;
      ucso = null;
@@ -735,6 +1047,8 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
             return obj = new Enemy(x,y)
         case "Lada":
             return  obj = new Lada(x,y)
+        case "Arus":
+                return  obj = new Arus(x,y)
         case "Kulcs":
             return  obj = new Kulcs(x,y)
         case "Fegyver":
@@ -745,6 +1059,8 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
             return  obj = new Exit(x,y)
         case "Penz":
             return  obj = new Penz(x,y)
+        case "Msg":
+            return  obj = new Uzenet(x,y)
         case "delete":
             return obj = "delete"
         default:
@@ -772,21 +1088,22 @@ function info() {
 }
 
 //Pálya elkészítése, valahogy legyen dinamikusabb
-createGrid(10,15)
+createGrid(15,10)
 function createGrid(gridw,gridh) {
 
     let w = 60;
     let h = 60;
-    let offsetX = (window.screen.width/2)-gridw*w+(1.5*w);
-    let offsetY = (window.screen.height/2)-((gridh*h)/2)+1.5*w;
+    let gridSzelesseg = w*gridw
+    let gridMagassag = h*gridh*2-window.screen.availHeight
+    let offsetX =(window.screen.width-gridSzelesseg)/2
+    let offsetY =((window.screen.height-gridMagassag)/4)
     let x = offsetX;
     let y = offsetY;
 
-for(let i = 0; i < gridw; i++) {
-for(let j = 0; j < gridh; j++) {
+for(let i = 0; i < gridh; i++) {
+for(let j = 0; j < gridw; j++) {
     let tile =  new Tile(x,y,w,h);
     tile.div.setAttribute("id","tile")
-    //860px
     tile.div.addEventListener("click",()=>{ //A rácsoknak adunk kattintás eventet 
         let o = kivalaszott(kurzor,tile.x,tile.y)
         if(o instanceof Objekt) {
@@ -794,7 +1111,7 @@ for(let j = 0; j < gridh; j++) {
         }
 
     })
-    if(i == 0 || j == 0 || i == gridw-1 || j == gridh-1) {
+    if(i == 0 || j == 0 || i == gridh-1 || j == gridw-1) {
         let wall = new Wall(x,y)
         vaszon.appendChild(wall.div)
        }
@@ -807,69 +1124,132 @@ for(let j = 0; j < gridh; j++) {
 
 }
         
-    let palyaNev = null;
-let save = document.getElementById("save");
-save.addEventListener("click",()=> {
-    if(save.value=="export") {
-    palyaNev = prompt("Fájl név")
-    }else {
+let palyaNev = null;
+let save = document.getElementsByClassName("save");
+
+function mentes(palyaNev) {
+    let objektLista = [];
+    for(i in ujObjektej) {
+     let obj = ujObjektej[i]
+         let type = "";
+         
+         if(ujObjektej[i] instanceof Fegyver) {type="fegyver"}
+         if(ujObjektej[i] instanceof Ruha) {type="ruha"}
+         if(ujObjektej[i] instanceof Kulcs) {type="kulcs"}
+         if(ujObjektej[i] instanceof Wall) {type="wall"}
+         if(ujObjektej[i] instanceof Enemy) {type="enemy"}
+         if(ujObjektej[i] instanceof Lada) {type="lada"}
+         if(ujObjektej[i] instanceof Exit) {type="exit"}
+         if(ujObjektej[i] instanceof Penz) {type="penz"}
+         if(ujObjektej[i] instanceof Uzenet) {type="uzenet"}
+         if(ujObjektej[i] instanceof Arus) {type="arus"}
+         if(type == "lada") {
+             let itemType = ""
+             if(obj.item instanceof Fegyver) {itemType = "fegyver"} else {itemType = "ruha"}
+             objektLista.push({
+                 "type":type,
+                 "x":obj.x,
+                 "y":obj.y,
+                 "atributumok":obj.atributumok,
+                 "itemtype":itemType,
+                 "itemAtib":obj.item.atributumok
+             })
+         }
+         else if(type == "arus") {
+            /*"Név": this.nev,
+            "Áruk": this.items,
+            "Textúra": this.texture*/
+            let onylAru ={ ...obj.atributumok }
+            let tombNoAru = { ...obj.atributumok  }
+            delete tombNoAru["Áruk"];
+            delete onylAru["Név"];
+            delete onylAru["Textúra"];
+           // console.log(onylAru)
+            let elem = 
+            {
+                "type":type,
+                "x":obj.x,
+                "y":obj.y,
+                "aruk": []
+            }
+            for(let aruk in onylAru) { //item, ar
+                let aruTomb = onylAru[aruk]
+                for(let i in aruTomb) {
+                    let aru = aruTomb[i]
+                    let item = aru.item
+                    let ar = aru.ar
+                    let tipus = "";
+                    if(item instanceof Fegyver) {tipus ="fegyver"}
+                    if(item instanceof Ruha) {tipus ="ruha"}
+                    elem["aruk"].push(tipus)
+                    elem["aruk"].push(item.atributumok)
+                    elem["aruk"].push(ar)
+
+                }
+              
+            }
+            //elem["aruk"]
+            console.log(elem["aruk"])
+            elem["atributumok"] = tombNoAru
+            objektLista.push(elem)
+         }
+         else {
+             if(type != "")
+             objektLista.push({              
+                 "type":type,
+                 "x":obj.x,
+                 "y":obj.y,
+                 "atributumok":obj.atributumok
+             })
+         }
+      
+    }
+     fetch('/mentes', {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/json'
+           },
+         body: JSON.stringify({message: objektLista, palya_name: palyaNev})
+       })
+       .then(response => response.json()) //Válaszüzenet átalakítása
+       .then(data => alert(data.message))
+       .catch(error => alert('Nincs elindítva a szerver! vagy valami más...'+error));
+ 
+}
+
+save[0].addEventListener("click",()=> {
         if(palyaNev == null) {
             palyaNev = prompt("Fájl név")
         }
-    }
-   
-   let objektLista = [];
-   for(i in ujObjektej) {
-    let obj = ujObjektej[i]
-        let type = "";
-        if(ujObjektej[i] instanceof Fegyver) {type="fegyver"}
-        if(ujObjektej[i] instanceof Ruha) {type="ruha"}
-        if(ujObjektej[i] instanceof Kulcs) {type="kulcs"}
-        if(ujObjektej[i] instanceof Wall) {type="wall"}
-        if(ujObjektej[i] instanceof Enemy) {type="enemy"}
-        if(ujObjektej[i] instanceof Lada) {type="lada"}
-        if(ujObjektej[i] instanceof Exit) {type="exit"}
-        if(ujObjektej[i] instanceof Penz) {type="penz"}
-        if(type == "lada") {
-            let itemType = ""
-            if(obj.item instanceof Fegyver) {itemType = "fegyver"} else {itemType = "ruha"}
-            objektLista.push({
-                "type":type,
-                "x":obj.x,
-                "y":obj.y,
-                "atributumok":obj.atributumok,
-                "itemtype":itemType,
-                "itemAtib":obj.item.atributumok
-            })
-        }else {
-            if(type != "")
-            objektLista.push({              
-                "type":type,
-                "x":obj.x,
-                "y":obj.y,
-                "atributumok":obj.atributumok
-            })
-        }
-     
-   }
-    fetch('/mentes', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-          },
-        body: JSON.stringify({message: objektLista, palya_name: palyaNev})
-      })
-      .then(response => response.json()) //Válaszüzenet átalakítása
-      .then(data => alert(data.message))
-      .catch(error => alert('Nincs elindítva a szerver! vagy valami más...'+error));
-
+        mentes(palyaNev)
 })
+
+save[1].addEventListener("click",()=> {
+    palyaNev = prompt("Fájl név")
+    mentes(palyaNev)
+})
+
+let betolt = document.getElementById("betolt");
+function iranyit() {
+    if(palyaNev == null) {
+        let inpt = document.createElement("input");
+        inpt.setAttribute("type","file")
+        inpt.addEventListener("change",()=>{
+             window.location.href = `../gama.html?palyaNev=${inpt.files[0].name}`
+        })
+        inpt.click()
+
+
+}else {
+window.location.href = `../gama.html?palyaNev=${palyaNev}`
+}
+}
+
 
 let load = document.getElementById("loadFile");
 //window.addEventListener("load",(event)=>{ hasznalhato majd a játékban pályák betöltésére. :)
 load.addEventListener("change",(event)=>{
-    let palyaSplit = load.value.split("\\")
-    palyaNev = palyaSplit[palyaSplit.length-1]
+    palyaNev = load.files[0].name
     fetch('/beolvas', {
         method: 'POST',
         headers: {
@@ -884,10 +1264,17 @@ load.addEventListener("change",(event)=>{
             palyaKeszitesFajlbol(palyaString)
             
         })
-      .catch(error => alert('Nincs elindítva a szerver! vagy valami más...'));
+      .catch(error => alert('Nincs elindítva a szerver! vagy valami más...'+error));
 })
 
 function palyaKeszitesFajlbol(palyaText) { 
+    for(let obj of objektek) {
+        if(!(obj instanceof Tile)) {
+            obj.div.remove()
+        }
+    }
+    enemyk = []
+    ujObjektej = []
     let palyaTomb = palyaText.split("\n") //felszeleteljük sorokra
     for(let obj of palyaTomb) {
         let objAtr = obj.split("|");
@@ -917,7 +1304,7 @@ function palyaKeszitesFajlbol(palyaText) {
 
             vaszon.appendChild(objekt.div)
         }
-        if(type == "wall" || type=="lada" || type =="exit" || type=="enemy") {   
+        if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus") {   
             if(type=="wall") { 
                 //wall,500,100,|false,fal4.png
                 let objParam = objAtr[1].split(",");
@@ -938,8 +1325,12 @@ function palyaKeszitesFajlbol(palyaText) {
                     let nev = itemParam[0];
                     let dmg = parseInt(itemParam[1]);
                     let item_textura = itemParam[2];
-                    if(itemType=="fegyver") {item = new Fegyver(0,0,dmg,nev,item_textura,false)}
-                    if(itemType=="ruha") {item = new Ruha(0,0,dmg,nev,item_textura,false)}
+                    if(itemType == "fegyver") {
+                        item = new Fegyver(0,0,dmg,nev,item_textura,true)
+                    }
+                    if(itemType == "ruha") {
+                        item = new Ruha(0,0,dmg,nev,item_textura,true)
+                    }
                     objekt = new Lada(x,y,item,texture,kulcsos,random)
                 }
                
@@ -948,9 +1339,17 @@ function palyaKeszitesFajlbol(palyaText) {
                 let objParam = objAtr[1].split(",")
                 let loc = parseInt(objParam[0]);
                 let id = parseInt(objParam[1]);
-                let spawn = objParam[2];
-                let textura = objParam[3];
-                objekt = new Exit(x,y,loc,id,textura,spawn)    //Ha több spawn van azt majd lekell kezelni.
+                let elozo = objParam[2];
+                let spawn = objParam[3];
+                let textura = objParam[4];
+                objekt = new Exit(x,y,loc,id,textura,spawn,elozo) 
+            }
+            if(type=="uzenet") {
+                //wall,500,100,|false,fal4.png
+                let objParam = objAtr[1].split(",");
+                let msg = objParam[0];
+                let textura = objParam[1];
+                objekt = new Uzenet(x,y,msg,textura)
             }
             if(type=="enemy") {
                 //enemy,660,540,|Béla,3,100,9,300,enemy.png
@@ -964,9 +1363,45 @@ function palyaKeszitesFajlbol(palyaText) {
                 objekt = new Enemy(x,y,nev,dmg,hp,sebesseg, penz,texture)
 
             }
+            //arus,890,473.75,|fegyver,Fegyver,3,kard.png,10|ruha,Ruha,3,ruha.png,10|Marika néni,arus.png
+            //x,y,items = [{"item":new Fegyver(),"ar":10},{"item":new Ruha(),"ar":10}],nev="Marika néni", texture = global_arus
+       
+            if(type == "arus") {
+                console.log("árushoz értünk")
+                //objAtr utolsó eleme a név és texture
+                let items =[];
+                let params = objAtr[objAtr.length-1].split(",")
+                let nev = params[0]
+                let texture = params[1]
+                for(let i in objAtr) {
+                    if(i > 0 && i < objAtr.length-1) {
+
+                        let aru = objAtr[i].split(",")
+                        let tipus = aru[0];
+                        let nev = aru[1];
+                        let dmg = aru[2];
+                        let texture = aru[3]
+                        let ar =  parseInt(aru[4])
+                        let item = null;
+                        if(tipus == "fegyver") {
+                            item = new Fegyver(0,0,parseInt(dmg),nev,texture,true)
+                        }
+                        if(tipus == "ruha") {
+                            item = new Ruha(0,0,parseInt(dmg),nev,texture,true)
+                        }
+                        if(item != null) {
+                            items.push({"item":item,"ar":ar})
+                        }
+                }
+            }
+            console.log(items)
+            objekt = new Arus(x,y,items,nev,texture);
+        }
             vaszon.appendChild(objekt.div)
         }
  
     }
+    }
 
-}
+//Láda megjavítása
+//árus létrehozás

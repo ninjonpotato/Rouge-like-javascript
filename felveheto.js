@@ -1,5 +1,5 @@
 	class Felveheto{
-		constructor(x,y) {
+		constructor(x,y,palya) {
 			this.x = x;
 			this.y = y;	
 			this.width = 30;
@@ -9,19 +9,20 @@
 			this.div.style.height = this.height
 			this.div.style.left = this.x;
 			this.div.style.top = this.y;
+			this.palya = palya
 			if(this.x > 0 && this.y > 0) {
 			this.div.style.position = "absolute"
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
-			objektek.push(this)
+			this.palya.palyaObjekt.push(this)
 			}
 			
 		}
 	}
 
     class Coin extends Felveheto {
-		constructor(x,y,ertek) {
-			super(x,y);
+		constructor(x,y,ertek,palya) {
+			super(x,y,palya);
 			this.ertek = ertek;
 			this.div.style.backgroundImage = "url(Textures/penz.png)"
 			//this.div.style.backgroundColor = "yellow"
@@ -30,8 +31,8 @@
 	}
 
 	class Item extends Felveheto {
-		constructor(x,y,nev,texture) {
-			super(x,y);
+		constructor(x,y,nev,texture,palya) {
+			super(x,y,palya);
 			this.nev = nev;
 			this.texture = texture
 			this.div.style.backgroundImage = `url(Textures/${texture})`;
@@ -55,8 +56,8 @@
 	}
 
 	class Fegyver extends Item {
-		constructor(x,y,nev,dmg,texture) {
-			super(x,y,nev,texture);
+		constructor(x,y,nev,dmg,texture,palya) {
+			super(x,y,nev,texture,palya);
 			this.dmg = dmg;
 		//	this.div.style.backgroundColor = "green"
 		//	this.div.style.border = "1px solid blue"
@@ -64,8 +65,8 @@
 	}
 
 	class Ruha extends Item {
-		constructor(x,y,nev,hp,texture) {
-			super(x,y,nev,texture);
+		constructor(x,y,nev,hp,texture,palya) {
+			super(x,y,nev,texture,palya);
 			this.hp = hp;
 			//this.div.style.backgroundColor = "blue"
 		//	this.div.style.border = "1px solid green"
@@ -73,8 +74,8 @@
 	}
 
 	class Kulcs extends Item {
-		constructor(x,y,nev,texture) {
-			super(x,y,nev,texture)
+		constructor(x,y,nev,texture,palya) {
+			super(x,y,nev,texture,palya)
 		//	this.div.style.backgroundColor = "red"
 		//	this.div.style.border = "2px solid yellow"
 		}

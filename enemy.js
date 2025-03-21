@@ -1,12 +1,12 @@
 class Enemy {
-		constructor(x,y,hp=100,nev="Béla",dmg=3,sebesseg=1,penz=1,texture) {
+		constructor(x,y,hp=100,nev="Béla",dmg=3,sebesseg=1,penz=1,texture,palya) {
 			this.x = x;
 			this.y = y;
 			this.nev = nev;
 			this.hp = hp
 			this.penz = penz;
-			this.width = 60;
-			this.height = 60;
+			this.width = 55;
+			this.height = 55;
 			this.agroRange = 300;
 			this.div = document.createElement("div")
 			this.div.style.width = this.width 
@@ -15,14 +15,17 @@ class Enemy {
 			this.div.style.backgroundColor = "blue"
 			this.div.style.left = this.x;
 			this.div.style.top = this.y;
-			this.div.innerText = this.nev;
+			//this.div.innerText = this.nev;
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
-			objektek.push(this)	
+
+			this.palya = palya
+			this.palya.palyaObjekt.push(this)	
+			this.palya.palyaEnemyk.push(this)
 			this.texture = texture
 			this.tamad = false;
 			this.dmg = dmg; 
-			this.atkDelay = 300; //milisec
+			this.atkDelay = 300; //milisec lehessen editorban állítnani
 			this.box = document.createElement("div")
 			this.hitMeret = 30;
 			this.div.style.backgroundImage = `url(Textures/${this.texture})`
@@ -31,11 +34,15 @@ class Enemy {
 			this.vaszon.appendChild(this.box)
 
 			this.hpD = document.createElement("p");
+			this.nevD = document.createElement("p");
 			this.div.appendChild(this.hpD);
+			this.div.appendChild(this.nevD);
 			this.hpD.innerText = this.hp
 			this.hpD.setAttribute("class","enemy-hp")
+			this.nevD.innerText = this.nev
+			this.nevD.style.left = (this.width-1000)/2
+			this.nevD.setAttribute("class","enemy-nev")
 			this.sebesseg = sebesseg;
-			enemyk.push(this)
 
 			this.mozoghat = true;
 			this.iranyok = [false,false,false,false]
@@ -44,6 +51,15 @@ class Enemy {
 			if(this.box != null) {
 				this.tamad = true
 				this.box.style.backgroundColor = "grey"
+				if(kari.x < this.x) {
+					this.hitboxUpdate(this.x-this.hitMeret,this.y , this.hitMeret,this.height)	
+				}else if(kari.x >= this.x) {
+					this.hitboxUpdate(this.x+this.width,this.y , this.hitMeret,this.height)
+				}else if(kari.y < this.y) {
+					this.hitboxUpdate(this.x,this.y-this.hitMeret, this.width,this.hitMeret)
+				}else if(kari.y > this.y) {
+					this.hitboxUpdate(this.x,this.y+this.height, this.width,this.hitMeret)
+				}
 				let xx = parseInt(this.box.style.left.split("px")[0]);
 				let yy = parseInt(this.box.style.top.split("px")[0]);
 				let ww = parseInt(this.box.style.width.split("px")[0])
@@ -83,7 +99,7 @@ class Enemy {
 				this.x+= lokes
 				
 			}
-			for(let obj of objektek) {
+			for(let obj of this.palya.palyaObjekt) {
 				if(aabbCollision(this, obj)) {
 					if (obj instanceof Wall) {
 						if(lokes > 0) {
@@ -104,7 +120,7 @@ class Enemy {
 				this.x -= lokes
 			}
 			
-			for(let obj of objektek) {
+			for(let obj of this.palya.palyaObjekt) {
 					if(aabbCollision(this, obj)) {
 						if (obj instanceof Wall) {
 							if(lokes > 0) {
@@ -124,7 +140,7 @@ class Enemy {
 			} else {
 				this.y += lokes
 			}
-			for(let obj of objektek) {
+			for(let obj of this.palya.palyaObjekt) {
 					if(aabbCollision(this, obj)) {
 						if (obj instanceof Wall) {
 							if(lokes > 0) {
@@ -144,7 +160,7 @@ class Enemy {
 			this.y -= lokes;
 			}
 			
-			for(let obj of objektek) {
+			for(let obj of this.palya.palyaObjekt) {
 					if(aabbCollision(this, obj)) {
 						if (obj instanceof Wall) {
 							if(lokes > 0) {
@@ -161,9 +177,9 @@ class Enemy {
 
 			if(kari != null && this.mozoghat) {
 				if(agroRangeben(this,kari,(this.hitMeret+this.width)-10) ) {
-					let esely = 0.7;
+					let esely = 0.5;
 					if(this.tamad==false) {
-						if(Math.random() >= esely) {
+						if(Math.random() <= esely) {
 							this.attack()
 						}
 					}
@@ -199,21 +215,13 @@ class Enemy {
 			this.box.remove()
 			this.box = null
 			let rand = Math.random();
-			if(this.penz != 0) {
-				if(rand < 0.4 && rand > 0.1) {
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
-				}
-				else if(rand < 0.6) {
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
-				}else if(rand < 0.9) {
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+			if(this.penz == 0) {
+				for(let i = 0; i < 3; i++) {
+					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
 				}
 			}else {
 				for(let i = 0; i < this.penz; i++) {
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1)
+					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
 				}
 			}
 			

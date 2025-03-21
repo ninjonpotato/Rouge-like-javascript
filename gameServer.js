@@ -24,7 +24,35 @@ app.post('/mentes',(req,res) => { //Erre a végpontra érkező kérést fogadjuk
             palyaString +=`${attributumok[atr]},`
             }         
           }
-        }else {
+        }else if(j == "aruk") {
+           palyaString +=`|`
+           let it = 0;
+           let aruk = i[j]
+          for(let aru in aruk) {
+            let elem = aruk[aru]
+           if(typeof elem == "object") {
+              for(let param in elem) {
+                let atrib = elem[param]
+                 palyaString +=`${atrib},`
+              }
+            }else {
+              if(it == aruk.length-1) {
+                palyaString +=`${elem}`
+              }else {
+                if(typeof elem == "number") {
+                  palyaString +=`${elem}|`
+                }else {
+                   palyaString +=`${elem},`
+                }
+                 
+              }
+               
+            }
+            it++;
+          }
+           
+        }
+        else {
            palyaString +=`${i[j]},`
         }
          

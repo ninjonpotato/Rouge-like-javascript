@@ -1,18 +1,20 @@
 class Lada {
-    constructor(x,y,item,kulcsos=false,texture="nincs",random="false") {
+    constructor(x,y,item,kulcsos=false,texture="nincs",random="false", palya) {
         this.x = x;
         this.y = y;
         this.width = 60;
         this.height = 60;
         this.item = item
         this.texture = texture;
+        this.palya = palya
         this.div = document.createElement("div")
         this.vaszon =document.getElementById("canvas")
 		this.vaszon.appendChild(this.div)
         this.div.style.width = this.width
         this.div.style.height = this.height
         this.div.style.position = "absolute"
-        this.div.style.zIndex = "99"
+        this.div.style.zIndex = "10"
+        this.div.setAttribute("class","obj")
        // this.div.style.backgroundColor = "gray"
         //this.div.style.border = "2px solid black"
         this.div.style.left = this.x
@@ -20,7 +22,7 @@ class Lada {
         //this.div.innerText = "Láda"
         this.div.style.backgroundImage=`url(Textures/${this.texture})`
         this.nyitva = false
-        objektek.push(this)
+        this.palya.palyaObjekt.push(this)
         this.random = random
 
         this.kulcsos = (kulcsos == "true");

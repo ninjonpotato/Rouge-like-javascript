@@ -1,12 +1,14 @@
 class Exit {
-    constructor(x,y,location=0,id=0,texture="nincs",isSpawn=false) {
+    constructor(x,y,location=0,id=0,texture="nincs",isSpawn=false,palya,elozoPalya) {
             this.x = x;
 			this.y = y;
+			this.palya = palya
 			this.texture = texture
 			this.width = 60;
 			this.height = 60;
             this.location = location;
             this.id = id;
+			this.elozoPalya = elozoPalya
 			this.isSpawn = (isSpawn == "true");
 			this.div = document.createElement("div")
 			this.div.style.width = this.width;
@@ -17,6 +19,37 @@ class Exit {
 			this.div.style.top = this.y;
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
-			objektek.push(this)
+			this.palya.palyaObjekt.push(this)
+			this.isHasznalhato = false
+			this.belepes = false
+			
     }
+
+
+
+
+	betoltes(belep) {
+		if(belep) {
+
+		}else {
+			if(aktualPalya != this.location) {
+				betoltesEsMegjelenites(this.location);
+			}
+			else {
+				if(this.isHasznalhato && this.elozoPalya != null) {
+					betoltesEsMegjelenites(this.elozoPalya);
+					setTimeout(()=>{
+						this.isHasznalhato = false
+						
+					},300)
+				}else {
+						setTimeout(()=>{
+							if(aabbCollision(kari,this) == false) {
+								this.isHasznalhato = true 
+							}
+						},300)
+				}
+			}
+		}
+	}
 }

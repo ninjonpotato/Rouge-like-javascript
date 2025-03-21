@@ -5,15 +5,47 @@
     <title>Pálya keszitő</title>
 </head>
 <style>
+    * {
+        background-size: cover;
+    }
+    #back {
+        display: block;
+        margin-bottom: 6px;
+        margin-top: 12px;
+    }
     #obj-menu {
         position: absolute;
+        z-index: 200;
+        font-size: 18px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        border: 2px solid black;
+        background-color: rgba(250,250,250,0.4);
+        display: flex;
+        width: 700px;
+        align-items: center;
+        flex-wrap: wrap;
         label {
-            margin-left: 20px;
+        margin-left: 20px;
         }
-        button,input[type="file"] {
+
+        input[type="file"] {
+        display: none;
+        }
+        button,input[type="file"],.custom-file-upload {
             margin-top: 20px;
             font-size: 20px;
             margin-left: 20px;
+            width: fit-content;
+            cursor: pointer;
+            background-color: white;
+            border-radius: 15px;
+            padding: 5px 8px;
+            border: 1px solid black;
+            box-shadow: 0px 0px 2px 1px black;
+
+        }
+        .custom-file-upload button {
+            width: 300px;
         }
         
     }
@@ -26,25 +58,39 @@
             padding-left: 10px;
             padding-right: 10px;
             border: 2px solid black;
-    }
-    #kivalasztva {
-        border: 2px dotted white !important;
-    }
-    #menu h2{
+            button {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 10px;
+            width: 100px;
+            cursor: pointer;}
+        h2{
         text-align: center;
         font-size: 20px;
-        text-decoration: underline;
+        text-decoration: underline;}
+        .torolButton {
+            background-color: red;
+            display: inline-block;
+            width: fit-content;
+            padding: 3px 7px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+        p input[type = "number"] {
+        width: 40px;}
+        p input[type = "text"] {
+        width: 80px;
+        }
     }
-    #menu p input[type = "number"] {
-       width: 40px;
-    }
-    #menu p input[type = "text"] {
-       width: 80px;
-    }
-    #menu button {
-        text-align: center;
-        margin-bottom: 10px;
-        width: 100%;
+           
+    #kivalasztva {
+        border: 2px double black !important;
     }
     #itemBox {
         select {
@@ -69,15 +115,72 @@
             }
         }
     }
-
     #info {
         font-size: 20px;
         top: 97%;
         left: 97%;
         position: absolute;
-
-        
     } 
+    .arusIkon {
+        width:15;
+        height: 15;
+        display: inline-block;
+        position: relative;
+        top: 1;
+    }
+    .inputHide {
+        border: 2px solid black;
+        border-radius: 15px;
+        width: 100px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .add_item_selector {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 250px;
+        margin-top: 15px;
+        margin-left: 0 !important; 
+        align-items: center;
+        justify-content: left;
+        font-size: 20px;
+        input {
+            font-size: 20px;
+        }
+        label {
+            
+          display:block
+        }
+        input[type="file"] {
+            
+            display: none
+        }
+        input[type="number"] {
+            width: 100px;
+        }
+        img {
+         position :absolute;
+         width:20;
+         height:20;
+         margin-left:30;
+        }
+        button {
+            
+          width: 120px !important;
+        }
+    }
+    .aru_add_div {
+        margin-top: 20px;
+        width: 250px;
+        text-align: center;
+        border: 2px solid black;
+    }
+    .aru_add_div > label {
+        text-align: center;
+        margin-right: 15px;
+    }
 </style>
 <body>
     <div id="container">
@@ -96,17 +199,27 @@
         <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
         <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
         <label>Exit:<input type="radio" name="box" id="exit" onclick="kivalaszt('Exit')" ></label> 
+        <label>Üzenet:<input type="radio" name="box" id="msg" onclick="kivalaszt('Msg')" ></label> 
         <label>Fegyver:<input type="radio" name="box" id="fegy" onclick="kivalaszt('Fegyver')" ></label> 
         <label>Ruha:<input type="radio" name="box" id="ruha" onclick="kivalaszt('Ruha')" ></label>
         <label>Láda:<input type="radio" name="box" id="lada" onclick="kivalaszt('Lada')" ></label>
+        <label>Árus:<input type="radio" name="box" id="arus" onclick="kivalaszt('Arus')" ></label>
         <label>Kulcs: <input type="radio" name="box" id="kulcs" onclick="kivalaszt('Kulcs')" ></label>
         <label>Pénz: <input type="radio" name="box" id="penz" onclick="kivalaszt('Penz')" ></label><br>
-        <button id="save" value="save">Mentés</button>
-        <button id="save" value="export">export</button>
+        <div id="buttons">
+        <button class="save" value="save">Mentés</button>
+        <button class="save" value="export">export</button>
         <input type="file" value="Beolvasás fájlból" id="loadFile">
+        <label for="loadFile" class="custom-file-upload">Pálya betöltés </label>
+        <button class="custom-file-upload" onclick="iranyit()">Kipróbálás</button>
+        <br>
+        </div>
     </div>
+
     <script src="editorLogic.js"></script>
-    <script src="readfile.js"></script>
-    
+    <script>
+           
+    </script>
+
 </body>
 </html>

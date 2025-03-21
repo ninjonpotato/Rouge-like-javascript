@@ -2,26 +2,93 @@
 <head>
 	<meta charset="utf8">
 </head>
+
 <style>
+	
+	@keyframes megjelen {
+  	0% {opacity: 1; top:-30px;}
+  	50% {top: -50px;}
+	100% {opacity: 0;} 
+}
+@keyframes uzenet-megjelen {
+  	from {width: 0;}	
+  	to {width: 80%;}
+}
+@keyframes uzenet-bezar {
+  	from {width: 80%;}
+  	to {width: 0;}
+}
 	.enemy-hp {
 		color: black;
 		z-index: 100;
-		display: flex;
-		justify-content: center;
-		top:-60px;
-		flex-direction: row;
+		width: 55px;
+		top: -50px;
+		text-align: center;
 		position: relative;
-		
+	}
+	.enemy-nev {
+		position: relative;
+		width: 1000px;
+		top: -70px;
+		text-align: center;
 	}
 	#kari_adatok {
 		position: absolute;
-		z-index: 100;
+		z-index: 30;
         p {
             font-size: 20px;
         }
 	}
+	#textbox {
+		background-color: black;
+		position: absolute;
+		top: 10px;
+		left: 140px;
+		width: 80%;
+		height: 100px;
+		animation-name: uzenet-megjelen;
+		animation-duration: 1s;
+		display: none;
+		font-family: 'Courier New', Courier, monospace;
+		border: 3px solid white;
+		p {
+			color: white;	
+			padding: 10px;
+		}
+	}
+	
+	.obj {
+		z-index: 20;
+	}
+	.fal {
+		background-size: cover;
+		z-index:
+		 3;
+	}
+	#kari {
+		z-index: 30;
+		background-size: cover;
+		background-position-x: -8px;
+	}
+	.pick-up {
+		position: absolute;
+		animation-name: megjelen;
+		animation-duration: 4s;
+		top: -30px;
+		opacity: 0;
+		text-align: center;
+		height: fit-content;
+		width: 200px;
+		background-color: black;
+		color:white;
+		z-index: 105;
+	}
+
 	</style>
 <body>
+	<div id="textBox">
+		<p>üzenet</p>
+	</div>
 	<div id="kari_adatok">
 	<p>Pénzed: <span id="penz"></span></p>
 	<p>Életed: <span id="hp"></span></p>
@@ -30,15 +97,14 @@
 	</div>
 	<div id="canvas">
 	</div>
+	<script src="palya.js"></script>
 	<script src="gameLogic.js"></script>
 	<script src="felveheto.js"></script>
 	<script src="wall.js"></script>
 	<script src="enemy.js"></script>
-	<script src="karakter.js"></script>
 	<script src="lada.js"></script>
 	<script src="exit.js"></script>
-<script>
-	
-</script>
+	<script src="message.js"></script>
+	<script src="karakter.js"></script>
 </body>
 </html>
