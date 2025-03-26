@@ -2,7 +2,7 @@
 class Karakter{
 		constructor(nev,hp=15,x=0,y=0) {
 			this.nev = nev;
-			this.hp = hp;
+			this.hp = 100;
 			this.penz = 0;
 			this.sebesseg = 2;
 			this.dmg = 3;
@@ -11,9 +11,11 @@ class Karakter{
 			this.y = y;
 			this.width = 30;
 			this.height = 50;
+			this.maxHP = 100;
 			this.iranyok = [false,false,false,false]
 			this.lookIrany = 0
 			this.nezesNyomva = false;
+			this.zuhan = false;
 			this.lokes =30;
 			this.karakter = document.createElement("div")
 			this.karakter.style.width = this.width 
@@ -41,7 +43,7 @@ class Karakter{
 			//this.box.style.backgroundColor = "green"
 			this.vaszon.appendChild(this.box)	
 
-			this.recovery = 100 //min: 100
+			this.recovery = 300 //min: 100
 			this.recoveryP = document.createElement("p")
 			this.recoveryP.innerText = " "
 			this.recoveryP.style.position = "relative"
@@ -119,8 +121,15 @@ class Karakter{
 			}
 		}
 
+		vasarol(ar) {
+			this.penz -= parseInt(ar);
+			this.infoUpdate()
+		}
+
 		ifCollide(irany) {
-			
+			let prevX = 0;
+			let prevY = 0;
+			let esik = false;
 			for(let i in objektek) {
 				let obj = objektek[i];
 				if(aabbCollision(this, obj)) {
@@ -135,12 +144,53 @@ class Karakter{
 					if(obj instanceof Felveheto) {
 						torol(objektek[i])
 					}
+					if(obj instanceof Tile) {
+						if(obj.isVoid) {
+							this.atiranyit(obj.x, obj.y)
+							obj.div.style.backgroundImage="url(Textures/eses.gif)"
+							this.addHp(-20);
+							this.zuhan = true
+							this.karakter.style.opacity = "0"
+							setTimeout(()=>{
+								if(irany == 1) {this.atiranyit(obj.x, obj.y+this.height+20)} //fel
+								if(irany == 2) {this.atiranyit(obj.x+this.width+40, obj.y)} //bal
+								if(irany == 3) {this.atiranyit(obj.x, obj.y-this.height-20)} //le
+								if(irany == 4) {this.atiranyit(obj.x-this.width-20, obj.y)} //jobb
+								this.zuhan = false;
+									obj.div.style.backgroundImage="url(Textures/void.png)"
+									this.karakter.style.opacity = "100"
+							},800)
+				
+						}
+					} 
 					if(obj instanceof Exit) {
 					
-						obj.betoltes(false)
+						obj.betoltes()
 					}
 					if(obj instanceof Uzenet) {
-						obj.olvas()
+						if(arus_megjelenitve) {
+							obj.bezar()
+						}else {
+							obj.olvas()
+						}
+						
+					}
+					if(obj instanceof Arus) {
+						
+						if(uzenet != null) {
+							uzenet.bezar()
+							
+						}
+						arus_megjelenitve = true;
+							obj.showAru()
+						
+					}
+				}else {
+					prevX = this.x
+					prevY = this.y
+					if(obj instanceof Arus) {
+						arus_megjelenitve = false;
+						obj.hideAru()
 					}
 				}
 		}
@@ -219,6 +269,7 @@ class Karakter{
 				//ütés kezelése
 				for(let i in objektek) {
 					let obj = objektek[i];
+					if(obj != null){
 					if(aabbCollision(h,obj)) 
 					{
 						if(obj instanceof Enemy) {
@@ -226,6 +277,7 @@ class Karakter{
 							obj.visszalok(this.lokes,this.lookIrany)
 						}
 					}
+				}
 				}
 				if(kari.tamad) {
 				//this.box.style.backgroundColor = "grey"
@@ -253,20 +305,62 @@ class Karakter{
 				
 	}
 		}
+
+		addHp(mennyiseg) {
+				this.hp += mennyiseg
+				if( this.hp <= 0) {
+					setTimeout(()=>{
+						this.die();
+					},1000)
+	
+				}
+				this.infoUpdate()
+		}
+		picupItem(item) {
+			//hp
+			if(item instanceof Ruha) {
+				this.hp += parseInt(item.hp);
+				this.sebesseg += parseInt(item.speed);
+				//méretet lekezelni
+				if( this.hp <= 0) {
+					setTimeout(()=>{
+						this.die();
+					},1000)
+	
+				}
+			}
+			if(item instanceof Fegyver) {
+				this.dmg += item.dmg
+			//	this.recovery += item.speed
+			//	this.hitMeret += item.range // lekezelni mert most ha nagy a szám akkor nagyon vicces.
+				//ranget lekezelni
+			}
+			if(item instanceof Kulcs) {
+				this.kulcs++;
+			}
+			if(item instanceof Coin) {
+				this.penz+= parseInt(item.ertek);
+			}
+		
+			this.infoUpdate()
+			return true;
+		} 
+		die() {
+		this.karakter.style.backgroundPositionX = "0";
+		this.karakter.style.backgroundImage = "url(Textures/meghal.gif)"
+		setTimeout(()=>{
+			this.karakter.style.backgroundImage = "url(Textures/meghal.png)"
+		},400)
+		kari = null
+		setTimeout(()=>{
+				window.location.href = "index.html"
+		},2600)
+				}
 		sebzodik(dmg){
 			this.hp -= dmg;
 			this.infoUpdate();
 			if(this.hp <= 0) {
-				//alert("Meghaltál. Hamarosan visszakerült a főképernyőre")
-				this.karakter.style.backgroundPositionX = "0";
-				this.karakter.style.backgroundImage = "url(Textures/meghal.gif)"
-				setTimeout(()=>{
-					this.karakter.style.backgroundImage = "url(Textures/meghal.png)"
-				},400)
-				kari = null
-				setTimeout(()=>{
-						window.location.href = "index.html"
-				},2600)
+				this.die();
 			
 			}
 		

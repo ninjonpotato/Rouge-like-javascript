@@ -4,11 +4,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Főmenü</title>
 </head>
+<style>
+
+    #container {
+        display: flex;
+        justify-items: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        h1 {
+            font-size: 4em;
+            padding: 0 1.4em;
+        }
+        #sub-container {
+            padding: 30;
+            text-align: center;
+        }
+        #button-div {
+           text-align: right;
+           button {
+            font-size: 2.5em;
+            background-color: white;
+            border: 2px solid black;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s all;
+           }
+           button:hover {
+            background-color: grey;
+            color: white;
+           }
+         
+        }
+        a {
+            font-size: 3em;
+            color: black;
+            padding: 15px 1px;
+            display: block;
+            text-decoration: none;
+            border: 5px solid black;
+            border-radius: 10px;
+            transition: 0.3s all;
+        }
+        a:visited {
+            color: black;
+        }
+        a:hover {
+
+            background-color: grey;
+            color: white;
+        }
+        
+        
+    }
+    #beallitas {
+        position: absolute;
+        display: none;
+        animation: megjelen 0.5s;
+        flex-direction: column;
+        justify-content: space-around;
+        button {
+            position: absolute;
+            font-size: 2em;
+            right: -10px;
+            top: -20px;
+            border: 2px solid black;
+            background-color: red;
+            color: white;
+            border-radius: 15px;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+    }
+    #container-beall {
+        border: 5px solid black;
+        background-color: white;
+        height: 400px;
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+
+        h1 {
+            margin: 20px;
+        }
+        
+        img {
+            width: 50px;
+            height: 50px;
+        }
+        div {
+            text-align: center;
+            p {
+                font-size: 3em;
+                margin: 20px;
+               
+            }
+            label {
+                border: 2px solid black;
+                text-align: center;
+                padding: 10px 20px;
+                cursor: pointer;
+                margin: 0px 20px;
+                border-radius: 15px;
+                transition: 0.3s all;
+            }
+            label:hover {
+                background-color: rgba(0,0,0,0.3);
+            }
+            label::after {
+                content: ":";
+            }
+            input {
+                display: none;
+            }
+
+        }
+    }
+    
+</style>
 <body>
-    <h1>Treasure & Terror</h1>
+    <div id="container">
+        <div id="sub-container">
+    <h1>GAMA.JS</h1>
     <a href="gama.html">Kampány</a><br>
   
     <a href="MapEditor/mapEditor.html">Pálya készítés</a><br>
-    <button>Beállítás</button>
+    <div id="button-div">
+    <button onclick="beallitasMegnyit()">Beállítás</button></div>
+    </div>
+
+    <div id="beallitas">
+        <button onclick="beallitasBezar()">Bezár</button>
+        <div id="container-beall">
+            <h1>Globális textúrák</h1>
+        <div><p>Fal:<label for="fal_inp">Váltás</label><input type="file"  id="fal_inp" onchange="kepBeallit(this)"><img id="fal" src="Textures/fal4.png"></p></div>
+        <div><p>Enemy:<label for="enemy_inp">Váltás</label><input type="file" id="enemy_inp" onchange="kepBeallit(this)"><img id="enemy" src="Textures/enemy.png"></p></div>
+        <div><p>Exit:<label for="exit_inp">Váltás</label><input type="file" id="exit_inp" onchange="kepBeallit(this)"><img id="exit" src="Textures/exit.png"></p></div>
+        <div><p>Láda:<label for="lada_inp">Váltás</label><input type="file" id="lada_inp" onchange="kepBeallit(this)"><img id="lada" src="Textures/lada.png"></p></div>
+        <div><p>Pénz:<label for="penz_inp">Váltás</label><input type="file" id="penz_inp" onchange="kepBeallit(this)"><img id="penz" src="Textures/penz.png"></p></div>
+        <div><p>Ruha:<label for="ruha_inp">Váltás</label><input type="file" id="ruha_inp" onchange="kepBeallit(this)"><img id="ruha" src="Textures/ruha.png"></p></div>
+        <div><p>Fegyver:<label for="fegyver_inp">Váltás</label><input type="file" id="fegyver_inp" onchange="kepBeallit(this)"><img id="fegyver" src="Textures/kard.png"></p></div>
+        <div><p>Kulcs:<label for="kulcs_inp">Váltás</label><input type="file" id="kulcs_inp" onchange="kepBeallit(this)"><img id="kulcs" src="Textures/kulcs.png"></p></div>
+        <div><p>Üzenet:<label for="uzenet_inp">Váltás</label><input type="file" id="uzenet_inp" onchange="kepBeallit(this)"><img id="uzenet" src="Textures/uzenet.png"></p></div>
+        <div><p>Árus:<label for="arus_inp">Váltás</label><input type="file" id="arus_inp" onchange="kepBeallit(this)"><img id="arus" src="Textures/arus.png"></p></div>
+        <div><p>Csempe:<label for="csempe_inp">Váltás</label><input type="file" id="csempe_inp" onchange="kepBeallit(this)"><img id="csempe"></p></div>
+        </div>
+        
+    </div>
+    </div>
+    <script>
+        function beallitasMegnyit() {
+            document.getElementById("beallitas").style.display = "flex"
+        }
+        function beallitasBezar() {
+            document.getElementById("beallitas").style.display = "none"
+        }
+        function kepBeallit(event) {
+               console.log(event.id)
+               let nev = event.id.split("_")
+               let img = document.getElementById(nev[0])
+               img.setAttribute("src",`Textures/${event.files[0].name}`)
+        }
+    </script>
 </body>
 </html>

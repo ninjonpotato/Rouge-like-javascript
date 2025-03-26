@@ -28,15 +28,13 @@ class Exit {
 
 
 
-	betoltes(belep) {
-		if(belep) {
-
-		}else {
+	betoltes() {
 			if(aktualPalya != this.location) {
 				betoltesEsMegjelenites(this.location);
 			}
 			else {
 				if(this.isHasznalhato && this.elozoPalya != null) {
+					console.log(this.isHasznalhato + " " + this.elozoPalya)
 					betoltesEsMegjelenites(this.elozoPalya);
 					setTimeout(()=>{
 						this.isHasznalhato = false
@@ -50,6 +48,5 @@ class Exit {
 						},300)
 				}
 			}
-		}
 	}
 }

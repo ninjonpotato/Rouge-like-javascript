@@ -4,11 +4,9 @@
 </head>
 
 <style>
-	
 	@keyframes megjelen {
   	0% {opacity: 1; top:-30px;}
-  	50% {top: -50px;}
-	100% {opacity: 0;} 
+  	100% {top: -100px; opacity: 0;}
 }
 @keyframes uzenet-megjelen {
   	from {width: 0;}	
@@ -18,6 +16,96 @@
   	from {width: 80%;}
   	to {width: 0;}
 }
+
+@keyframes arus-megjelen {
+  	from {height: 0;}	
+  	to {height: 150px;}
+}
+
+@keyframes arus-bezar {
+  	from {height: 150px;}
+  	to {height: 0;}
+}
+body {
+	overflow: hidden;
+}
+	.vasarloMenu {
+		height: 0;
+		max-height: 150px;
+		overflow: hidden;
+		position: absolute;
+		left: 40%;
+		z-index: 100;
+		background-color: white;
+		border: 2px solid black;
+		display: flex;
+		flex-direction: row;
+		padding: 20px;
+
+		
+	}
+
+	.vasarloMenu div:first-child {
+		img {
+			width: 100px;
+			height: 100px;
+			border: 2px solid black;
+	
+		}
+		p {
+			text-align: center;
+			font-weight: bold;
+		}
+	}
+	.vasarloMenu div:nth-child(2) {
+			display: flex;
+			flex-direction: column;
+			overflow: scroll;
+			border-top: 5px solid black;
+			border-bottom: 5px solid black;
+			margin-left: 10px;
+			p {
+				border: 2px solid black;
+				justify-content: space-between;
+				padding: 10px;
+				font-family: Arial, Helvetica, sans-serif;
+				text-transform: uppercase;
+				font-size: 20px;
+				text-align: center;
+				
+				p {
+					text-align: right;
+					font-size: 17px;
+					border: none;
+					margin: 0;
+					margin-bottom: -10px;
+				}
+			}
+			p:first-child {
+				border: none;
+				padding: 0;
+				margin-bottom: 0px;	
+			}
+			button {
+				margin: 5px;
+			}
+	}
+
+	#cancel {
+				position: absolute;
+				right: -20;
+				bottom: -20;
+				padding: 10px;
+				color:white;
+				overflow: visible;
+				text-shadow: 0px 0px 2px black;
+				border: 1px solid black;
+				background-color: red;
+				font-weight: bold;
+				text-transform: uppercase;
+				cursor: pointer;
+				border-radius: 10px;
+			}
 	.enemy-hp {
 		color: black;
 		z-index: 100;
@@ -35,17 +123,53 @@
 	#kari_adatok {
 		position: absolute;
 		z-index: 30;
+		font-family:monospace;
+		border: 7px double whitesmoke;
+		padding: 0px 10px;
+		background-color: black;
+		color: white;
         p {
             font-size: 20px;
         }
+		img {
+			position: relative;
+			top: 4;
+			width: 20;
+			height: 20;
+		}
+		span {
+			font-weight: bold;
+			
+			padding-right: 5px;
+		}
+		
+	}
+
+	#hp {
+		color: red;
+		}
+
+	#dmg {
+		color: orange;
+	}
+	#penz {
+		color: yellow;
+	}
+	#kard_img {
+	
+		transform: scaleX(-1);
+	}
+	#kulcs {
+		color: grey;
 	}
 	#textbox {
 		background-color: black;
 		position: absolute;
 		top: 10px;
-		left: 140px;
+		left: 220px;
 		width: 80%;
 		height: 100px;
+		z-index: 100;
 		animation-name: uzenet-megjelen;
 		animation-duration: 1s;
 		display: none;
@@ -56,14 +180,12 @@
 			padding: 10px;
 		}
 	}
-	
 	.obj {
 		z-index: 20;
 	}
 	.fal {
 		background-size: cover;
-		z-index:
-		 3;
+		z-index: 3;
 	}
 	#kari {
 		z-index: 30;
@@ -73,7 +195,7 @@
 	.pick-up {
 		position: absolute;
 		animation-name: megjelen;
-		animation-duration: 4s;
+		animation-duration: 2s;
 		top: -30px;
 		opacity: 0;
 		text-align: center;
@@ -83,28 +205,86 @@
 		color:white;
 		z-index: 105;
 	}
+	#close {
+		position: absolute;
+		bottom: 20;
+		a {
+			padding: 10px;
+			border: 2px solid black;
+			border-radius: 15px;
+			text-decoration: none;
+			color: black;
+		}
+		a:visited {
+			color: black;
+		}
+		a:hover {
+			color:white;
+			background-color: red;
+		}
+		
+	}
+
+	#logAblak {
+		position: absolute;
+		font-family: monospace;
+		right: 10;
+		top: 100;
+		width: fit-content;
+		max-width: 230px;
+		color:white;
+		font-size: 2.5em;
+		background-color: black;
+		border: 4px double white;
+	}
+	#logAblak > p{
+	border-bottom: 2px solid white;
+	padding: 0 20;
+	}
+	#logContent {
+		font-size: 0.5em;
+		margin-top: -30;
+		display: flex;
+		flex-direction: column;
+		max-height: 100;
+		overflow: scroll;
+		text-align: center;
+		p {
+			background-color: rgba(230,230,230,0.4);
+		}
+	}
 
 	</style>
 <body>
 	<div id="textBox">
 		<p>üzenet</p>
+		
+	</div>
+	<div id="logAblak">
+		<p>Előzmények</p>
+		<div id="logContent">
+		</div>
 	</div>
 	<div id="kari_adatok">
-	<p>Pénzed: <span id="penz"></span></p>
-	<p>Életed: <span id="hp"></span></p>
-	<p>Sebzésed: <span id="dmg"></span></p>
-	<p>Kulcsok: <span id="kulcs"></span></p>
+		<p>Élteted: <span id="hp"></span><img src="Textures/hp.png"></p>
+		<p>Sebzésed: <span id="dmg"></span><img id="kard_img" src="Textures/kard2.png"></span></p>
+		<p>Pénzed: <span id="penz"></span><img id="penz_img" src="Textures/penz.png"></p>
+		<p>Kulcsok: <span id="kulcs"></span><img id="penz_img" src="Textures/kulcs.png"></p>
 	</div>
 	<div id="canvas">
 	</div>
-	<script src="palya.js"></script>
-	<script src="gameLogic.js"></script>
-	<script src="felveheto.js"></script>
-	<script src="wall.js"></script>
-	<script src="enemy.js"></script>
-	<script src="lada.js"></script>
-	<script src="exit.js"></script>
-	<script src="message.js"></script>
-	<script src="karakter.js"></script>
+	<div id="close">
+		<a href="index.html">Kilépés</a>
+	</div>
+	<script src="Game_osztalyok/gameLogic.js"></script>
+	<script src="Game_osztalyok/felveheto.js"></script>
+	<script src="Game_osztalyok/wall.js"></script>
+	<script src="Game_osztalyok/tile.js"></script>
+	<script src="Game_osztalyok/enemy.js"></script>
+	<script src="Game_osztalyok/lada.js"></script>
+	<script src="Game_osztalyok/exit.js"></script>
+	<script src="Game_osztalyok/message.js"></script>
+	<script src="Game_osztalyok/arus.js"></script>
+	<script src="Game_osztalyok/karakter.js"></script>
 </body>
 </html>

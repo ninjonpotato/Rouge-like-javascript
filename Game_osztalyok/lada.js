@@ -15,7 +15,7 @@ class Lada {
         this.div.style.position = "absolute"
         this.div.style.zIndex = "10"
         this.div.setAttribute("class","obj")
-       // this.div.style.backgroundColor = "gray"
+        //this.div.style.backgroundColor = "red"
         //this.div.style.border = "2px solid black"
         this.div.style.left = this.x
         this.div.style.top = this.y

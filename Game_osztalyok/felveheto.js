@@ -9,6 +9,7 @@
 			this.div.style.height = this.height
 			this.div.style.left = this.x;
 			this.div.style.top = this.y;
+			this.div.setAttribute("class","felveheto")
 			this.palya = palya
 			if(this.x > 0 && this.y > 0) {
 			this.div.style.position = "absolute"
@@ -56,18 +57,23 @@
 	}
 
 	class Fegyver extends Item {
-		constructor(x,y,nev,dmg,texture,palya) {
+		// constructor(x,y,dmg = 3, range=0,speed=0,nev="Fegyver",textura=global_fegyver,manual = true) {
+		constructor(x,y,nev,dmg,range,speed,texture,palya) {
 			super(x,y,nev,texture,palya);
 			this.dmg = dmg;
+			this.range = range;
+			this.speed = speed
 		//	this.div.style.backgroundColor = "green"
 		//	this.div.style.border = "1px solid blue"
 		}
 	}
 
 	class Ruha extends Item {
-		constructor(x,y,nev,hp,texture,palya) {
+		constructor(x,y,nev,hp,speed,meret,texture,palya) {
 			super(x,y,nev,texture,palya);
 			this.hp = hp;
+			this.speed = speed;
+			this.meret = meret;
 			//this.div.style.backgroundColor = "blue"
 		//	this.div.style.border = "1px solid green"
 		}

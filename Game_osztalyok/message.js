@@ -32,6 +32,10 @@ olvas() {
     this.textBox.style.animationName = "uzenet-megjelen"
     this.textBox.style.animationDuration = "1s"
     this.textBox.appendChild(this.text)
+    let exit = document.createElement("p")
+    exit.innerText = "Exit [E]"
+    this.textBox.appendChild(this.text)
+    this.textBox.appendChild(exit)
 }
 bezar() {
         this.textBox.style.animationName = "uzenet-bezar"

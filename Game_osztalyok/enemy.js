@@ -15,6 +15,7 @@ class Enemy {
 			this.div.style.backgroundColor = "blue"
 			this.div.style.left = this.x;
 			this.div.style.top = this.y;
+			this.div.style.zIndex = 3
 			//this.div.innerText = this.nev;
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
@@ -25,12 +26,13 @@ class Enemy {
 			this.texture = texture
 			this.tamad = false;
 			this.dmg = dmg; 
-			this.atkDelay = 300; //milisec lehessen editorban állítnani
+			this.atkDelay = 600; //milisec lehessen editorban állítnani
 			this.box = document.createElement("div")
-			this.hitMeret = 30;
+			this.hitMeret = 20;
 			this.div.style.backgroundImage = `url(Textures/${this.texture})`
 			this.box.style.backgroundColor = "green"
 			this.box.style.position = "absolute"
+			this.box.style.zIndex = 3
 			this.vaszon.appendChild(this.box)
 
 			this.hpD = document.createElement("p");
@@ -93,23 +95,37 @@ class Enemy {
 			
 		}
 
-		left(lokes= 0) {
-			if(lokes == 0) {this.x -= this.sebesseg}
-			else {
-				this.x+= lokes
-				
-			}
+		isCollision(irany,lokes) {
+			//left
+			irany == 1
 			for(let obj of this.palya.palyaObjekt) {
 				if(aabbCollision(this, obj)) {
-					if (obj instanceof Wall) {
-						if(lokes > 0) {
-							this.x -= lokes
+					if (obj instanceof Wall || (obj instanceof Enemy && obj != this)) {
+						if(lokes > 0) { 
+						if(irany == 0) {this.y -= lokes}
+						if(irany == 1) {this.x-= lokes}
+						if(irany == 2) {this.y += lokes}
+						if(irany == 3) {this.x+= lokes}
 						}
-						this.x += this.sebesseg	
+						if(irany == 0) {this.y += this.sebesseg}
+						if(irany == 1) {this.x += this.sebesseg	}
+						if(irany == 2) {this.y -= this.sebesseg}
+						if(irany == 3) {this.x -= this.sebesseg}
+
 					}
 
 				}
 			}
+		}
+
+		left(lokes= 0) {
+			if(lokes == 0) {this.x -= this.sebesseg}
+			else {
+				this.x += lokes	
+			}
+			this.isCollision(1,lokes)
+			//collision detect
+			
 				this.div.style.left = this.x;
 				this.hitboxUpdate(this.x-this.hitMeret,this.y , this.hitMeret,this.height)			
 		}
@@ -119,17 +135,7 @@ class Enemy {
 			} else {
 				this.x -= lokes
 			}
-			
-			for(let obj of this.palya.palyaObjekt) {
-					if(aabbCollision(this, obj)) {
-						if (obj instanceof Wall) {
-							if(lokes > 0) {
-								this.x += lokes
-							}
-							this.x -= this.sebesseg
-						}
-					}
-				}
+			this.isCollision(3,lokes)
 			this.div.style.left = this.x;
 			this.hitboxUpdate(this.x+this.width,this.y , this.hitMeret,this.height)
 		}
@@ -140,16 +146,7 @@ class Enemy {
 			} else {
 				this.y += lokes
 			}
-			for(let obj of this.palya.palyaObjekt) {
-					if(aabbCollision(this, obj)) {
-						if (obj instanceof Wall) {
-							if(lokes > 0) {
-								this.y -= lokes
-							}
-							this.y += this.sebesseg
-						}
-					}
-			}
+			this.isCollision(0,lokes)
 			this.div.style.top = this.y;
 			this.hitboxUpdate(this.x,this.y-this.hitMeret, this.width,this.hitMeret)
 		}
@@ -160,16 +157,7 @@ class Enemy {
 			this.y -= lokes;
 			}
 			
-			for(let obj of this.palya.palyaObjekt) {
-					if(aabbCollision(this, obj)) {
-						if (obj instanceof Wall) {
-							if(lokes > 0) {
-								this.y += lokes
-							}
-							this.y -= this.sebesseg
-						}
-					}
-			}
+			this.isCollision(2,lokes)
 			this.hitboxUpdate(this.x,this.y+this.height, this.width,this.hitMeret)
 			this.div.style.top = this.y
 		}
@@ -224,9 +212,11 @@ class Enemy {
 					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
 				}
 			}
-			
-			
-			torol(this) 
+			let log = document.getElementById("logContent")
+     	   	let t = document.createElement("p")
+       		 t.innerText = "Megölted: "+this.nev
+      		  log.appendChild(t)
+				torol(this) 
 		}
 		visszalok(lokes,irany) {
 			if(irany == 2) { //bal nézünk

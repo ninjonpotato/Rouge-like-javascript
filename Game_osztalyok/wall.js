@@ -1,5 +1,6 @@
 	class Wall {
 			constructor(x,y,titkos=false,texture,palya) {
+
 			this.x = x;
 			this.y = y;
 			this.palya = palya
