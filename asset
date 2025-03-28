@@ -1,0 +1,4 @@
+kulcs,asd|{"Név":"kulcs","Textúra":"kulcs.png"}
+wall,Falacska|{"Titkos":false,"Textúra":"fal4.png"}
+penz,mosoly_penz|{"Érték":1,"Textúra":"fal.png"}
+fegyver,Nagyfegyó|{"Név":"Megafegyó","Sebzés":"30","Range növelés":"30","Ütés sebesség":"30","Textúra":"kard.png"}

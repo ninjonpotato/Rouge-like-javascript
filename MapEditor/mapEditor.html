@@ -207,6 +207,50 @@
         text-align: center;
         margin-right: 15px;
     }
+    #asset-menu {
+        position: absolute;
+        top: 200;
+        left: 10;
+        border: 2px solid black;
+        width: 320px;
+        h1 {
+            width: 100%;
+            text-align: center;
+        }
+        #asset-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        justify-self: center;
+        flex-flow: row;
+        max-height: 330px;
+        flex-wrap: wrap;
+        overflow: scroll;
+            .asset {
+            margin: 10px;
+            display: flex;
+            border: 2px solid black;
+            width: 100px;
+            height: 150px;
+            flex-direction: column;
+            text-align: center;
+            padding: 10px 10px 0px 10px;
+            max-height: 150px;
+            overflow: scroll;
+            img {
+                height: 100px;
+                width: 100px;
+            }
+            a{
+                word-wrap:normal;
+               word-break:break-all;
+               font-size: clamp(16px, 25px,50px);
+            }
+           
+        }
+        }
+
+    }
 </style>
 <body>
     <div id="container">
@@ -223,10 +267,10 @@
         <label>Select:<input type="radio" name="box" id="cursor" onclick="kivalaszt('cursor')" checked></label>
         <label>Törlés:<input type="radio" name="box" id="cursor" onclick="kivalaszt('delete')"></label>
         <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
-        <label>Ellenség:<input type="radio" name="box" id="ellen" onclick="kivalaszt('Ellen')" ></label> 
+        <label>Ellenség:<input type="radio" name="box" id="enemy" onclick="kivalaszt('Enemy')" ></label> 
         <label>Exit:<input type="radio" name="box" id="exit" onclick="kivalaszt('Exit')" ></label> 
-        <label>Üzenet:<input type="radio" name="box" id="msg" onclick="kivalaszt('Msg')" ></label> 
-        <label>Fegyver:<input type="radio" name="box" id="fegy" onclick="kivalaszt('Fegyver')" ></label> 
+        <label>Üzenet:<input type="radio" name="box" id="uzenet" onclick="kivalaszt('Uzenet')" ></label> 
+        <label>Fegyver:<input type="radio" name="box" id="fegyver" onclick="kivalaszt('Fegyver')" ></label> 
         <label>Ruha:<input type="radio" name="box" id="ruha" onclick="kivalaszt('Ruha')" ></label>
         <label>Láda:<input type="radio" name="box" id="lada" onclick="kivalaszt('Lada')" ></label>
         <label>Árus:<input type="radio" name="box" id="arus" onclick="kivalaszt('Arus')" ></label>
@@ -240,9 +284,15 @@
         <label for="loadFile" class="custom-file-upload">Pálya betöltés </label>
         <button class="custom-file-upload" onclick="iranyit()">Kipróbálás</button>
         <br>
+        <div id="asset-menu">
+            <h1>Assets</h1>
+            <div id="asset-box">
+            </div>
+            
+        </div>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="editorLogic.js"></script>
     <script>
            

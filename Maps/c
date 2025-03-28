@@ -194,5 +194,9 @@ tile,780,540,|true,false,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,padlo1.png
 wall,840,540,|false,fal4.png
-exit,360,60,|0,4,3,true,exit.png
-exit,60,360,|0,5,null,false,exit.png
+kulcs,-808,-359.5,|kulcs,kulcs.png
+wall,-722,-273.5,|false,false
+penz,-808,-359.5,|1,fal.png
+fegyver,-808,-359.5,|Megafegyó,30,0,30,kard.png
+fegyver,-822,-373.5,|Fegyómegyó,0,0,0,kard.png
+lada,240,120,|false,[object Object],false,lada.png,fegyver,|Megafegyó,30,0,30,kard.png,

@@ -16,8 +16,7 @@ class Palya  {
         this.palyaString = palyaString;
         palyak.push(this)
         this.palyaKeszitesFajlbol(palyaString)
-        this.spawn = null;
-        this.lastDoor = null;
+        //beállítjuk a spawnt, de ez csak akkor kell ha ez az első szoba, utána ez legyen null, csak ajtóhoz dobjon.
     }
     hide() {
         
@@ -35,7 +34,7 @@ class Palya  {
         }
 
     }
-    show() {
+    show(doorID) {
         
         for (let obj of this.palyaEnemyk) {
             if( obj.box != null) {
@@ -49,6 +48,30 @@ class Palya  {
             }
            
             if(obj instanceof Exit) {
+
+                let offset = (obj.width-50)/2
+                if(kari == null) {//kezdeti létrehozás
+                    if(obj.id == 0 && obj.location == 0) {
+                        kari = new Karakter("Sándor",15,obj.x+offset, obj.y+offset)
+                    }
+                }else {
+                   //a karakter a megadott id-hez irányítsa.
+                   if(obj.id == doorID && obj.location != aktualPalya) {
+                    obj.isHasznalhato = false;
+                    kari.atiranyit(obj.x+offset, obj.y+offset)
+                    setInterval(()=>
+                        {
+                            if(!aabbCollision(obj,kari)) {
+                                obj.isHasznalhato = true; //ha nem állunk az ajtóban.
+                            }
+                          
+                        },1000)
+                   }
+                }
+
+                enemyk = this.palyaEnemyk
+                objektek = this.palyaObjekt
+                /*
                 if(obj.isSpawn) {
                     this.spawn = obj
                     let offset = (obj.width-50)/2
@@ -56,12 +79,12 @@ class Palya  {
                         kari = new Karakter("Sándor",15,this.spawn.x+offset, this.spawn.y+offset)
                     }else {
                        //átrakjuk a karaktert az exit helyére
-                        kari.atiranyit(this.spawn.x+offset, this.spawn.y+offset)
+                        kari.atiranyit(this.spawn.x+offset, this.spawn.y+offset) //A spawn változzon meg, amikor átmegyünk egy ajtón
                     }
                     enemyk = this.palyaEnemyk
                     objektek = this.palyaObjekt
                     
-                }
+                }*/
             }
         }
     }
@@ -78,9 +101,9 @@ class Palya  {
             let h = 60;
             //valahogy számolja ki mekkora a pálya szélessége és magassága, 60x60 a négyzetek beégetett mérete
             let gridSzelesseg = w*15
-            let gridMagassag = h*10*2-window.screen.availHeight
-            let offsetX =(window.screen.width-gridSzelesseg)/2
-            let offsetY =((window.screen.height-gridMagassag)/4)
+            let gridMagassag = h*10*2-window.innerHeight
+            let offsetX =(window.innerWidth-gridSzelesseg)/2
+            let offsetY =((window.innerHeight-gridMagassag)/4)
             if(!(x < 0 && y < 0)) { //a nem kirajzoldanó itemek a 0-0 ba kerülnek.
                 x+= offsetX
                 y+= offsetY
@@ -184,7 +207,6 @@ class Palya  {
                             }
                     }
                 }
-               // console.log(items)
                 objekt = new Arus(x,y,items,nev,texture,this,selfimg);
             }
 
@@ -192,15 +214,10 @@ class Palya  {
                     let objParam = objAtr[1].split(",")
                     let loc = parseInt(objParam[0]);
                     let id = parseInt(objParam[1]);
-                    let back = null;
-                    if(objParam[2] != "null") {
-                        back = parseInt(objParam[2]);
-                    }
-                     
-                    let spawn = objParam[3];
-                    let textura = objParam[4];
+                    let locDoor = parseInt(objParam[2]);
+                    let textura = objParam[3];
                     
-                    objekt = new Exit(x,y,loc,id,textura,spawn,this,back)
+                    objekt = new Exit(x,y,id,loc,locDoor,textura,this)
                     }
                 if(type=="enemy") {
                         let objParam = objAtr[1].split(",")
@@ -262,13 +279,20 @@ setInterval(()=>{
                 let log = document.getElementById("logContent")
                 let t = document.createElement("p")
                 t.innerText = `+${felvett_coin} pénz`;
-                log.appendChild(t);felvett_coin = 0; }
+                log.appendChild(t);felvett_coin = 0;
+                log.scrollTop = log.scrollHeight;
+            }
+
 
     }
 
 },1000)
+
+
+
+
+
 function torol(obj,vasarolt = false) {
-    console.log(obj,vasarolt)
     let text = document.createElement("p")
     text.setAttribute("class","pick-up")
     let span = document.createElement("span")
@@ -341,6 +365,7 @@ function torol(obj,vasarolt = false) {
             let t = document.createElement("p")
             t.innerText = text.innerText
             log.appendChild(t)
+            log.scrollTop = log.scrollHeight;
     }
 
     rendez();
@@ -473,7 +498,7 @@ class Lock {
 const lock = new Lock();
 let betoltve = false;
 
-async function betoltesEsMegjelenites(index) {
+async function betoltesEsMegjelenites(location, doorID) {
         await lock.acquire();
         try {
             if(!betoltve) {
@@ -490,9 +515,8 @@ async function betoltesEsMegjelenites(index) {
             
         } finally{
             palyak[aktualPalya].hide();
-            aktualPalya = index
-            console.log("aktualPalya:"+aktualPalya)
-            palyak[aktualPalya].show(); 
+            aktualPalya = location
+            palyak[aktualPalya].show(doorID); 
             lock.release();
         }
 

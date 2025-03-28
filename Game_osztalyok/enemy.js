@@ -216,6 +216,7 @@ class Enemy {
      	   	let t = document.createElement("p")
        		 t.innerText = "Megölted: "+this.nev
       		  log.appendChild(t)
+				log.scrollTop = log.scrollHeight;
 				torol(this) 
 		}
 		visszalok(lokes,irany) {

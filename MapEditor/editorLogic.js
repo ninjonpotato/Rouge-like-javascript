@@ -1,4 +1,3 @@
-
 let objektek = []; //Minden benne van, még a tile-k is.
 let ujObjektej = [] //csak az újonnan létrehozott objektek vannak benne
 let enemyk = []
@@ -23,6 +22,22 @@ let global_arus = "arus.png"
 let global_csempe = "padlo2.png"
 let last_attrib = null
 let last_obj = null
+let assets = [];
+let isAsset = false
+let itemekNagylistaja = [
+]
+
+
+function assetButton(parent,obj) {
+    let addAsset = document.createElement("button");
+    addAsset.innerText="asset hozzáadás"
+    addAsset.addEventListener("click",()=>{
+        let nev = prompt("Mi legyen a neve?")
+        asset_mentes_run(obj,nev)
+    })
+    parent.appendChild(addAsset)
+}
+
 
 class Objekt {
     constructor(x,y,w=60,h=60,texture="nincs") {
@@ -45,14 +60,17 @@ class Objekt {
         objektek.push(this)
 
         this.div.addEventListener("click",()=>{ //A rácsoknak adunk kattintás eventet 
-            let o = kivalaszott(kurzor,this.x,this.y)
-            if(o instanceof Objekt) {
-                vaszon.appendChild(o.div)
-            }
-    
+                let o = kivalaszott(kurzor,this.x,this.y)
+                console.log(o)
+                if(o instanceof Objekt) {
+                    vaszon.appendChild(o.div)
+                }
         })
 
 
+    }
+    static getInstance() {
+        return new this()
     }
     textureBeallit(obj,texture) {
     if(obj instanceof Tile) {
@@ -69,6 +87,7 @@ class Objekt {
     atribMeghiv() {
         if(last_attrib != null && last_obj.constructor.name == this.constructor.name) {
             this.atributumok = last_attrib
+            console.log(last_attrib)
             this.textureBeallit(this,last_attrib["Textúra"])
             this.menuLista()
         }
@@ -77,7 +96,7 @@ class Objekt {
         if(this.atributumok != null) {
         menuBox.remove();
         menuBox =document.createElement("div")
-
+        
         for(let i in this.atributumok) {
             let p = document.createElement("p")
             p.innerText = i+": ";
@@ -112,6 +131,8 @@ class Objekt {
             menuBox.appendChild(p);
             menu.appendChild(menuBox)
         }
+        assetButton(menuBox,this)
+       
     }
     }
 
@@ -231,7 +252,7 @@ class Lada extends Objekt{
         }
         this.atributumok = {
             "Kulcsos":this.kulcsos,
-            "Item":this.item.nev,
+            "Item":this.item,
             "Random": this.isRandom,
             "Textúra": this.texture
         }
@@ -295,7 +316,9 @@ class Lada extends Objekt{
         button.addEventListener("click",()=> {
             this.itemAddBox()
         })
-        menuBox.appendChild(button);}
+        menuBox.appendChild(button);
+    }
+    assetButton(menuBox)
     }
 
     itemAddBox() {
@@ -359,14 +382,14 @@ class Lada extends Objekt{
                     })
                 }
             }
-             //TODO MEGCSINÁLNI HOGY LISTÁBÓL LEHESSEN VÁLASZTANI, A RANDOM OPCIÓ MEG VÉLETLENSZERŰEN VÁLASZT A LISTÁBÓL
-            //valasztodiv
             if(typeLista.value == "letezo") {
                 this.isRandom = false;
                 let lista = document.createElement("select");
+                let opc = document.createElement("option");
+                opc.innerText = "Választék"
+                lista.appendChild(opc)
                 for(let i = 0; i < itemekNagylistaja.length; i++) {
                     let opc = document.createElement("option");
-                    alert(itemekNagylistaja[i].nev)
                     opc.value = itemekNagylistaja[i].nev;
                     opc.innerText = itemekNagylistaja[i].nev;
                     lista.appendChild(opc) //kiválasztáskor irja ki a hozzá tartozó tulajdonságokat, ezeket ne lehessen módosítani.
@@ -375,6 +398,7 @@ class Lada extends Objekt{
 
                 lista.addEventListener("change",()=>{
                     let item = null;
+                    opc.disabled = true
                     itemListaDiv.remove()
                     itemListaDiv = document.createElement("div")
                     for(let j of itemekNagylistaja) {
@@ -787,30 +811,30 @@ class Arus extends Objekt {
 
         }
     }
+    assetButton(menuBox)
 
 }
 
 }
 
 class Exit extends Objekt {
-    constructor(x,y,location=0,id=0, texture=global_exit,isSpawn=true,elozoPalya=null) { //id alapján tudjuk majd megadni hogy hova vigyen minket
+    constructor(x,y,location=0,id=0, locDoor=0,texture=global_exit) { //id alapján tudjuk majd megadni hogy hova vigyen minket
         super(x,y)
       //  this.div.style.backgroundColor = "black"
         this.div.style.opacity = 1;
         this.location = location
         this.id = id;
         this.texture = texture
-        this.isSpawn = isSpawn;
+        this.locDoor = locDoor;
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         this.div.style.border = ""
-        this.elozoPalya = elozoPalya
         this.atributumok = {
-            "id":this.id,
-            "location":this.location,
-            "előző szoba":this.elozoPalya,
-            "Spanw hely": this.isSpawn,
+            "id":this.id, //ajtó azonosító
+            "location":this.location, //melyik szobába visz
+            "location-door":this.locDoor, //a szobán belül melyi kid-jű ajtóhoz tesz.
             "Textúra": this.texture
          }  
+         //ha mind a 3 atrib nulla akkor az lesz a játék belépési pontja
           
          this.atribMeghiv()
     }
@@ -824,12 +848,6 @@ class Exit extends Objekt {
             p.innerText = i+": ";
             let input = document.createElement("input")
             let t_name = document.createElement("span")
-        
-            if(i == "id") {
-                input.disabled = true;
-            }
-
-
             if(i == "Textúra") {
                 t_name.innerText = this.atributumok[i]
                 input.setAttribute("type","file")
@@ -850,8 +868,10 @@ class Exit extends Objekt {
             p.appendChild(input)
             menuBox.appendChild(p);
             menu.appendChild(menuBox)
+            
         }
     }
+    assetButton(menuBox)
     }
 
 }
@@ -967,16 +987,6 @@ class Ruha extends Item{
          this.atribMeghiv()
     }
 }
-
-//Ezt majd valahogy fel kell tölteni felgyverekkel, talán a pálya betöltésekor.
-let itemekNagylistaja = [
-    new Fegyver(0,0,30,30,20,"Giga-megyfegyver"),
-    new Fegyver(0,0,20,20,10,"Mega-megyfegyver"),
-    new Fegyver(0,0,10,10,5,"Sima-megyfegyver"),
-    new Ruha(0,0,30,30,20,"Giga-hagymaruha"),
-    new Ruha(0,0,20,20,10,"Mega-hagymaruha"),
-    new Ruha(0,0,10,10,0,"Sima-hagymaruha"),
-]
 
 class Hit {
     constructor(x,y,w,h) {
@@ -1117,28 +1127,40 @@ if(kurzor == "cursor") {
 
 
 function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet ahova kattintunk
+    let o = last_obj
     switch(id) {
         case "Wall":
+            if(isAsset) return obj = new Wall(x,y,o.texture,o.titkos)
             return obj = new Wall(x,y)
-        case "Ellen":
+        case "Enemy":
+            if(isAsset)return obj = new Enemy(x,y,o.nev,o.dmg,o.hp,o.speed,o.drop,o.texture)
             return obj = new Enemy(x,y)
         case "Lada":
+            if(isAsset) return obj = new Lada(x,y,o.item,o.texture,o.kulcsos,o.isRandom)
             return  obj = new Lada(x,y)
         case "Arus":
-                return  obj = new Arus(x,y)
+            if(isAsset) return   obj = new Arus(x,y,o.items,o.nev,o.texture,o.selfImg)
+            return  obj = new Arus(x,y)
         case "Kulcs":
+            if(isAsset) return   obj = new Kulcs(x,y,o.nev,o.texture,true)
             return  obj = new Kulcs(x,y)
         case "Fegyver":
+            if(isAsset) return obj = new Fegyver(x,y,o.dmg,o.range,o.speed,o.nev,o.texture,true)  
             return  obj = new Fegyver(x,y)           
         case "Ruha":
+            if(isAsset) return  obj = new Ruha(x,y,o.ved,o.speed,o.meret,o.nev,o.texture,true)
             return  obj = new Ruha(x,y)
          case "Exit":
+            if(isAsset) return  obj = new Exit(x,y,o.location,o.id,o.locDoor,o.texture)
             return  obj = new Exit(x,y)
         case "Penz":
+            if(isAsset) return    obj = new Penz(x,y,o.value,o.texture,true)
             return  obj = new Penz(x,y)
-        case "Msg":
+        case "Uzenet":
+            if(isAsset) return   obj = new Uzenet(x,y,o.msg,o.texture)
             return  obj = new Uzenet(x,y)
         case "Tile":
+            if(isAsset) return  obj = new Tile(x,y,o.isBedrok,o.texture,o.isVoid);
             return  obj = new Tile(x,y,false);
         case "delete":
             return obj = "delete"
@@ -1149,6 +1171,9 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
 
 
 function kivalaszt(i) { //Ezt a radio buttonok hivják meg
+    isAsset = false;
+    var gyerekek = $("#asset-box").children();
+    gyerekek.css("border-color","black")
     kurzor = i;
 }
 
@@ -1177,9 +1202,9 @@ function createGrid(gridw,gridh) {
     let w = 60;
     let h = 60;
     let gridSzelesseg = w*gridw
-    let gridMagassag = h*gridh*2-window.screen.availHeight
-    offsetX =(window.screen.width-gridSzelesseg)/2
-    offsetY =((window.screen.height-gridMagassag)/4)
+    let gridMagassag = h*gridh*2-window.innerHeight
+    offsetX =(window.innerWidth-gridSzelesseg)/2
+    offsetY =((window.innerHeight-gridMagassag)/4)
     let x = offsetX;
     let y = offsetY;
 
@@ -1426,10 +1451,9 @@ function palyaKeszitesFajlbol(palyaText) {
                 let objParam = objAtr[1].split(",")
                 let loc = parseInt(objParam[0]);
                 let id = parseInt(objParam[1]);
-                let elozo = objParam[2];
-                let spawn = objParam[3];
-                let textura = objParam[4];
-                objekt = new Exit(x,y,loc,id,textura,spawn,elozo) 
+                let locDoor = parseInt(objParam[2]);
+                let textura = objParam[3];
+                objekt = new Exit(x,y,id,loc,locDoor,textura) 
             }
             if(type=="uzenet") {
                 //wall,500,100,|false,fal4.png
@@ -1489,5 +1513,167 @@ function palyaKeszitesFajlbol(palyaText) {
     }
     }
 
-//Láda megjavítása
-//árus létrehozás
+    let tmp = "";
+    //Az obj az eddig mintát követi
+    async function asset_mentes(obj,nev) {
+        let asset = {"asset":null}
+        let str = `${(obj.constructor.name).toLowerCase()},${nev}|${JSON.stringify(obj.atributumok)}`;
+        str+="\n"
+    asset["asset"] = str
+        const response = await fetch('/asset_mentes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(asset),
+          });
+          const data = await response.json();
+      //   tmp = data.message;
+    }
+    
+    async function asset_mentes_run(obj,nev) {
+    await asset_mentes(obj,nev);
+    }
+    async function asset_betoltes_run() {
+    await asset_betoltes();
+    }
+    asset_betoltes_run()
+    //Beolvasás megtörtént, lementeni az assets tömbbe, megoldani hogy a -1 -1 vagy 0 0 helyekre ne legyenek letéve.
+    async function asset_betoltes() {
+        const response = await fetch('/asset_betoltes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+          const data = await response.json();
+          let sorok = data.message.split("\n")
+          let texture = "";
+          let i = 0;
+          for(let asset of sorok) {
+            if(asset != "") {
+                //rá lehessen kattintani a divekre, ilyenkor az objekt lemásolódik atribútum meg ilyenek, és a következő kattintásnál az lesz benyomva.
+                //Akár a fenti menüsorban is váltódjon át.
+                //Mentéskor el lehessen nevezni.
+                let obj = asset.split("|")
+                let alap_adatok = obj[0].split(",")
+                let atrib = JSON.parse(obj[1])
+                texture = atrib["Textúra"]
+                let o = null;
+                if(alap_adatok[0] == "enemy") {
+                    //enemy,-1,-1|{"Név":"Béla","Sebzés":3,"Hp":15,"Sebesség":1,"Pénz":3,"Textúra":"enemy.png"}
+                    o = new Enemy(-1,-1,atrib["Név"],atrib["Sebzés"],atrib["Hp"],atrib["Sebesség"],atrib["Pénz"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "wall") {
+                   
+                    o = new Wall(100,100,atrib["Textúra"],atrib["Titkos"]);
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "exit") {
+                   
+                    o = new Exit(-1,-1,atrib["id"],atrib["location"],atrib["location-door"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "uzenet") {
+                  
+                    o = new Uzenet(-1,-1,atrib["Üzenet"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "fegyver") {
+                   console.log(atrib)
+                    o = new Fegyver(-1,-1,atrib["Sebzés"],atrib["Ranfe növelés"],atrib["Ütés sebesség"],atrib["Név"],atrib["Textúra"]);
+                    itemekNagylistaja.push(o)
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "ruha") {
+                    o = new Ruha(-1,-1,atrib["Védelem"],atrib["Sebesség növelés"],atrib["Méret növelés"],atrib["Név"],atrib["Textúra"]);
+                    itemekNagylistaja.push(o)
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "lada") {
+                    console.log(atrib["Textúra"])
+                    let itemAtrib = atrib["Item"]["atributumok"]
+                    let type = itemAtrib["Sebzés"]
+                    let item = null;
+                    if(type != undefined) {
+                        
+                        item = new Fegyver(-1,-1,itemAtrib["Sebzés"],itemAtrib["Range növelés"],itemAtrib["Ütés sebesség"],itemAtrib["Név"],itemAtrib["Textúra"]);
+                    }else {
+                        item = new Ruha(-1,-1,itemAtrib["Védelem"],itemAtrib["Sebesség növelés"],itemAtrib["Méret növelés"],itemAtrib["Név"],itemAtrib["Textúra"]);
+                    }
+                    o = new Lada(-1,-1,atrib["Kulcsos"],item,atrib["Random"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "arus") {
+                    //enemy,-1,-1|{"Név":"Béla","Sebzés":3,"Hp":15,"Sebesség":1,"Pénz":3,"Textúra":"enemy.png"}
+                    let items = [];
+                    let aruk = atrib["Áruk"]
+                    for(let aru_dict of aruk) {
+                        let aru = aru_dict["item"]
+                        let ar = aru_dict["ar"]
+
+                        let itemAtrib = aru["atributumok"]
+                        let type = itemAtrib["Sebzés"]
+                        let item = null;
+                        if(type != undefined) {
+                            
+                            item = new Fegyver(-1,-1,itemAtrib["Név"],itemAtrib["Sebzés"],itemAtrib["Range növelés"],itemAtrib["Ütés sebesség"],itemAtrib["Textúra"]);
+                        }else {
+                            item = new Ruha(-1,-1,itemAtrib["Név"],itemAtrib["Védelem"],itemAtrib["Sebesség növelés"],itemAtrib["Méret növelés"],itemAtrib["Textúra"]);
+                        }
+                        items.push({"item":item,"ar":ar})
+                    }
+                    
+                    o = new Arus(-1,-1,items,atrib["Név"],atrib["Textúra"],atrib["Önarckép"]);
+                    console.log(o)
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "kulcs") {
+                    o = new Kulcs(-1,-1,atrib["Név"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                
+                if(alap_adatok[0] == "penz") {
+                    o = new Penz(-1,-1,atrib["Érték"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                if(alap_adatok[0] == "tile") {
+                    o = new Tile(-1,-1,atrib["Alapkő"],atrib["Mélység"],atrib["Textúra"]);
+                    assets.push(o)
+                }
+                    
+                    let asset_box = document.getElementById("asset-box");
+                    let asset_div = document.createElement("div")
+                    asset_div.setAttribute("id",i)
+                    asset_div.addEventListener("click",()=>{
+                        document.getElementById(alap_adatok[0]).checked = true
+                        last_obj = o
+                        var gyerekek = $("#asset-box").children();
+                        gyerekek.css("border-color","black")
+                        asset_div.style.borderColor = "red"
+                        isAsset = true;
+                        kurzor = o.constructor.name
+                    })
+                    let img = document.createElement("img")
+                    img.setAttribute("src","/Textures/"+texture)
+                    asset_div.appendChild(img)
+                    let a = document.createElement("a")
+                     a.innerText = alap_adatok[1]
+                    asset_div.appendChild(a)
+                    asset_div.setAttribute("class","asset")
+                    asset_box.appendChild(asset_div)
+                    i++
+            }
+         
+          }
+
+    }

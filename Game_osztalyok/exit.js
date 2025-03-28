@@ -1,5 +1,5 @@
 class Exit {
-    constructor(x,y,location=0,id=0,texture="nincs",isSpawn=false,palya,elozoPalya) {
+    constructor(x,y,location=0,id=0,locDoor,texture="nincs",palya) {
             this.x = x;
 			this.y = y;
 			this.palya = palya
@@ -8,8 +8,7 @@ class Exit {
 			this.height = 60;
             this.location = location;
             this.id = id;
-			this.elozoPalya = elozoPalya
-			this.isSpawn = (isSpawn == "true");
+			this.locDoor = locDoor
 			this.div = document.createElement("div")
 			this.div.style.width = this.width;
 			this.div.style.height = this.height
@@ -20,15 +19,19 @@ class Exit {
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
 			this.palya.palyaObjekt.push(this)
-			this.isHasznalhato = false
-			this.belepes = false
+			this.isHasznalhato = true
 			
     }
 
 
+	betoltes() { //Jatékos ezt hívja meg, itt döntődik el melyik pálya töltődik be.
+		if(this.isHasznalhato) {betoltesEsMegjelenites(this.location, this.locDoor)}
+		 //meghívja a pálya show és hide-ját
+		//Ha rélépünk egy exitre akkor dobjon át a másik szobába.
+		//Mindig csak ajtóhoz dobjon,
 
 
-	betoltes() {
+/*
 			if(aktualPalya != this.location) {
 				betoltesEsMegjelenites(this.location);
 			}
@@ -48,5 +51,6 @@ class Exit {
 						},300)
 				}
 			}
+				*/
 	}
 }

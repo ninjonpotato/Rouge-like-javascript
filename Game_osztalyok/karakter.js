@@ -165,7 +165,7 @@ class Karakter{
 					} 
 					if(obj instanceof Exit) {
 					
-						obj.betoltes()
+						obj.betoltes() 
 					}
 					if(obj instanceof Uzenet) {
 						if(arus_megjelenitve) {

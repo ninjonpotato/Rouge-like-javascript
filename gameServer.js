@@ -82,11 +82,13 @@ app.post("/beolvas",async (req,res) => {
 })
 
 
-app.listen(port, () => {
-    console.log(`Szerver fut a http://localhost:${port}/index.html címen`);
-  });
+app.post("/asset_mentes",async (req,res) => {
+  let {asset} = req.body;
+  AssetMentes(asset);
+ res.json({ message: 'Fájl sikeresen mentve!' });
+})
 
-function fajlbaIr(nev,objektek) { //jelenleg hozzáfűz a régi pályához ha többször nyomunk a mentésre
+function fajlbaIr(nev,objektek) {
   fs.writeFile(`Maps/${nev}`,objektek, (err) =>{
     if (err) {
         console.log('Hiba történt a fájl írásakor:', err);
@@ -96,3 +98,38 @@ function fajlbaIr(nev,objektek) { //jelenleg hozzáfűz a régi pályához ha t�
     });
 } 
 
+
+
+
+
+function AssetMentes(asset) {
+  fs.writeFile(`asset`,asset, {flag: 'a+'}, (err) =>{
+    if (err) {
+        console.log('Hiba történt a fájl írásakor:', err);
+      } else {
+      console.log("fájl sikeresen létrehozva!")
+      }
+    });
+  }
+
+
+
+
+  app.post("/asset_betoltes",async (req,res) => {
+   res.json({ message: await AssetOlvas()});
+  })
+  
+  async function AssetOlvas() { 
+    try {
+      data = await fs.readFile("asset",'utf8')
+      return data
+    } catch(err)  {
+      console.log(`Hiba történt: ${err}`)
+    }
+  }
+
+
+
+app.listen(port, () => {
+  console.log(`Szerver fut a http://localhost:${port}/index.html címen`);
+});
