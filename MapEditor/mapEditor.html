@@ -7,6 +7,10 @@
 <style>
     * {
         background-size: cover;
+
+    }
+    body {
+        background-color: rgb(31, 31, 42);
     }
     #back {
       position: absolute;
@@ -209,10 +213,11 @@
     }
     #asset-menu {
         position: absolute;
+        background-color: rgb(88, 88, 88);
         top: 200;
         left: 10;
         border: 2px solid black;
-        width: 320px;
+        width: 35%;
         h1 {
             width: 100%;
             text-align: center;
@@ -223,29 +228,32 @@
         justify-content: space-around;
         justify-self: center;
         flex-flow: row;
-        max-height: 330px;
+        align-items: center;
+        max-height: 350px;
         flex-wrap: wrap;
         overflow: scroll;
             .asset {
             margin: 10px;
             display: flex;
             border: 2px solid black;
-            width: 100px;
-            height: 150px;
+            width: 30%;
             flex-direction: column;
+            cursor: pointer;
             text-align: center;
             padding: 10px 10px 0px 10px;
             max-height: 150px;
             overflow: scroll;
-            img {
-                height: 100px;
-                width: 100px;
-            }
             a{
                 word-wrap:normal;
                word-break:break-all;
-               font-size: clamp(16px, 25px,50px);
+               font-size: clamp(15px, 1.5vw,50px);
             }
+            button {
+                display: block;
+                margin: auto;
+                margin-top: 10px;
+            }
+           
            
         }
         }

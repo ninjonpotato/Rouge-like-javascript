@@ -95,8 +95,8 @@ class Palya  {
             let objAtr = obj.split("|");
             let objType = objAtr[0].split(",")
             let type = objType[0].trim()
-            let x = parseInt(objType[1]);//eredeti x
-            let y = parseInt(objType[2]); //eredeti y
+            let x = parseFloat(objType[1]);//eredeti x
+            let y = parseFloat(objType[2]); //eredeti y
             let w = 60;
             let h = 60;
             //valahogy számolja ki mekkora a pálya szélessége és magassága, 60x60 a négyzetek beégetett mérete
@@ -109,15 +109,14 @@ class Palya  {
                 y+= offsetY
             }
 
-            //parseInt(objType[1])-
            
             let objekt = null;
             if(type == "fegyver" || type=="ruha" || type =="kulcs" || type=="penz") {  
                 let objParam = objAtr[1].split(",")
                 let nev = objParam[0];
-                let dmg = parseInt(objParam[1]);
-                let range = parseInt(objParam[2]);
-                let speed = parseInt(objParam[3]);
+                let dmg = parseFloat(objParam[1]);
+                let range = parseFloat(objParam[2]);
+                let speed = parseFloat(objParam[3]);
                 let textura = objParam[4];
       
                 if(type=="fegyver") {
@@ -129,7 +128,7 @@ class Palya  {
                     objekt = new Kulcs(x,y,nev,textura,this)
                 }
                 if(type=="penz") {
-                    let ertek = objParam[0];
+                    let ertek = parseFloat(objParam[0]);
                     objekt = new Coin(x,y,ertek,this)
                 }
                 
@@ -165,9 +164,9 @@ class Palya  {
                         let item = null;
                         let itemParam = objAtr[2].split(",")
                         let nev = itemParam[0];
-                        let dmg = parseInt(itemParam[1]);
-                        let range = parseInt(itemParam[2]);
-                        let speed = parseInt(itemParam[3]);
+                        let dmg = parseFloat(itemParam[1]);
+                        let range = parseFloat(itemParam[2]);
+                        let speed = parseFloat(itemParam[3]);
                         let item_textura = itemParam[4];
                         if(itemType=="fegyver") {
                             item = new Fegyver(-1,-1,nev,dmg,range,speed,item_textura,this)}
@@ -190,17 +189,17 @@ class Palya  {
                             let aru = objAtr[i].split(",")
                             let tipus = aru[0];
                             let nev = aru[1];
-                            let dmg = parseInt(aru[2]);
-                            let range = parseInt(aru[3]);
-                            let speed = parseInt(aru[4]);
+                            let dmg = parseFloat(aru[2]);
+                            let range = parseFloat(aru[3]);
+                            let speed = parseFloat(aru[4]);
                             let texture = aru[5]
-                            let ar =  parseInt(aru[6])
+                            let ar =  parseFloat(aru[6])
                             let item = null;
                             if(tipus == "fegyver") {
-                                item = new Fegyver(-1,-1,nev,parseInt(dmg),range,speed,texture,this)
+                                item = new Fegyver(-1,-1,nev,parseFloat(dmg),range,speed,texture,this)
                             }
                             if(tipus == "ruha") {
-                                item = new Ruha(-1,-1,nev,parseInt(dmg),range,speed,texture,true,this)
+                                item = new Ruha(-1,-1,nev,parseFloat(dmg),range,speed,texture,true,this)
                             }
                             if(item != null) {
                                 items.push({"item":item,"ar":ar})
@@ -222,10 +221,10 @@ class Palya  {
                 if(type=="enemy") {
                         let objParam = objAtr[1].split(",")
                         let nev = objParam[0]
-                        let dmg = parseInt(objParam[1])
-                        let hp= parseInt(objParam[2])
-                        let sebesseg = parseInt(objParam[3])
-                        let penz =  parseInt(objParam[4])
+                        let dmg = parseFloat(objParam[1])
+                        let hp= parseFloat(objParam[2])
+                        let sebesseg = parseFloat(objParam[3])
+                        let penz =  parseFloat(objParam[4])
                         let texture = objParam[5]
                         let offset = (60-55)/2
                         objekt = new Enemy(x+offset,y+offset,hp,nev,dmg,sebesseg,penz,texture,this)
@@ -308,7 +307,7 @@ function torol(obj,vasarolt = false) {
     if(obj instanceof Coin) {
         isPenz = true;
         szamlalo = 0;
-        felvett_coin+= parseInt(obj.ertek);
+        felvett_coin+= parseFloat(obj.ertek);
         textMeret = 100;
         span.innerText = felvett_coin
         text.innerText = "+"
@@ -474,7 +473,10 @@ if(kari.iranyok[2]) {kari.down();}
 if(kari.iranyok[3]) {kari.right();}
     }
 for(let enemy of enemyk) {
-enemy.mozog()
+    if(enemy.zuhan == false) {
+        enemy.mozog()
+    }
+
 }
 },10)
 

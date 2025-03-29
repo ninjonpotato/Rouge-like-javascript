@@ -22,7 +22,7 @@ let global_arus = "arus.png"
 let global_csempe = "padlo2.png"
 let last_attrib = null
 let last_obj = null
-let assets = [];
+let assets = []
 let isAsset = false
 let itemekNagylistaja = [
 ]
@@ -32,7 +32,10 @@ function assetButton(parent,obj) {
     let addAsset = document.createElement("button");
     addAsset.innerText="asset hozzáadás"
     addAsset.addEventListener("click",()=>{
+        assets = [];
+       $('#asset-box').empty()
         let nev = prompt("Mi legyen a neve?")
+        console.log(obj)
         asset_mentes_run(obj,nev)
     })
     parent.appendChild(addAsset)
@@ -56,6 +59,7 @@ class Objekt {
         this.atributumok = null;
         this.texture = texture
         this.disabled = []
+        this.isAsset = false
         this.div.style.border = "1px solid black"
         objektek.push(this)
 
@@ -69,16 +73,12 @@ class Objekt {
 
 
     }
-    static getInstance() {
-        return new this()
-    }
     textureBeallit(obj,texture) {
     if(obj instanceof Tile) {
         global_csempe = texture
     }
     obj.div.style.backgroundImage = "url(../Textures/"+texture+")"
     }
-
     lastAtribBeallit() {
         last_attrib = this.atributumok
         last_obj = this
@@ -318,7 +318,7 @@ class Lada extends Objekt{
         })
         menuBox.appendChild(button);
     }
-    assetButton(menuBox)
+    assetButton(menuBox,this)
     }
 
     itemAddBox() {
@@ -811,7 +811,7 @@ class Arus extends Objekt {
 
         }
     }
-    assetButton(menuBox)
+    assetButton(menuBox,this)
 
 }
 
@@ -871,7 +871,7 @@ class Exit extends Objekt {
             
         }
     }
-    assetButton(menuBox)
+    assetButton(menuBox,this)
     }
 
 }
@@ -1204,7 +1204,7 @@ function createGrid(gridw,gridh) {
     let gridSzelesseg = w*gridw
     let gridMagassag = h*gridh*2-window.innerHeight
     offsetX =(window.innerWidth-gridSzelesseg)/2
-    offsetY =((window.innerHeight-gridMagassag)/4)
+    offsetY =((window.innerHeight-gridMagassag)/3)
     let x = offsetX;
     let y = offsetY;
 
@@ -1228,6 +1228,7 @@ let palyaNev = null;
 let save = document.getElementsByClassName("save");
 
 function mentes(palyaNev) {
+    fajlClear("Maps/"+palyaNev)
     let objektLista = [];
     for(i in objektek) {
      let obj = objektek[i]
@@ -1365,6 +1366,8 @@ load.addEventListener("change",(event)=>{
 })
 
 function palyaKeszitesFajlbol(palyaText) { 
+    console.log(objektek)
+    objektek = []
     for(let obj of objektek) {
         if(!(obj instanceof Tile)) {
             obj.div.remove()
@@ -1376,7 +1379,6 @@ function palyaKeszitesFajlbol(palyaText) {
     for(let obj of palyaTomb) {
         let objAtr = obj.split("|");
         let objType = objAtr[0].split(",")
-
         let type = objType[0].trim()
         let x =  parseInt(objType[1])+offsetX
         let y = parseInt(objType[2])+offsetY
@@ -1385,6 +1387,8 @@ function palyaKeszitesFajlbol(palyaText) {
             y = 0;
         }
         let objekt = null;
+    
+        
         if(type == "fegyver" || type=="ruha" || type =="kulcs" || type=="penz") {  
             let objParam = objAtr[1].split(",")
             let nev = objParam[0];
@@ -1508,13 +1512,12 @@ function palyaKeszitesFajlbol(palyaText) {
             objekt = new Arus(x,y,items,nev,selfImg,texture);
         }
             vaszon.appendChild(objekt.div)
-        }
- 
+        } 
     }
     }
 
-    let tmp = "";
-    //Az obj az eddig mintát követi
+
+
     async function asset_mentes(obj,nev) {
         let asset = {"asset":null}
         let str = `${(obj.constructor.name).toLowerCase()},${nev}|${JSON.stringify(obj.atributumok)}`;
@@ -1528,17 +1531,17 @@ function palyaKeszitesFajlbol(palyaText) {
             body: JSON.stringify(asset),
           });
           const data = await response.json();
-      //   tmp = data.message;
+          asset_betoltes_run()
     }
     
     async function asset_mentes_run(obj,nev) {
     await asset_mentes(obj,nev);
     }
     async function asset_betoltes_run() {
-    await asset_betoltes();
+    await asset_betoltes()
     }
     asset_betoltes_run()
-    //Beolvasás megtörtént, lementeni az assets tömbbe, megoldani hogy a -1 -1 vagy 0 0 helyekre ne legyenek letéve.
+    let torlesFlag = false
     async function asset_betoltes() {
         const response = await fetch('/asset_betoltes', {
             method: 'POST',
@@ -1546,55 +1549,53 @@ function palyaKeszitesFajlbol(palyaText) {
               'Content-Type': 'application/json',
             }
           });
+          assets = []
+          $('#asset-box').empty()
           const data = await response.json();
           let sorok = data.message.split("\n")
           let texture = "";
           let i = 0;
           for(let asset of sorok) {
             if(asset != "") {
-                //rá lehessen kattintani a divekre, ilyenkor az objekt lemásolódik atribútum meg ilyenek, és a következő kattintásnál az lesz benyomva.
-                //Akár a fenti menüsorban is váltódjon át.
-                //Mentéskor el lehessen nevezni.
                 let obj = asset.split("|")
                 let alap_adatok = obj[0].split(",")
                 let atrib = JSON.parse(obj[1])
                 texture = atrib["Textúra"]
                 let o = null;
                 if(alap_adatok[0] == "enemy") {
-                    //enemy,-1,-1|{"Név":"Béla","Sebzés":3,"Hp":15,"Sebesség":1,"Pénz":3,"Textúra":"enemy.png"}
                     o = new Enemy(-1,-1,atrib["Név"],atrib["Sebzés"],atrib["Hp"],atrib["Sebesség"],atrib["Pénz"],atrib["Textúra"]);
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "wall") {
                    
                     o = new Wall(100,100,atrib["Textúra"],atrib["Titkos"]);
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "exit") {
-                   
+                    
                     o = new Exit(-1,-1,atrib["id"],atrib["location"],atrib["location-door"],atrib["Textúra"]);
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "uzenet") {
                   
                     o = new Uzenet(-1,-1,atrib["Üzenet"],atrib["Textúra"]);
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "fegyver") {
                    console.log(atrib)
                     o = new Fegyver(-1,-1,atrib["Sebzés"],atrib["Ranfe növelés"],atrib["Ütés sebesség"],atrib["Név"],atrib["Textúra"]);
                     itemekNagylistaja.push(o)
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "ruha") {
                     o = new Ruha(-1,-1,atrib["Védelem"],atrib["Sebesség növelés"],atrib["Méret növelés"],atrib["Név"],atrib["Textúra"]);
                     itemekNagylistaja.push(o)
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "lada") {
@@ -1609,7 +1610,7 @@ function palyaKeszitesFajlbol(palyaText) {
                         item = new Ruha(-1,-1,itemAtrib["Védelem"],itemAtrib["Sebesség növelés"],itemAtrib["Méret növelés"],itemAtrib["Név"],itemAtrib["Textúra"]);
                     }
                     o = new Lada(-1,-1,atrib["Kulcsos"],item,atrib["Random"],atrib["Textúra"]);
-                    assets.push(o)
+                    assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "arus") {
@@ -1634,27 +1635,28 @@ function palyaKeszitesFajlbol(palyaText) {
                     
                     o = new Arus(-1,-1,items,atrib["Név"],atrib["Textúra"],atrib["Önarckép"]);
                     console.log(o)
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "kulcs") {
                     o = new Kulcs(-1,-1,atrib["Név"],atrib["Textúra"]);
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "penz") {
                     o = new Penz(-1,-1,atrib["Érték"],atrib["Textúra"]);
-                    assets.push(o)
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 if(alap_adatok[0] == "tile") {
-                    o = new Tile(-1,-1,atrib["Alapkő"],atrib["Mélység"],atrib["Textúra"]);
-                    assets.push(o)
+                    o = new Tile(-1,-1,atrib["Alapkő"],atrib["Textúra"],atrib["Mélység"]);
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                     
                     let asset_box = document.getElementById("asset-box");
                     let asset_div = document.createElement("div")
                     asset_div.setAttribute("id",i)
                     asset_div.addEventListener("click",()=>{
+                        if(!torlesFlag) {
                         document.getElementById(alap_adatok[0]).checked = true
                         last_obj = o
                         var gyerekek = $("#asset-box").children();
@@ -1662,18 +1664,58 @@ function palyaKeszitesFajlbol(palyaText) {
                         asset_div.style.borderColor = "red"
                         isAsset = true;
                         kurzor = o.constructor.name
+                        }
+                        torlesFlag = false;
                     })
+                    o.isAsset = true
+                    objektek = objektek.filter(obj => !obj.isAsset
+                    );
                     let img = document.createElement("img")
                     img.setAttribute("src","/Textures/"+texture)
                     asset_div.appendChild(img)
                     let a = document.createElement("a")
-                     a.innerText = alap_adatok[1]
+                    a.innerText = alap_adatok[1]
                     asset_div.appendChild(a)
                     asset_div.setAttribute("class","asset")
                     asset_box.appendChild(asset_div)
+                    
+                    var button = $("<button>",{
+                        text:"törlés",
+                        click: ()=>{
+                            torlesFlag = true;
+                        kivalaszt("cursor")
+                        document.getElementById("cursor").checked = true
+                        assets.splice(parseInt(asset_div.id), 1);
+                        console.log(assets.length)
+                        fajlClear_run("asset")
+                        if(assets.length > 0){
+                            for(let a of assets) {
+                                asset_mentes_run(a.asset,a.nev)
+                            }
+                        }else {
+                            assets = []
+                            $('#asset-box').empty()
+                        }
+                        }
+                    });
+                    $(asset_div).append(button)
                     i++
             }
-         
           }
+          console.log(assets)
 
+    }
+
+    async function fajlClear_run(path) {
+        await fajlClear(path);
+    }
+    async function fajlClear(path) {
+        const response = await fetch('/clear', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"path":path}),
+          });
+          const data = await response.json();
     }

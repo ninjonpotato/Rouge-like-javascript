@@ -99,17 +99,30 @@ function fajlbaIr(nev,objektek) {
 } 
 
 
-
-
-
-function AssetMentes(asset) {
-  fs.writeFile(`asset`,asset, {flag: 'a+'}, (err) =>{
+app.post("/clear",async (req,res) => {
+  let {path} = req.body;
+  fileEmpty(path);
+ res.json({ message: 'Fájl sikeresen kiürítve!' });
+})
+function fileEmpty(path) {
+  fs.writeFile(path,"", (err) =>{
     if (err) {
         console.log('Hiba történt a fájl írásakor:', err);
       } else {
-      console.log("fájl sikeresen létrehozva!")
+      console.log("fájl sikeresen kiürítve!")
       }
     });
+}
+
+function AssetMentes(asset) {
+
+    fs.writeFile(`asset`,asset, {flag: 'a+'}, (err) =>{
+      if (err) {
+          console.log('Hiba történt a fájl írásakor:', err);
+        } else {
+        console.log("fájl sikeresen létrehozva!")
+        }
+      });
   }
 
 

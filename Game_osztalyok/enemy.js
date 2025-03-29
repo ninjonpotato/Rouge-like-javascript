@@ -48,6 +48,8 @@ class Enemy {
 
 			this.mozoghat = true;
 			this.iranyok = [false,false,false,false]
+
+			this.zuhan = false
 		}
 		attack() {
 			if(this.box != null) {
@@ -113,11 +115,29 @@ class Enemy {
 						if(irany == 3) {this.x -= this.sebesseg}
 
 					}
+					if(obj instanceof Tile) {
+						if(obj.isVoid && this.hp > 0) {
+							this.atiranyit(obj.x, obj.y)
+							obj.div.style.backgroundImage="url(Textures/eses.gif)"
+							this.sebzodik(this.hp);
+							this.zuhan = true
+							setTimeout(()=>{	
+								this.zuhan = false;
+								obj.div.style.backgroundImage="url(Textures/void.png)"
+							},800)
+				
+						}
+					} 
 
 				}
 			}
 		}
-
+		atiranyit(x,y) {
+			this.x = x;
+			this.y = y;
+			this.div.style.left = this.x;
+			this.div.style.top = this.y
+		}
 		left(lokes= 0) {
 			if(lokes == 0) {this.x -= this.sebesseg}
 			else {
@@ -202,7 +222,6 @@ class Enemy {
 		die() {
 			this.box.remove()
 			this.box = null
-			let rand = Math.random();
 			if(this.penz == 0) {
 				for(let i = 0; i < 3; i++) {
 					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
@@ -214,10 +233,10 @@ class Enemy {
 			}
 			let log = document.getElementById("logContent")
      	   	let t = document.createElement("p")
-       		 t.innerText = "Megölted: "+this.nev
-      		  log.appendChild(t)
-				log.scrollTop = log.scrollHeight;
-				torol(this) 
+       		t.innerText = "Megölted: "+this.nev
+      		log.appendChild(t)
+			log.scrollTop = log.scrollHeight;
+			torol(this) 
 		}
 		visszalok(lokes,irany) {
 			if(irany == 2) { //bal nézünk

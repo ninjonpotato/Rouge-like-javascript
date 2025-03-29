@@ -122,14 +122,13 @@ class Karakter{
 		}
 
 		vasarol(ar) {
-			this.penz -= parseInt(ar);
+			this.penz -= parseFloat(ar);
 			this.infoUpdate()
 		}
 
 		ifCollide(irany) {
 			let prevX = 0;
 			let prevY = 0;
-			let esik = false;
 			for(let i in objektek) {
 				let obj = objektek[i];
 				if(aabbCollision(this, obj)) {
@@ -147,6 +146,9 @@ class Karakter{
 					if(obj instanceof Tile) {
 						if(obj.isVoid) {
 							this.atiranyit(obj.x, obj.y)
+							if(obj instanceof Felveheto) {
+								torol(objektek[i])
+							}
 							obj.div.style.backgroundImage="url(Textures/eses.gif)"
 							this.addHp(-20);
 							this.zuhan = true
@@ -319,8 +321,8 @@ class Karakter{
 		picupItem(item) {
 			//hp
 			if(item instanceof Ruha) {
-				this.hp += parseInt(item.hp);
-				this.sebesseg += parseInt(item.speed);
+				this.hp += parseFloat(item.hp);
+				this.sebesseg += parseFloat(item.speed);
 				//méretet lekezelni
 				if( this.hp <= 0) {
 					setTimeout(()=>{
@@ -339,7 +341,7 @@ class Karakter{
 				this.kulcs++;
 			}
 			if(item instanceof Coin) {
-				this.penz+= parseInt(item.ertek);
+				this.penz+= parseFloat(item.ertek);
 			}
 		
 			this.infoUpdate()
@@ -367,8 +369,8 @@ class Karakter{
 
 		}
 		infoUpdate() {
-		document.getElementById("penz").innerText = this.penz
-		document.getElementById("hp").innerText = this.hp
+		document.getElementById("penz").innerText = this.penz.toFixed(2)
+		document.getElementById("hp").innerText = this.hp.toFixed(2)
 		document.getElementById("dmg").innerText = this.dmg
 		document.getElementById("kulcs").innerText = this.kulcs
 		}
