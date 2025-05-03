@@ -7,7 +7,10 @@ let kari = null;
 let palyak = []
 let aktualPalya = 0;
 let uzenet = null;
-let arus_megjelenitve = false;
+let arus_megjelenitve = false
+let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-5","ds1-6","ds1-7-1","ds1-7-2","ds1-7-3","ds1-7-4","ds1-7-5","ds2-1","ds2-2","ds2-3","ds2-4","ds2-5","ds2-6"]
+//    //Teendő:
+    //7. Láda kinyitásakor az item nem látszódik
 class Palya  {
     constructor(nev,palyaString) {
         this.nev = nev
@@ -35,6 +38,7 @@ class Palya  {
 
     }
     show(doorID) {
+
         
         for (let obj of this.palyaEnemyk) {
             if( obj.box != null) {
@@ -52,7 +56,7 @@ class Palya  {
                 let offset = (obj.width-50)/2
                 if(kari == null) {//kezdeti létrehozás
                     if(obj.id == 0 && obj.location == 0) {
-                        kari = new Karakter("Sándor",15,obj.x+offset, obj.y+offset)
+                        kari = new Karakter("Sándor",obj.x+offset, obj.y+offset)
                     }
                 }else {
                    //a karakter a megadott id-hez irányítsa.
@@ -95,8 +99,8 @@ class Palya  {
             let objAtr = obj.split("|");
             let objType = objAtr[0].split(",")
             let type = objType[0].trim()
-            let x = parseFloat(objType[1]);//eredeti x
-            let y = parseFloat(objType[2]); //eredeti y
+            let x =  Math.ceil(parseFloat(objType[1]));//eredeti x
+            let y =  Math.ceil(parseFloat(objType[2])); //eredeti y
             let w = 60;
             let h = 60;
             //valahogy számolja ki mekkora a pálya szélessége és magassága, 60x60 a négyzetek beégetett mérete
@@ -117,7 +121,8 @@ class Palya  {
                 let dmg = parseFloat(objParam[1]);
                 let range = parseFloat(objParam[2]);
                 let speed = parseFloat(objParam[3]);
-                let textura = objParam[4];
+                let hang = objParam[4]
+                let textura = objParam[5];
       
                 if(type=="fegyver") {
                     objekt = new Fegyver(x,y,nev,dmg,range,speed,textura,this)
@@ -145,20 +150,25 @@ class Palya  {
                     let objParam = objAtr[1].split(",");
                     let isBedrock = objParam[0];
                     let isVoid = objParam[1];
-                    let textura = objParam[2];
+                    let textura = objParam[3];
                         objekt = new Tile(x,y,isBedrock,textura,this,isVoid)}
                 if(type=="uzenet") {
+                    console.log(objAtr)
                         let objParam = objAtr[1].split(",");
-                        let msg = objParam[0];
-                        let textura = objParam[1];
+                        let msg = ""
+                        for(let i=0; i < objParam.length-1; i++) {
+                            msg+=objParam[i]
+                        }
+                        let textura = objParam[objParam.length-1];;
                         objekt = new Uzenet(x,y,msg,textura,this)
                     }
                 if(type=="lada") {
                     let objParam = objAtr[1].split(",");
                     let kulcsos = objParam[0]
                     let random = objParam[2];
-                    let texture = objParam[3];
-                    let itemType= objParam[4];
+                    let kulcsId = objParam[3];
+                    let texture = objParam[4];
+                    let itemType= objParam[5];
                     itemType.trim()
                     if(itemType == "fegyver" || itemType=="ruha") {
                         let item = null;
@@ -167,12 +177,13 @@ class Palya  {
                         let dmg = parseFloat(itemParam[1]);
                         let range = parseFloat(itemParam[2]);
                         let speed = parseFloat(itemParam[3]);
-                        let item_textura = itemParam[4];
+                        let hang = itemParam[4];
+                        let item_textura = itemParam[5];
                         if(itemType=="fegyver") {
                             item = new Fegyver(-1,-1,nev,dmg,range,speed,item_textura,this)}
                           if(itemType=="ruha") {item = new Ruha(-1,-1,nev,dmg,range,speed,item_textura,this)}
                         //random most nem csinál semmit
-                        objekt = new Lada(x,y,item,kulcsos,texture,random,this)
+                        objekt = new Lada(x,y,item,kulcsos,texture,random, this,kulcsId)
                     }
                    
                 }
@@ -182,7 +193,8 @@ class Palya  {
                     let params = objAtr[objAtr.length-1].split(",")
                     let nev = params[0]
                     let selfimg = params[1]
-                    let texture = params[2]
+                    let hang = params[2]
+                    let texture = params[3]
                     for(let i in objAtr) {
                         if(i > 0 && i < objAtr.length-1) {
     
@@ -192,8 +204,9 @@ class Palya  {
                             let dmg = parseFloat(aru[2]);
                             let range = parseFloat(aru[3]);
                             let speed = parseFloat(aru[4]);
-                            let texture = aru[5]
-                            let ar =  parseFloat(aru[6])
+                            let hang = aru[5]
+                            let texture = aru[6]
+                            let ar =  parseFloat(aru[7])
                             let item = null;
                             if(tipus == "fegyver") {
                                 item = new Fegyver(-1,-1,nev,parseFloat(dmg),range,speed,texture,this)
@@ -225,9 +238,11 @@ class Palya  {
                         let hp= parseFloat(objParam[2])
                         let sebesseg = parseFloat(objParam[3])
                         let penz =  parseFloat(objParam[4])
-                        let texture = objParam[5]
+                        let kulcsos = objParam[6]
+                        let texture = objParam[7]
+                        let hang = objParam[5]
                         let offset = (60-55)/2
-                        objekt = new Enemy(x+offset,y+offset,hp,nev,dmg,sebesseg,penz,texture,this)
+                        objekt = new Enemy(x+offset,y+offset,hp,nev,dmg,sebesseg,penz,texture,this,kulcsos)
         
                 }
             }
@@ -386,17 +401,110 @@ const tavB = Math.sqrt((b.x - kari.x) ** 2 + (b.y - kari.y) ** 2);
 return tavA - tavB;
 });
 }
-let olvas = false;
-document.body.addEventListener("keydown",function(e) {
-rendez()
 
+let prefix = "../Sounds/"
+
+const audioFiles = {
+    coin: prefix+'pickupCoin.wav',
+    hitEnemy: prefix+'hitEnemy.wav',
+    player_damaged: prefix+'player_damaged.wav',
+    utes: prefix+'utes.wav',
+    cantOpen:prefix+'cantOpen.wav',
+    openChest:prefix+"openChest.wav",
+    pickupRuha:prefix+"pickupRuha.wav",
+    pickupFegyver:prefix+"pickupFegyver.wav",
+    pickupKey:prefix+"pickupKey.wav",
+    walk:prefix+"walk.wav",
+    gameMusic:prefix+"gameMusic.wav",
+    openDoor:prefix+"openDoor.wav",
+    openUzenet: prefix+"openUzenet.wav",
+    openArus:prefix+"openArus.wav",
+    buyAru:prefix+"buyAru.wav",
+    cantBuy:prefix+"cantBuy.wav"
+
+  };
+  let audioBuffers = {};
+  let audioCtx;
+  let activeSources = {}; // Aktív lejátszók tárolása
+  
+  async function loadAllSounds() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+    const entries = Object.entries(audioFiles);
+  
+    for (const [key, url] of entries) {
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = await audioCtx.decodeAudioData(arrayBuffer);
+      audioBuffers[key] = buffer;
+    }
+  
+    console.log("Minden hang betöltve");
+  }
+  
+  function playSound(name, loop = false, volume = 0.1) {
+    const buffer = audioBuffers[name];
+    if (!buffer) {
+      console.warn(`A(z) ${name} hang nincs betöltve.`);
+      return;
+    }
+  
+    if (activeSources[name]) {
+      activeSources[name].source.stop();
+      delete activeSources[name];
+    }
+  
+    const source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.loop = loop;
+  
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = volume; // Itt állítjuk be a hangerőt
+  
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+  
+    source.start();
+  
+    // Tároljuk a lejátszót és a gainNode-ot is, ha később állítani akarod
+    activeSources[name] = { source, gainNode };
+  }
+  
+  
+  function stopSound(name) {
+    if (activeSources[name]) {
+      activeSources[name].stop();
+      delete activeSources[name];
+    } else {
+      console.warn(`A(z) ${name} hang nincs aktív lejátszásban.`);
+    }
+  }
+  
+  window.addEventListener('DOMContentLoaded', async () => {
+    await loadAllSounds();
+    playSound("gameMusic", true);
+  
+  });
+  
+
+let olvas = false;
+let xm = 0;
+let ym = 0;
+let le = 0.99;
+let bgMusicPlaying = false
+
+document.body.addEventListener("keydown",function(e) {   
+
+rendez()
 if(e.key == "w" || e.key == "W") {
     kari.iranyok[0] = true
+    kari.mozog = true
 }
 if(e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
     kari.nezesIrany = e.key;
     kari.nezesNyomva = true;
 }
+
 
 if(e.key == "a" || e.key == "A") {
 kari.iranyok[1] = true
@@ -415,17 +523,31 @@ if(e.key == "e" || e.key == "E") {
     if(uzenet != null) {
         uzenet.bezar();
     }
-
+    let canOpen = false
     for(let obj of objektek) {
     if(aabbCollision(obj, kari)) { 
         if(obj instanceof Lada) {
             if(obj.nyitva == false) {
                 if(obj.kulcsos) {
-                    if(obj.vanEkulcs(kari)) {
+                    if(obj.kulcsId != "") {
+                        for(let k of kari.kulcsok) {
+                            if(k.nev == obj.kulcsId) {
+                                canOpen = true
+                                kari.kulcs--;
+                                obj.kinyit();
+                                kari.infoUpdate();
+                            }
+                        }
+                        if(canOpen==false) {
+                            playSound("cantOpen")
+                        }
+                    }
+                    else if(obj.vanEkulcs(kari)) {
                        // console.log("Kulcsal lett kinyitva")
                         obj.kinyit();
                         kari.infoUpdate();
                     }else {
+                        playSound("cantOpen")
                       //  console.log("nincs kulcsod")
                     }
                 }else {
@@ -442,11 +564,9 @@ if(e.key == "e" || e.key == "E") {
 })
 
 document.body.addEventListener("keyup",function(e) {
-
-
-
 if(e.key == "w" || e.key == "W") {
     kari.iranyok[0] = false
+
     kari.karakter.style.backgroundImage = "url(Textures/elore.png)"
 }
 if(e.key == "a" || e.key == "A") {
@@ -460,18 +580,24 @@ if(e.key == "s" || e.key == "S") {
 if(e.key == "d" || e.key == "D") {
     kari.iranyok[3] = false
     kari.karakter.style.backgroundImage = "url(Textures/jobbra.png)"
-}
 
+}
 })
 //karakter mozgatás
+setInterval(()=>{
+    if(kari.iranyok[0] ||kari.iranyok[1] ||kari.iranyok[2]||kari.iranyok[3]){
+    playSound("walk");}
+},300)
 setInterval(function(){
-    if(kari != null && kari.zuhan == false) {
+    if(kari != null && kari.zuhan == false) {   
+if(kari.iranyok[0]) {kari.up(); if(kari.nezesNyomva == false) {kari.nezesIrany="ArrowUp";}}
+if(kari.iranyok[1]) {kari.left(); if(kari.nezesNyomva == false) {kari.nezesIrany="ArrowLeft";}}
+if(kari.iranyok[2]) {kari.down(); if(kari.nezesNyomva == false) {kari.nezesIrany="ArrowDown";}}
+if(kari.iranyok[3]) {kari.right(); if(kari.nezesNyomva == false){ kari.nezesIrany="ArrowRight";}}
+
 kari.look(kari.nezesIrany)
-if(kari.iranyok[0]) {kari.up();}
-if(kari.iranyok[1]) {kari.left();}
-if(kari.iranyok[2]) {kari.down();}
-if(kari.iranyok[3]) {kari.right();}
-    }
+
+}
 for(let enemy of enemyk) {
     if(enemy.zuhan == false) {
         enemy.mozog()
@@ -480,7 +606,14 @@ for(let enemy of enemyk) {
 }
 },10)
 
-let palyanevek = ["a","b"]
+//Ajtók zárása
+setInterval(()=> {
+    for(let e of objektek) {
+        if(e instanceof Exit) {
+            e.lockdown()
+        }
+    }
+},100)
 
 class Lock {
     constructor() {
@@ -506,6 +639,7 @@ async function betoltesEsMegjelenites(location, doorID) {
             if(!betoltve) {
                 if(palyaNev != null) {
                     await palyaBeolvas(palyaNev);
+
                 }else {
                     for(let nevek of palyanevek) {
                         await palyaBeolvas(nevek);
@@ -553,8 +687,4 @@ function palyaKeszito(palyaNev,palyaString) {
 new Palya(palyaNev,palyaString)
 }
 
-
-//Valahogy megoldani hogy ahoz az ajtóhoz tegyen vissza ahonnan bejöttünk
-//Szebb UI, effectek amikor megsebődünk
-//momentum
-//hangok
+//music offolásra lehetőség,

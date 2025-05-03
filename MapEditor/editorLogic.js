@@ -9,6 +9,7 @@ let menuBox =document.createElement("div")
 let menu = document.getElementById("menu")
 let itemBox = document.createElement("div");
 let itemListaDiv = document.createElement("div")
+let kepek = [];
 let global_wall = "fal4.png";
 let global_enemy ="enemy.png";
 let global_exit ="exit.png"
@@ -20,6 +21,50 @@ let global_kulcs = "kulcs.png"
 let global_uzenet = "uzenet.png"
 let global_arus = "arus.png"
 let global_csempe = "padlo2.png"
+fajl_betoltes("glob_img")
+async function fajl_betoltes_run(fajl) {
+  await fajl_betoltes(fajl)
+ }
+async function fajl_betoltes(fajl) {
+    f = {"fajl":fajl}
+const response = await fetch('/fajlBeolvas', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(f)
+  });
+  const data = await response.json();
+  kepek = JSON.parse(data.message)
+for(let kep of kepek) {
+    if(kep["Típus"] == "fal") {global_wall = kep["src"]}
+    if(kep["Típus"] == "enemy") {global_enemy = kep["src"]}
+    if(kep["Típus"] == "exit") {global_exit = kep["src"]}
+    if(kep["Típus"] == "lada") {global_lada = kep["src"]}
+    if(kep["Típus"] == "penz") {global_penz = kep["src"]}
+    if(kep["Típus"] == "ruha") {global_ruha = kep["src"]}
+    if(kep["Típus"] == "fegyver") {global_fegyver = kep["src"]}
+    if(kep["Típus"] == "kulcs") {global_kulcs = kep["src"]}
+    if(kep["Típus"] == "uzenet") {global_uzenet = kep["src"]}
+    if(kep["Típus"] == "arus") {global_arus = kep["src"]}
+    if(kep["Típus"] == "csempe") {global_csempe = kep["src"]}
+
+}
+
+}
+async function fajl_mentes_run(nev,tartalom) {
+    await fajl_mentes(nev,tartalom)
+}
+async function fajl_mentes(nev,tartalom) {
+const response = await fetch('/fajlMentes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({"nev":nev,"tartalom":tartalom}),
+  });
+  const data = await response.json();
+}
 let last_attrib = null
 let last_obj = null
 let assets = []
@@ -43,7 +88,7 @@ function assetButton(parent,obj) {
 
 
 class Objekt {
-    constructor(x,y,w=60,h=60,texture="nincs") {
+    constructor(x,y,w=60,h=60,texture="nincs",isLadaItem = false) {
         this.x = x;
         this.y = y;
         this.width = w;
@@ -61,11 +106,16 @@ class Objekt {
         this.disabled = []
         this.isAsset = false
         this.div.style.border = "1px solid black"
-        objektek.push(this)
+        this.selectDiv = document.createElement("div")
+        this.selectDiv.style.width = this.width
+        this.selectDiv.style.height = this.height
+        this.div.appendChild(this.selectDiv);
+        this.selectDiv.setAttribute("class","tile")
+        if(isLadaItem==false) {objektek.push(this)}
+
 
         this.div.addEventListener("click",()=>{ //A rácsoknak adunk kattintás eventet 
                 let o = kivalaszott(kurzor,this.x,this.y)
-                console.log(o)
                 if(o instanceof Objekt) {
                     vaszon.appendChild(o.div)
                 }
@@ -79,16 +129,12 @@ class Objekt {
     }
     obj.div.style.backgroundImage = "url(../Textures/"+texture+")"
     }
-    lastAtribBeallit() {
-        last_attrib = this.atributumok
-        last_obj = this
-      //  this.textureBeallit(this,last_attrib["Textúra"])
-    }
+
     atribMeghiv() {
-        if(last_attrib != null && last_obj.constructor.name == this.constructor.name) {
-            this.atributumok = last_attrib
-            console.log(last_attrib)
-            this.textureBeallit(this,last_attrib["Textúra"])
+//Csak letevéskor aktiválódik és ha assetröl van szó
+        if(last_obj != null&& isAsset && last_obj.constructor.name == this.constructor.name) {
+            this.atributumok = JSON.parse(JSON.stringify(last_obj.atributumok)); //Mély klónozás, ez nem referencia szerint másol
+            this.textureBeallit(this,last_obj.atributumok["Textúra"])
             this.menuLista()
         }
     }
@@ -115,15 +161,36 @@ class Objekt {
                     this.atributumok[i] = texture;
                     t_name.innerText = this.atributumok[i]
                     this.textureBeallit(this,texture)
-                    this.lastAtribBeallit()
+                     
 
                 })
-            }else {
+            }
+            else if(i == "Hang") {
+                t_name.innerText = this.atributumok[i]
+                input.setAttribute("type","file")
+                input.addEventListener("change",()=>{
+                     let hang =input.files[0].name
+                    this.atributumok[i] = hang;
+                    t_name.innerText = this.atributumok[i]
+                     
+
+                })
+            }
+            else if(i == "Üzenet") {
+                input = document.createElement("textarea")
+                input.value = this.atributumok[i]
+                input.addEventListener("input",()=>{
+                    this.atributumok[i] = input.value
+                     
+                })
+            }
+            else {
                 input.value = this.atributumok[i]
             
                 input.addEventListener("input",()=>{
+
                     this.atributumok[i] = input.value
-                    this.lastAtribBeallit()
+                   
                 })
             }
             p.appendChild(t_name)
@@ -139,7 +206,7 @@ class Objekt {
 }
 
 class Tile extends Objekt {
-    constructor(x,y,isBedrok = "true",texture = global_csempe,isVoid = "false"){
+    constructor(x,y,isBedrok = "true",texture = global_csempe,isVoid = "false",hang="../Sounds/default.mp3"){
         super(x,y,60,60,texture)
         this.div.style.opacity = 1
         this.div.style.border = "none";
@@ -148,11 +215,13 @@ class Tile extends Objekt {
         this.isBedrok = (isBedrok == "true");
         this.isVoid = (isVoid == "true")
         this.disabled.push("Alapkő");
+        this.hang = hang
   //          this.div.style.backgroundColor = "green"
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         this.atributumok = {
             "Alapkő": this.isBedrok,
             "Mélység": this.isVoid,
+            "Hang":this.hang,
             "Textúra": this.texture
         }
         this.atribMeghiv()
@@ -205,7 +274,7 @@ class Uzenet extends Objekt{
 
 
 class Enemy extends Objekt{
-        constructor(x,y,nev="Béla",dmg=3,hp =15,speed=1, drop = 3,texture=global_enemy) {
+        constructor(x,y,nev="Béla",dmg=3,hp =15,speed=1, drop = 3,texture=global_enemy,hang="../Sounds/default.mp3",kulcsos="") {
             super(x,y)
             this.div.style.backgroundColor = "red"
             this.div.style.zIndex = 1
@@ -217,6 +286,8 @@ class Enemy extends Objekt{
             this.drop = drop,
             this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
             this.speed = speed
+            this.hang = hang
+            this.kulcsos = kulcsos
             if(this.texture != "nincs") {
                 this.div.style.border = "none"
             }
@@ -226,6 +297,8 @@ class Enemy extends Objekt{
                 "Hp": this.hp,
                 "Sebesség": this.speed,
                 "Pénz": this.drop,
+                "Hang": this.hang,
+                "Kulcsos":this.kulcsos,
                 "Textúra": this.texture
             }
              
@@ -235,8 +308,8 @@ class Enemy extends Objekt{
 }
 
 class Lada extends Objekt{ 
-    //x,y,dmg = 3, range=0,speed=0,nev="Fegyver",textura=global_fegyver,manual = true
-    constructor(x,y,item = new Fegyver(0,0,0,0,0,"Fegyómegyó",global_fegyver,false),texture = global_lada,kulcsos = false, isRandom = false) {
+
+    constructor(x,y,item = new Fegyver(0,0,0,0,0,"Fegyómegyó",global_fegyver,false,"",true),texture = global_lada,kulcsos = false, isRandom = false,kulcsId="") {
         super(x,y)
         //this.div.style.backgroundColor = "gray"
         this.div.style.zIndex = 1
@@ -245,7 +318,7 @@ class Lada extends Objekt{
         this.isRandom = isRandom;
         this.texture = texture;
         this.kulcsos = kulcsos;
-
+        this.kulcsId = kulcsId
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         if(this.texture != "nincs") {
             this.div.style.border = "none"
@@ -254,6 +327,7 @@ class Lada extends Objekt{
             "Kulcsos":this.kulcsos,
             "Item":this.item,
             "Random": this.isRandom,
+            "KulcsId":this.kulcsId,
             "Textúra": this.texture
         }
          
@@ -268,6 +342,7 @@ class Lada extends Objekt{
         itemDiv.style.textAlign = "center"
         menuBox =document.createElement("div")
         for(let i in this.atributumok) {
+            console.log(i)
             let p = document.createElement("p")
             p.innerText = i+": ";
             let input = document.createElement("input")
@@ -281,13 +356,11 @@ class Lada extends Objekt{
                     t_name.innerText = this.atributumok[i]
                     this.div.style.backgroundImage = "url(../Textures/"+texture+")"
                 })
-            }else {
-                input.value = this.atributumok[i]
-                input.addEventListener("input",()=>{
-                    this.atributumok[i] = input.value
-                })
+                p.appendChild(t_name)
+                p.appendChild(input)
+                menuBox.appendChild(p);
             }
-            if(i == "Item") {
+            else if(i == "Item") {
                 let p = document.createElement("p")
                 p.innerHTML = "Tartalma"
                 itemDiv.append(p)
@@ -301,11 +374,17 @@ class Lada extends Objekt{
                     itemDiv.append(p)
             }
             menuBox.appendChild(itemDiv)
-        }else {
-            p.appendChild(t_name)
-            p.appendChild(input)
-            menuBox.appendChild(p);
-        }
+        } else {
+                input.value = this.atributumok[i]
+                input.addEventListener("input",()=>{
+                    this.atributumok[i] = input.value
+                })
+                p.appendChild(t_name)
+                p.appendChild(input)
+                menuBox.appendChild(p);
+            }
+
+        
 
 
             menu.appendChild(menuBox)
@@ -427,7 +506,7 @@ class Lada extends Objekt{
                             this.item = item;
          
                             this.menuLista();
-                           // this.atrUpdate()
+                   
                     })
                     
                     itemListaDiv.appendChild(save)
@@ -453,35 +532,34 @@ class Lada extends Objekt{
         itemBox.appendChild(typeLista);
         menuBox.appendChild(itemBox);
     }
-    atrUpdate() {
-        this.atributumok = {
-            "Kulcsos":this.kulcsos,
-            "Item":this.item.nev,
-            "Random": this.isRandom,
-            "Textúra": this.texture
-        }
-    }
+
     //Sajátnál
-    itemListaBox(parent,tipus,) {
+    itemListaBox(parent,tipus) {
         itemListaDiv = document.createElement("div")
         
         let item;
         if(tipus =="fegyver") {
-            item = new Fegyver();
+            item = new Fegyver(0,0,0,0,0,"asd","asd",false,"asd",true);
         }
         if(tipus =="ruha") {
-            item = new Ruha();
+            item = new Ruha(0,0,0,0,0,"asd","asd",false,"asd",true);
         } 
             for(let atr in item.atributumok) {
                 let p = document.createElement("p")
                 p.innerText = atr+":";
                 let input = document.createElement("input")
                 input.setAttribute("id",atr)
-          
                 if(!isNaN(item.atributumok[atr])) {
                     input.setAttribute("type","number")
                 }else {
-                    if(input.id =="Textúra") {
+                    console.log(input.id)
+                    if(atr =="Textúra") {
+                    
+                        item.atributumok[atr] = item.defTexture
+                        input.setAttribute("type","file")
+                    }
+                    else if(input.id=="Hang"){
+                        item.atributumok[atr] = item.defHang
                         input.setAttribute("type","file")
                     }else {
                         input.setAttribute("type","text")
@@ -501,25 +579,31 @@ class Lada extends Objekt{
                 let dmg =  document.getElementById("Sebzés").value
                 let range = document.getElementById("Range növelés").value
                 let speed = document.getElementById("Ütés sebesség").value
-                let texture = document.getElementById("Textúra").files[0].name
-                this.item = new Fegyver(0,0,dmg,range,speed,nev,texture,false);
+                let hang
+                try {
+                    hang = document.getElementById("Hang").files[0].name
+                }catch(error) {
+                    hang = item.defHang
+                } 
+                let texture;
+                try {
+                    texture = document.getElementById("Textúra").files[0].name
+                }catch(error) {
+                    texture = item.defTexture
+                } 
+              
+                this.item = new Fegyver(0,0,dmg,range,speed,nev,texture,false,hang,true);
             }
-            if(tipus == "ruha") {/*
-                 "Név":this.nev,
-            "Védelem":this.ved,
-            "Sebesség növelés":this.speed,
-            "Méret növelés": this.meret,
-            "Textúra": this.texture
-                */
+            if(tipus == "ruha") {
                 let nev = document.getElementById("Név").value
                 let ved =  document.getElementById("Védelem").value
                 let speed = document.getElementById("Sebesség növelés").value
                 let meret = document.getElementById("Méret növelés").value
-                let texture = document.getElementById("Textúra").value
-                this.item = new Ruha(0,0,ved,speed,meret,nev,texture,false);
+                let hang = document.getElementById("Hang").value
+                let texture = document.getElementById("Textúra").files[0].name
+                this.item = new Ruha(0,0,ved,speed,meret,nev,texture,false,hang,true);
 
             }
-            this.atrUpdate()
             this.menuLista();
    
 
@@ -532,7 +616,7 @@ class Lada extends Objekt{
 }
 
 class Arus extends Objekt {
-    constructor(x,y,items = [{"item":new Fegyver(),"ar":10},{"item":new Ruha(),"ar":10}],nev="Marika néni", texture = global_arus, selfImg="nagyi.png") {
+    constructor(x,y,items = [{"item":new Fegyver(),"ar":10},{"item":new Ruha(),"ar":10}],nev="Marika néni", texture = global_arus, selfImg="nagyi.png",hang="../Sounds/default.mp3") {
         super(x,y)
         this.items = items;
         this.nev = nev
@@ -541,6 +625,7 @@ class Arus extends Objekt {
         this.div.style.opacity = 1;
         this.texture = texture
         this.selfImg = selfImg;
+        this.hang = hang
         this.div.style.backgroundImage = "url(../Textures/"+this.texture+")"
         if(this.texture != "nincs") {
             this.div.style.border = "none"
@@ -549,6 +634,7 @@ class Arus extends Objekt {
             "Név": this.nev,
             "Önarc kép": this.selfImg,
             "Áruk": this.items,
+            "Hang":this.hang,
             "Textúra": this.texture
         }
          
@@ -643,6 +729,7 @@ class Arus extends Objekt {
                 let range = document.getElementById("Sebesség növelés").value
                 let speed = document.getElementById("Méret növelés").value
                 item = new Ruha(0,0,dmg,range,speed,nev,texture,false);
+                console.log(item)
                
              }
              this.items.push({item,ar})
@@ -796,6 +883,19 @@ class Arus extends Objekt {
                 menuBox.appendChild(p)
               
             }
+            else if(i == "Hang") {
+                t_name.innerText = this.atributumok[i]
+                input.setAttribute("type","file")
+                input.addEventListener("change",()=>{
+                    let hang =input.files[0].name
+                    this.atributumok[i] = hang;
+                    t_name.innerText = this.atributumok[i]
+
+                }) 
+                p.appendChild(t_name)
+                p.appendChild(input)
+                menuBox.appendChild(p);
+            }
              else {
                 input.value = this.atributumok[i]
                 input.addEventListener("input",()=>{
@@ -878,9 +978,9 @@ class Exit extends Objekt {
 
 
 class Item extends Objekt{
-    constructor(x = 0,y = 0,nev = "Item",manual = true, texture  = "nincs") {
+    constructor(x = 0,y = 0,nev = "Item",manual = true, texture  = "nincs",isLadaItem = false) {
         if(x == 0 && y == 0) {
-            super(0,0,0,0)
+            super(0,0,0,0,"",isLadaItem)
         }else { //850 0
             if(manual) {
                 super(x+30/2,y+30/2,30,30)
@@ -943,13 +1043,16 @@ class Penz extends Item{
 
 
 class Fegyver extends Item{
-    constructor(x,y,dmg = 3, range=0,speed=0,nev="Fegyver",textura=global_fegyver,manual = true) {
-        super(x,y,nev,manual)
+    constructor(x,y,dmg = 3, range=0,speed=0,nev="Fegyver",textura=global_fegyver,manual = true,hang="../Sounds/default.mp3",isLadaItem = false) {
+        super(x,y,nev,manual,textura,isLadaItem)
        // this.div.style.backgroundColor = "red"
         this.dmg = dmg;
         this.range = range;
         this.speed = speed;
         this.texture = textura
+        this.hang = hang
+        this.defTexture = global_fegyver
+        this.defHang = "../Sounds/utes.wav"
         if(this.texture != "nincs") {
             this.div.style.border = "none"
         }
@@ -959,6 +1062,7 @@ class Fegyver extends Item{
             "Sebzés":this.dmg,
             "Range növelés":this.range,
             "Ütés sebesség": this.speed,
+            "Hang": this.hang,
             "Textúra": this.texture,
          }
          this.atribMeghiv()
@@ -966,13 +1070,16 @@ class Fegyver extends Item{
 }
 
 class Ruha extends Item{
-    constructor(x,y,ved = 3,speed=0, meret=0,nev = "Ruha",textura=global_ruha,manual = true) {
-        super(x,y,nev,manual)
+    constructor(x,y,ved = 3,speed=0, meret=0,nev = "Ruha",textura=global_ruha,manual = true,hang="../Sounds/default.mp3",isLadaItem=false) {
+        super(x,y,nev,manual,textura,isLadaItem)
        // this.div.style.backgroundColor = "yellow"
         this.ved = ved;
         this.texture = textura
         this.speed = speed;
         this.meret = meret;
+        this.hang = hang;
+        this.defTexture = global_ruha
+           this.defHang = "../Sounds/utes.wav"
         if(this.texture != "nincs") {
             this.div.style.border = "none"
         }
@@ -982,6 +1089,7 @@ class Ruha extends Item{
             "Védelem":this.ved,
             "Sebesség növelés":this.speed,
             "Méret növelés": this.meret,
+            "Hang":this.hang,
             "Textúra": this.texture
          }
          this.atribMeghiv()
@@ -1127,13 +1235,16 @@ if(kurzor == "cursor") {
 
 
 function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet ahova kattintunk
-    let o = last_obj
+ /*   let o
+    if(last_obj != null) {
+        o = last_obj.atributumok
+    }
+*/
     switch(id) {
         case "Wall":
             if(isAsset) return obj = new Wall(x,y,o.texture,o.titkos)
             return obj = new Wall(x,y)
         case "Enemy":
-            if(isAsset)return obj = new Enemy(x,y,o.nev,o.dmg,o.hp,o.speed,o.drop,o.texture)
             return obj = new Enemy(x,y)
         case "Lada":
             if(isAsset) return obj = new Lada(x,y,o.item,o.texture,o.kulcsos,o.isRandom)
@@ -1167,6 +1278,7 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
         default:
             return  obj = "cursor"
     }
+
 }
 
 
@@ -1187,14 +1299,17 @@ function info() {
         Tippek:
         -Ha több objektumot egymásra tettél, vagy csak arréb akarod mozgatni csak tartsd lenyomva a bal egérgombot és a kívánt helyen engedd el.
         -Használj exportot ha a pályát más néven szeretnéd elmenteni, használj mentést ha a meglévő néven akarod elmenteni.
-        -Az alapértelmezett textúrákat a beállításokban tudod megváltoztatni TODO.
+        -Az alapértelmezett textúrákat a beállításokban tudod megváltoztatni.
         `)
 }
 
 //Pálya elkészítése, valahogy legyen dinamikusabb
 let offsetX = 0;
 let offsetY = 0;
-createGrid(15,10)
+if(objektek.length == 0)  {
+    createGrid(15,10)
+}
+
 
 function createGrid(gridw,gridh) {
     vaszon.innerHTML = ""
@@ -1223,7 +1338,7 @@ for(let j = 0; j < gridw; j++) {
 }
 
 }
-        
+
 let palyaNev = null;
 let save = document.getElementsByClassName("save");
 
@@ -1235,6 +1350,8 @@ function mentes(palyaNev) {
          let type = "";
          obj.x -= offsetX;
          obj.y -= offsetY
+         obj.x = Math.ceil(obj.x)
+         obj.y = Math.ceil(obj.y)
         type = objektek[i].constructor.name.toLowerCase() //Az objekt osztályának lekérése
          if(type == "lada") {
              let itemType = ""
@@ -1250,12 +1367,13 @@ function mentes(palyaNev) {
          }
          else if(type == "arus") {
             let onylAru ={ ...obj.atributumok }
-            let tombNoAru = { ...obj.atributumok  }
+            let tombNoAru = { ...obj.atributumok}
             delete tombNoAru["Áruk"];
             delete onylAru["Név"];
             delete onylAru["Textúra"];
             delete onylAru["Önarc kép"];
-           // (onylAru)
+            delete onylAru["Hang"];
+
             let elem = 
             {
                 "type":type,
@@ -1268,7 +1386,7 @@ function mentes(palyaNev) {
                 for(let i in aruTomb) {
                     let aru = aruTomb[i]
                     let item = aru.item
-                    let ar = aru.ar
+                    let ar = parseFloat(aru.ar)
                     let tipus = "";
                     if(item instanceof Fegyver) {tipus ="fegyver"}
                     if(item instanceof Ruha) {tipus ="ruha"}
@@ -1279,8 +1397,7 @@ function mentes(palyaNev) {
                 }
               
             }
-            //elem["aruk"]
-            (elem["aruk"])
+            elem["aruk"]
             elem["atributumok"] = tombNoAru
             objektLista.push(elem)
          }
@@ -1327,7 +1444,68 @@ save[1].addEventListener("click",()=> {
     palyaNev = prompt("Fájl név")
     mentes(palyaNev)
 })
+document.body.addEventListener("keypress",(e)=>{
+    $('input[type="radio"]').prop('checked', false);
 
+    if(e.ctrlKey) {
+
+        switch(e.key) {
+            case "c":
+                kurzor="cursor";
+                $("#cursor").prop("checked",true)
+                break;
+            case "x":
+                kurzor = "delete";
+                $("#delete").prop("checked",true)
+                break;
+            case "w":
+                kurzor = "Wall";
+                $("#wall").prop("checked",true)
+                break;
+            case "e":
+                kurzor = "Enemy";
+                $("#enemy").prop("checked",true)
+                break;
+             case "q":
+                kurzor = "Exit";
+                $("#exit").prop("checked",true)
+                break;
+            case "m":
+                kurzor = "Uzenet";
+                $("#uzenet").prop("checked",true)
+                break;
+            case "f":
+                kurzor = "Fegyver";
+                $("#fegyver").prop("checked",true)
+                break;
+            case "r":
+                kurzor = "Ruha";
+                $("#ruha").prop("checked",true)
+                break;
+            case "a":
+                kurzor = "Arus";
+                $("#arus").prop("checked",true)
+                break;
+            case "k":
+                kurzor = "Kulcs";
+                $("#kulcs").prop("checked",true)
+                break;
+            case "p":
+                kurzor = "Penz";
+                $("#penz").prop("checked",true)
+                break;
+            case "t":
+                kurzor = "Tile";
+                $("#tile").prop("checked",true)
+                break;
+            case "L":
+                kurzor = "Lada";
+                $("#lada").prop("checked",true)
+                break;
+        }
+    }
+
+})
 let betolt = document.getElementById("betolt");
 function iranyit() {
     if(palyaNev == null) {
@@ -1366,6 +1544,9 @@ load.addEventListener("change",(event)=>{
 })
 
 function palyaKeszitesFajlbol(palyaText) { 
+    for(let obj of objektek) {
+        obj.div.remove()
+    }
     console.log(objektek)
     objektek = []
     for(let obj of objektek) {
@@ -1381,7 +1562,7 @@ function palyaKeszitesFajlbol(palyaText) {
         let objType = objAtr[0].split(",")
         let type = objType[0].trim()
         let x =  parseInt(objType[1])+offsetX
-        let y = parseInt(objType[2])+offsetY
+        let y =  parseInt(objType[2])+offsetY
         if(x - offsetX < 0 && y-offsetY < 0) {
             x = 0;
             y = 0;
@@ -1395,10 +1576,11 @@ function palyaKeszitesFajlbol(palyaText) {
             let dmg = parseInt(objParam[1]);
             let range = parseInt(objParam[2]);
             let delay = parseInt(objParam[3]);
-            let textura = objParam[4];
+            let hang = objParam[4];
+            let textura = objParam[5];
   
-            if(type=="fegyver") {objekt = new Fegyver(x,y,dmg,range,delay,nev,textura,false)}
-            if(type=="ruha") {objekt = new Ruha(x,y,dmg,range,delay,nev,textura,false)}
+            if(type=="fegyver") {objekt = new Fegyver(x,y,dmg,range,delay,nev,textura,false,hang)}
+            if(type=="ruha") {objekt = new Ruha(x,y,dmg,range,delay,nev,textura,false,hang)}
             if(type=="kulcs") {
                 let textura = objParam[1];
                 objekt = new Kulcs(x,y,nev,textura,false)
@@ -1415,6 +1597,8 @@ function palyaKeszitesFajlbol(palyaText) {
         if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus" || type=="tile") {   
             if(type=="wall") { 
                 //wall,500,100,|false,fal4.png
+                x = Math.round(x)
+                y = Math.round(y)
                 let objParam = objAtr[1].split(",");
                 let titkos = objParam[0];
                 let textura = objParam[1];
@@ -1423,15 +1607,18 @@ function palyaKeszitesFajlbol(palyaText) {
                 let objParam = objAtr[1].split(",");
                 let alap = objParam[0];
                 let mely = objParam[1];
-                let textura = objParam[2];
-                objekt = new Tile(x,y,alap,textura,mely)}
+                let hang = objParam[2];
+                let textura = objParam[3];
+                objekt = new Tile(x,y,alap,textura,mely,hang)}
 
                 if(type=="lada") {
+                    //false,[object Object],false,,lada.png,fegyver,|asd,1,1,1,../Sounds/utes.wav,kard2.png
                 let objParam = objAtr[1].split(",");
                 let kulcsos = objParam[0]
                 let random = objParam[2];
-                let texture = objParam[3];
-                let itemType= objParam[4];
+                let kulcsid = objParam[3]; //HA üres akkor nem igényel specko kulcsot
+                let texture = objParam[4];
+                let itemType= objParam[5];
                 itemType.trim()
                 if(itemType == "fegyver" || itemType=="ruha") {
                     let item = null;
@@ -1447,7 +1634,7 @@ function palyaKeszitesFajlbol(palyaText) {
                     if(itemType == "ruha") {
                         item = new Ruha(0,0,dmg,range,speed,nev,item_textura,true)
                     }
-                    objekt = new Lada(x,y,item,texture,kulcsos,random)
+                    objekt = new Lada(x,y,item,texture,kulcsos,random,kulcsid)
                 }
                
             }
@@ -1462,8 +1649,11 @@ function palyaKeszitesFajlbol(palyaText) {
             if(type=="uzenet") {
                 //wall,500,100,|false,fal4.png
                 let objParam = objAtr[1].split(",");
-                let msg = objParam[0];
-                let textura = objParam[1];
+                let msg = ""
+                        for(let i=0; i < objParam.length-1; i++) {
+                            msg+=objParam[i]
+                        }
+                let textura = objParam[objParam.length-1];
                 objekt = new Uzenet(x,y,msg,textura)
             }
             if(type=="enemy") {
@@ -1474,8 +1664,10 @@ function palyaKeszitesFajlbol(palyaText) {
                 let hp= objParam[2]
                 let sebesseg = objParam[3]
                 let penz = objParam[4]
-                let texture = objParam[5]
-                objekt = new Enemy(x,y,nev,dmg,hp,sebesseg, penz,texture)
+                let hang = objParam[5]
+                let kulcsos = objParam[6]
+                let texture = objParam[7]
+                objekt = new Enemy(x,y,nev,dmg,hp,sebesseg, penz,texture,hang,kulcsos)
 
             }
             if(type == "arus") {
@@ -1483,7 +1675,8 @@ function palyaKeszitesFajlbol(palyaText) {
                 let params = objAtr[objAtr.length-1].split(",")
                 let nev = params[0]
                 let texture = params[1]
-                let selfImg = params[2]
+                let hang = params[2]
+                let selfImg = params[3]
                 for(let i in objAtr) {
                     if(i > 0 && i < objAtr.length-1) {
 
@@ -1492,24 +1685,25 @@ function palyaKeszitesFajlbol(palyaText) {
                         let nev = aru[1];
                         let dmg = aru[2];
                         let speed = aru[3];
-                        let range = aru[4]
-                        let texture = aru[5]
-                        let ar =  parseInt(aru[6])
+                        let range = aru[4];
+                        let hang = aru[5]
+                        let texture = aru[6]
+                        let ar =  parseFloat(aru[7])
                         let item = null;
 
 
                         if(tipus == "fegyver") {
-                            item = new Fegyver(0,0,parseInt(dmg),speed,range,nev,texture,true)
+                            item = new Fegyver(0,0,parseFloat(dmg),speed,range,nev,texture,true,hang)
                         }
                         if(tipus == "ruha") {
-                            item = new Ruha(0,0,parseInt(dmg),speed,range,nev,texture,true)
+                            item = new Ruha(0,0,parseFloat(dmg),speed,range,nev,texture,true,hang)
                         }
                         if(item != null) {
                             items.push({"item":item,"ar":ar})
                         }
                 }
             }
-            objekt = new Arus(x,y,items,nev,selfImg,texture);
+            objekt = new Arus(x,y,items,nev,selfImg,texture,);
         }
             vaszon.appendChild(objekt.div)
         } 
@@ -1538,7 +1732,7 @@ function palyaKeszitesFajlbol(palyaText) {
     await asset_mentes(obj,nev);
     }
     async function asset_betoltes_run() {
-    await asset_betoltes()
+   await asset_betoltes()
     }
     asset_betoltes_run()
     let torlesFlag = false
@@ -1556,6 +1750,7 @@ function palyaKeszitesFajlbol(palyaText) {
           let texture = "";
           let i = 0;
           for(let asset of sorok) {
+       
             if(asset != "") {
                 let obj = asset.split("|")
                 let alap_adatok = obj[0].split(",")
@@ -1563,7 +1758,7 @@ function palyaKeszitesFajlbol(palyaText) {
                 texture = atrib["Textúra"]
                 let o = null;
                 if(alap_adatok[0] == "enemy") {
-                    o = new Enemy(-1,-1,atrib["Név"],atrib["Sebzés"],atrib["Hp"],atrib["Sebesség"],atrib["Pénz"],atrib["Textúra"]);
+                    o = new Enemy(-1,-1,atrib["Név"],atrib["Sebzés"],atrib["Hp"],atrib["Sebesség"],atrib["Pénz"],atrib["Textúra"],atrib["Hang"],atrib["Kulcsos"]);
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
@@ -1586,18 +1781,27 @@ function palyaKeszitesFajlbol(palyaText) {
                 }
                 
                 if(alap_adatok[0] == "fegyver") {
-                   console.log(atrib)
-                    o = new Fegyver(-1,-1,atrib["Sebzés"],atrib["Ranfe növelés"],atrib["Ütés sebesség"],atrib["Név"],atrib["Textúra"]);
-                    itemekNagylistaja.push(o)
+
+                    o = new Fegyver(-1,-1,atrib["Sebzés"],atrib["Range növelés"],atrib["Ütés sebesség"],atrib["Név"],atrib["Textúra"]);
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 
                 if(alap_adatok[0] == "ruha") {
                     o = new Ruha(-1,-1,atrib["Védelem"],atrib["Sebesség növelés"],atrib["Méret növelés"],atrib["Név"],atrib["Textúra"]);
-                    itemekNagylistaja.push(o)
+                 
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
-                
+                let benne = false;
+                if(o instanceof Fegyver || o instanceof Ruha) {
+                    for(let item of itemekNagylistaja) {
+                        if(item.nev == o.nev) {
+                            benne =true
+                        }
+                    }
+                    if(benne == false) {itemekNagylistaja.push(o)}
+                }
+        
+
                 if(alap_adatok[0] == "lada") {
                     console.log(atrib["Textúra"])
                     let itemAtrib = atrib["Item"]["atributumok"]
@@ -1647,7 +1851,9 @@ function palyaKeszitesFajlbol(palyaText) {
                     o = new Penz(-1,-1,atrib["Érték"],atrib["Textúra"]);
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
+        
                 if(alap_adatok[0] == "tile") {
+              
                     o = new Tile(-1,-1,atrib["Alapkő"],atrib["Textúra"],atrib["Mélység"]);
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
@@ -1656,14 +1862,15 @@ function palyaKeszitesFajlbol(palyaText) {
                     let asset_div = document.createElement("div")
                     asset_div.setAttribute("id",i)
                     asset_div.addEventListener("click",()=>{
+                        //Rákattintunk az assetre
                         if(!torlesFlag) {
-                        document.getElementById(alap_adatok[0]).checked = true
-                        last_obj = o
+                        document.getElementById(alap_adatok[0]).checked = true //A megfelelő radio checkeljük
+                        last_obj = o //Beállitjuk a last objectet
                         var gyerekek = $("#asset-box").children();
                         gyerekek.css("border-color","black")
                         asset_div.style.borderColor = "red"
                         isAsset = true;
-                        kurzor = o.constructor.name
+                        kurzor = o.constructor.name //beállítjuk a tipust
                         }
                         torlesFlag = false;
                     })
@@ -1702,7 +1909,6 @@ function palyaKeszitesFajlbol(palyaText) {
                     i++
             }
           }
-          console.log(assets)
 
     }
 

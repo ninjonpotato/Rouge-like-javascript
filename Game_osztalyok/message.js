@@ -5,6 +5,7 @@ class Uzenet {
     this.palya = palya
     this.texture = texture
     this.msg =msg;
+    console.log(msg)
     this.width = 60;
     this.height = 60;
     this.div = document.createElement("div")
@@ -21,11 +22,14 @@ class Uzenet {
     this.vaszon.appendChild(this.div)
     this.text = document.createElement("p")
     this.textBox = document.getElementById("textBox")
-    this.text.innerText = this.msg
+    this.text.innerHTML = this.msg
+    this.megnyitva = false
+    
 }
 
 olvas() {
     uzenet = this
+    this.megnyitva = true
     this.textBox.innerHTML = ""
     this.textBox.style.display ="block"
     this.textBox.style.width = "80%"
@@ -38,8 +42,10 @@ olvas() {
     this.textBox.appendChild(exit)
 }
 bezar() {
+    this.megnyitva = false
         this.textBox.style.animationName = "uzenet-bezar"
         this.textBox.style.animationDuration = "1s"
         this.textBox.style.width = "0px"
+        
 }
 }

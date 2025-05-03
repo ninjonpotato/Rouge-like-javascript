@@ -1,5 +1,5 @@
 class Lada {
-    constructor(x,y,item,kulcsos=false,texture="nincs",random="false", palya) {
+    constructor(x,y,item,kulcsos=false,texture="nincs",random="false", palya,kulcsId="") {
         this.x = x;
         this.y = y;
         this.width = 60;
@@ -24,7 +24,7 @@ class Lada {
         this.nyitva = false
         this.palya.palyaObjekt.push(this)
         this.random = random
-
+        this.kulcsId = kulcsId
         this.kulcsos = (kulcsos == "true");
     }
 
@@ -33,14 +33,15 @@ class Lada {
         kari.kulcs--;
         return true;
        }
+       playSound("cantOpen")
        return false;
     }
     kinyit() {
         if(this.nyitva == false) {
         this.nyitva = true;
-       // this.div.innerText += "Nyitva"
+        playSound("openChest")
         this.div.style.backgroundImage =`url(Textures/nyitott.png)`
-        this.item.kirajzol(this.x+(this.width-this.item.width)/2,this.y+(this.height-this.item.height)/2);
+        this.item.kirajzol(this.x,this.y,this);
         
     }
     }

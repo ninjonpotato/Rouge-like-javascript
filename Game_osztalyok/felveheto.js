@@ -42,16 +42,14 @@
 		//	this.div.innerText = this.nev
 		}
 
-		kirajzol(x,y) {
+		kirajzol(x,y,lada) {
+			this.x = x
+			this.y = y
 			this.div.style.position = "absolute"
-			this.x = x;
-			this.y = y;
-			this.div.style.left = x
-			this.div.style.top = y
-			this.div.style.zIndex = "100"
-			this.div.style.backgroundImage = `url(Textures/${this.texture})`;
-			this.vaszon =document.getElementById("canvas")
-			this.vaszon.appendChild(this.div)
+			
+			this.div.style.left = lada.width/2-this.width/2
+			this.div.style.top =lada.height/2-this.height/2
+			lada.div.appendChild(this.div)
 			objektek.push(this)
 		}
 	}
@@ -62,7 +60,7 @@
 			super(x,y,nev,texture,palya);
 			this.dmg = dmg;
 			this.range = range;
-			this.speed = speed
+			this.speed = speed*10
 		//	this.div.style.backgroundColor = "green"
 		//	this.div.style.border = "1px solid blue"
 		}

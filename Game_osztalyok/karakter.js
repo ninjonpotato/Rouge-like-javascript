@@ -1,14 +1,17 @@
 
 class Karakter{
-		constructor(nev,hp=15,x=0,y=0) {
+		constructor(nev,x=0,y=0) {
 			this.nev = nev;
-			this.hp = 100;
+			this.hp = 50;
 			this.penz = 0;
 			this.sebesseg = 2;
 			this.dmg = 3;
 			this.tamad = false
 			this.x = x;
 			this.y = y;
+			this.xm = 0;
+			this.ym = 0;
+			this.le = 0.99
 			this.width = 30;
 			this.height = 50;
 			this.maxHP = 100;
@@ -16,8 +19,16 @@ class Karakter{
 			this.lookIrany = 0
 			this.nezesNyomva = false;
 			this.zuhan = false;
+			this.mozog = false
+			this.kulcsok = []
 			this.lokes =30;
+			this.hitOverlay = document.createElement("div")
+			this.hitOverlay.style.width = this.width
+			this.hitOverlay.style.height =this.height
+			this.hitOverlay.style.opacity = 0
+			this.hitOverlay.style.backgroundColor = "white"
 			this.karakter = document.createElement("div")
+			this.karakter.appendChild(this.hitOverlay)
 			this.karakter.style.width = this.width 
 			this.karakter.style.height = this.height 
 			this.karakter.style.position = "absolute"
@@ -43,17 +54,19 @@ class Karakter{
 			//this.box.style.backgroundColor = "green"
 			this.vaszon.appendChild(this.box)	
 
-			this.recovery = 300 //min: 100
+			this.recovery = 500 //min: 100
 			this.recoveryP = document.createElement("p")
 			this.recoveryP.innerText = " "
 			this.recoveryP.style.position = "relative"
 			this.recoveryP.style.textAlign = "center";
+			this.recoveryP.style.color = "white";
+			this.recoveryP.style.backgroundColor = "black";
 			this.recoveryP.style.top = -30;
 			this.recoveryP.style.display = "none"
 			this.karakter.appendChild(this.recoveryP)
 
 			this.itemek = [];
-	
+			this.infoUpdate()
 		}
 		look(irany) {
 			let offset = (this.width-this.hitMeret)/2
@@ -167,24 +180,31 @@ class Karakter{
 					} 
 					if(obj instanceof Exit) {
 					
-						obj.betoltes() 
+						obj.betoltes()
+					
 					}
 					if(obj instanceof Uzenet) {
 						if(arus_megjelenitve) {
 							obj.bezar()
 						}else {
+						if(obj.megnyitva == false) {
+							playSound("openUzenet")
+						}
 							obj.olvas()
 						}
 						
 					}
 					if(obj instanceof Arus) {
-						
 						if(uzenet != null) {
 							uzenet.bezar()
 							
 						}
+						if(obj.megjelenit==false) {
+							playSound("openArus")
+						}
 						arus_megjelenitve = true;
-							obj.showAru()
+
+						obj.showAru()
 						
 					}
 				}else {
@@ -197,9 +217,10 @@ class Karakter{
 				}
 		}
 		}
-
 		left() {
-			this.x -= this.sebesseg;
+			
+			this.x -= this.sebesseg;	
+			this.xm += 0;
 				if(this.nezesNyomva) {
 				if(this.lookIrany == 1) {this.karakter.style.backgroundImage=`url(Textures/elore.gif)` }
 					if(this.lookIrany == 2) {this.karakter.style.backgroundImage=`url(Textures/balra.gif)` }
@@ -215,9 +236,10 @@ class Karakter{
 			this.karakter.style.left = this.x;
 		}
 		right() {
-			this.x += this.sebesseg;
-			if(this.nezesNyomva) {
-				if(this.lookIrany == 1) {this.karakter.style.backgroundImage=`url(Textures/elore.gif)` }
+
+			this.x += this.sebesseg	
+					if(this.nezesNyomva) {
+					if(this.lookIrany == 1) {this.karakter.style.backgroundImage=`url(Textures/elore.gif)` }
 					if(this.lookIrany == 2) {this.karakter.style.backgroundImage=`url(Textures/balra.gif)` }
 					if(this.lookIrany == 3) {this.karakter.style.backgroundImage=`url(Textures/hatra.gif)` }
 					if(this.lookIrany == 4) {this.karakter.style.backgroundImage=`url(Textures/jobbra.gif)` }
@@ -259,9 +281,10 @@ class Karakter{
 			this.ifCollide(3)
 			this.karakter.style.top = this.y;
 		}
-
+		
 		attack() {
 				this.tamad = true
+				playSound("utes")
 				this.recoveryP.style.display = "block"
 				let xx = parseInt(this.box.style.left.split("px")[0]);
 				let yy = parseInt(this.box.style.top.split("px")[0]);
@@ -276,7 +299,8 @@ class Karakter{
 					{
 						if(obj instanceof Enemy) {
 							obj.sebzodik(this.dmg)
-							obj.visszalok(this.lokes,this.lookIrany)
+							if(obj.sebesseg > 0) {
+							obj.visszalok(this.lokes,this.lookIrany)}
 						}
 					}
 				}
@@ -287,7 +311,7 @@ class Karakter{
 				//Visszaszámlálás
 				let interv = setInterval(()=> {
  					if(this.tamad) {
-					this.recoveryP.innerText =  s/10 +"s";
+					this.recoveryP.innerText =  (s/10).toFixed(2) +"s";
 					if(s> 0) {
 						s-=1;
 					}else {
@@ -321,6 +345,7 @@ class Karakter{
 		picupItem(item) {
 			//hp
 			if(item instanceof Ruha) {
+				playSound("pickupRuha")
 				this.hp += parseFloat(item.hp);
 				this.sebesseg += parseFloat(item.speed);
 				//méretet lekezelni
@@ -332,15 +357,23 @@ class Karakter{
 				}
 			}
 			if(item instanceof Fegyver) {
+				playSound("pickupFegyver")
 				this.dmg += item.dmg
-			//	this.recovery += item.speed
-			//	this.hitMeret += item.range // lekezelni mert most ha nagy a szám akkor nagyon vicces.
-				//ranget lekezelni
+				if(this.recovery-item.speed < 100) {
+					this.recovery = 100
+				}else {
+					this.recovery -= item.speed
+				}
+		
 			}
 			if(item instanceof Kulcs) {
+				playSound("pickupKey")
+				this.kulcsok.push(item)
 				this.kulcs++;
 			}
 			if(item instanceof Coin) {
+					playSound("coin")
+				  
 				this.penz+= parseFloat(item.ertek);
 			}
 		
@@ -360,6 +393,10 @@ class Karakter{
 				}
 		sebzodik(dmg){
 			this.hp -= dmg;
+			this.hitOverlay.style.opacity = 0.9
+			setTimeout(()=>{
+				this.hitOverlay.style.opacity = 0
+			},100)
 			this.infoUpdate();
 			if(this.hp <= 0) {
 				this.die();

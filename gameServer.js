@@ -126,12 +126,41 @@ function AssetMentes(asset) {
   }
 
 
-
-
-  app.post("/asset_betoltes",async (req,res) => {
+app.post("/fajlBeolvas", async (req,res) =>{
+  let {fajl} = req.body
+  res.json({ message: await FajlOlvas(fajl)});
+})
+app.post("/fajlMentes",async (req,res) =>{
+  let {nev,tartalom} = req.body
+  res.json({ message: await FajlMentes(nev,tartalom)});
+})
+app.post("/asset_betoltes",async (req,res) => {
    res.json({ message: await AssetOlvas()});
   })
   
+
+  async function FajlOlvas(fajl) { 
+    try {
+      data = await fs.readFile(fajl,'utf8')
+      return data
+    } catch(err)  {
+      console.log(`Hiba történt: ${err}`)
+    }
+  }
+
+  function FajlMentes(nev,tartalom) {
+
+    fs.writeFile(nev,tartalom, (err) =>{
+      if (err) {
+          console.log('Hiba történt a fájl írásakor:', err);
+        } else {
+        console.log("fájl sikeresen létrehozva!")
+        }
+      });
+  }
+
+
+
   async function AssetOlvas() { 
     try {
       data = await fs.readFile("asset",'utf8')

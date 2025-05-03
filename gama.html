@@ -30,6 +30,10 @@ body {
 	overflow: hidden;
 	background-color: rgb(31, 31, 42);
 }
+* {
+        background-size: cover;
+
+    }
 	.vasarloMenu {
 		height: 0;
 		max-height: 150px;
@@ -127,6 +131,7 @@ body {
 		font-family:monospace;
 		border: 7px double whitesmoke;
 		padding: 0px 10px;
+		max-width: 210px;
 		background-color: black;
 		color: white;
         p {
@@ -140,7 +145,6 @@ body {
 		}
 		span {
 			font-weight: bold;
-			
 			padding-right: 5px;
 		}
 		
@@ -166,8 +170,9 @@ body {
 	#textbox {
 		background-color: black;
 		position: absolute;
+		overflow: hidden;
 		top: 10px;
-		left: 220px;
+		left: 260px;
 		width: 80%;
 		height: 100px;
 		z-index: 100;
@@ -192,6 +197,7 @@ body {
 		z-index: 30;
 		background-size: cover;
 		background-position-x: -8px;
+
 	}
 	.pick-up {
 		position: absolute;
@@ -254,9 +260,17 @@ body {
 			background-color: rgba(230,230,230,0.4);
 		}
 	}
+	#musicOff {
+		position: absolute;
+		right: 0;
+		color:white
+	}
 
 	</style>
 <body>
+	<div id="musicOff">
+		<label>Music:<button id="musicToggle">On</button></label>
+	</div>
 	<div id="textBox">
 		<p>üzenet</p>
 		
@@ -287,5 +301,20 @@ body {
 	<script src="Game_osztalyok/message.js"></script>
 	<script src="Game_osztalyok/arus.js"></script>
 	<script src="Game_osztalyok/karakter.js"></script>
+	<script>
+		let toggle = document.getElementById("musicToggle")
+		let isOn = true;
+		toggle.addEventListener("click",function(){
+			isOn = !isOn
+			if(isOn) {
+			toggle.innerText = "On"
+			playSound("gameMusic",true)
+			}else {
+				toggle.innerText = "Off"
+				stopSound("gameMusic")
+			}
+		
+		})
+	</script>
 </body>
 </html>

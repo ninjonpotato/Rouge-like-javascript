@@ -129,13 +129,15 @@ class Arus {
     let item = this.items[index]
     if(kari.penz >= item.ar) 
         {
+            playSound("buyAru")
             this.aruHozzaadas(index)
             kari.vasarol(item.ar)
             this.items.splice(index,1)
             this.vasarloMenu.innerHTML = "";
             this.arusMenu()
         }else{
-        alert("Sajnos nincs elég pénzed")
+            playSound("cantBuy")
+        //alert("Sajnos nincs elég pénzed")
     } 
   
    }

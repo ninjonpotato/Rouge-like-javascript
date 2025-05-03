@@ -12,6 +12,12 @@
     body {
         background-color: rgb(31, 31, 42);
     }
+    .tile:hover {
+      background-color: white;
+      opacity: 0.3;
+        z-index: 100    ;
+        cursor: pointer;
+    }
     #back {
       position: absolute;
       bottom: 20;
@@ -121,6 +127,7 @@
         z-index: 15 !important;
         max-height: 200px;
         overflow: scroll;
+        background-color: white;
         select {
             width: 100%;
             font-size: 20px;
@@ -166,6 +173,7 @@
 
     .add_item_selector {
         display: flex;
+        background-color: white;
         flex-direction: column;
         gap: 10px;
         width: 250px;
@@ -205,6 +213,7 @@
         margin-top: 20px;
         width: 250px;
         text-align: center;
+        background-color: white;
         border: 2px solid black;
     }
     .aru_add_div > label {
@@ -273,7 +282,7 @@
     <button onclick="info()" id="info">info</button>
     <div id="obj-menu">
         <label>Select:<input type="radio" name="box" id="cursor" onclick="kivalaszt('cursor')" checked></label>
-        <label>Törlés:<input type="radio" name="box" id="cursor" onclick="kivalaszt('delete')"></label>
+        <label>Törlés:<input type="radio" name="box" id="delete" onclick="kivalaszt('delete')"></label>
         <label>Fal:<input type="radio" name="box" id="wall" onclick="kivalaszt('Wall')"></label>
         <label>Ellenség:<input type="radio" name="box" id="enemy" onclick="kivalaszt('Enemy')" ></label> 
         <label>Exit:<input type="radio" name="box" id="exit" onclick="kivalaszt('Exit')" ></label> 
@@ -300,7 +309,7 @@
         </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../jquery-3.7.1.min.js"></script>
     <script src="editorLogic.js"></script>
     <script>
            
