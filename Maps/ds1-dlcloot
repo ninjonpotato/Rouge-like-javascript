@@ -194,9 +194,8 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,780,240,|0,ds1-manus,1,exit.png
+lada,240,120,|true,[object Object],false,sanctkulcs,lada.png,ruha,|Illatos gyertya,100,0,0,../Sounds/utes.wav,ruha.png,
+lada,360,120,|true,[object Object],false,kalikulcs,lada.png,ruha,|Nyalóka (nyami),100,0,0,../Sounds/utes.wav,ruha.png,
+lada,480,120,|true,[object Object],false,artikulcs,lada.png,fegyver,|A művészúr tartalék ecsete,100,0,0,../Sounds/utes.wav,kard2.png,
+lada,600,120,|true,[object Object],false,manuskulcs,lada.png,ruha,|Manus manusza,100,0,0,../Sounds/utes.wav,ruha.png,

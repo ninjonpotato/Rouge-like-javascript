@@ -194,9 +194,30 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,420,60,|0,ds2-1,3,exit.png
+enemy,420,360,|Öreg Vas Károly,9,50,0.1,3,../Sounds/default.mp3,,vaskarcsi.webp
+wall,240,60,|false,fal4.png
+wall,240,120,|false,fal4.png
+wall,240,180,|false,fal4.png
+wall,240,240,|false,fal4.png
+wall,240,300,|false,fal4.png
+wall,240,360,|false,fal4.png
+wall,360,360,|false,fal4.png
+wall,300,360,|false,fal4.png
+wall,540,360,|false,fal4.png
+wall,660,360,|false,fal4.png
+wall,600,360,|false,fal4.png
+wall,720,360,|false,fal4.png
+wall,720,300,|false,fal4.png
+wall,720,240,|false,fal4.png
+wall,720,180,|false,fal4.png
+wall,780,180,|false,fal4.png
+tile,540,180,|false,true,../Sounds/default.mp3,void.png
+tile,600,180,|false,true,../Sounds/default.mp3,void.png
+penz,780,240,|1,penz.png
+penz,780,240,|1,penz.png
+penz,780,240,|1,penz.png
+penz,780,240,|1,penz.png
+penz,780,240,|1,penz.png
+penz,780,240,|1,penz.png
+exit,360,480,|1,ds2-tuzes-trio1,0,exit.png

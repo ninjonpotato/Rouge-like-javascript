@@ -42,7 +42,7 @@ lockdown() {
 	this.lockdownLayer.style.opacity = 0;
 for(let e of enemyk) {
 	if (e instanceof Enemy) {
-		if(e.hp >0) {
+		if(e.hp >0 && e.sebesseg > 0) {
 			this.isZarva = true;
 			this.lockdownLayer.style.opacity = 1;
 

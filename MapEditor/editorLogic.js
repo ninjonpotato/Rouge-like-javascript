@@ -276,7 +276,7 @@ class Uzenet extends Objekt{
 class Enemy extends Objekt{
         constructor(x,y,nev="Béla",dmg=3,hp =15,speed=1, drop = 3,texture=global_enemy,hang="../Sounds/default.mp3",kulcsos="") {
             super(x,y)
-            this.div.style.backgroundColor = "red"
+          //  this.div.style.backgroundColor = "red"
             this.div.style.zIndex = 1
             this.div.style.opacity = 1;
             this.nev = nev;
@@ -599,8 +599,19 @@ class Lada extends Objekt{
                 let ved =  document.getElementById("Védelem").value
                 let speed = document.getElementById("Sebesség növelés").value
                 let meret = document.getElementById("Méret növelés").value
-                let hang = document.getElementById("Hang").value
-                let texture = document.getElementById("Textúra").files[0].name
+                let hang
+                try {
+                    hang = document.getElementById("Hang").files[0].name
+                }catch(error) {
+                    hang = item.defHang
+                } 
+                let texture;
+                try {
+                    texture = document.getElementById("Textúra").files[0].name
+                }catch(error) {
+                    texture = item.defTexture
+                } 
+              
                 this.item = new Ruha(0,0,ved,speed,meret,nev,texture,false,hang,true);
 
             }
@@ -1247,31 +1258,30 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
         case "Enemy":
             return obj = new Enemy(x,y)
         case "Lada":
-            if(isAsset) return obj = new Lada(x,y,o.item,o.texture,o.kulcsos,o.isRandom)
             return  obj = new Lada(x,y)
         case "Arus":
             if(isAsset) return   obj = new Arus(x,y,o.items,o.nev,o.texture,o.selfImg)
             return  obj = new Arus(x,y)
         case "Kulcs":
-            if(isAsset) return   obj = new Kulcs(x,y,o.nev,o.texture,true)
+           
             return  obj = new Kulcs(x,y)
         case "Fegyver":
-            if(isAsset) return obj = new Fegyver(x,y,o.dmg,o.range,o.speed,o.nev,o.texture,true)  
+           
             return  obj = new Fegyver(x,y)           
         case "Ruha":
-            if(isAsset) return  obj = new Ruha(x,y,o.ved,o.speed,o.meret,o.nev,o.texture,true)
+          
             return  obj = new Ruha(x,y)
          case "Exit":
-            if(isAsset) return  obj = new Exit(x,y,o.location,o.id,o.locDoor,o.texture)
+          
             return  obj = new Exit(x,y)
         case "Penz":
-            if(isAsset) return    obj = new Penz(x,y,o.value,o.texture,true)
+           
             return  obj = new Penz(x,y)
         case "Uzenet":
-            if(isAsset) return   obj = new Uzenet(x,y,o.msg,o.texture)
+         
             return  obj = new Uzenet(x,y)
         case "Tile":
-            if(isAsset) return  obj = new Tile(x,y,o.isBedrok,o.texture,o.isVoid);
+        
             return  obj = new Tile(x,y,false);
         case "delete":
             return obj = "delete"
@@ -1304,8 +1314,6 @@ function info() {
 }
 
 //Pálya elkészítése, valahogy legyen dinamikusabb
-let offsetX = 0;
-let offsetY = 0;
 if(objektek.length == 0)  {
     createGrid(15,10)
 }
@@ -1318,6 +1326,7 @@ function createGrid(gridw,gridh) {
     let h = 60;
     let gridSzelesseg = w*gridw
     let gridMagassag = h*gridh*2-window.innerHeight
+
     offsetX =(window.innerWidth-gridSzelesseg)/2
     offsetY =((window.innerHeight-gridMagassag)/3)
     let x = offsetX;
@@ -1328,6 +1337,7 @@ for(let j = 0; j < gridw; j++) {
     let tile =  new Tile(x,y,"true","padlo1.png");
     if(i == 0 || j == 0 || i == gridh-1 || j == gridw-1) { //szélére falak
         let wall = new Wall(x,y)
+        console.log(`Üres pálya x:${x} y:${y}`)
         vaszon.appendChild(wall.div)
        }
    vaszon.appendChild(tile.div)
@@ -1350,8 +1360,8 @@ function mentes(palyaNev) {
          let type = "";
          obj.x -= offsetX;
          obj.y -= offsetY
-         obj.x = Math.ceil(obj.x)
-         obj.y = Math.ceil(obj.y)
+         obj.x = Math.round(obj.x)
+         obj.y = Math.round(obj.y)
         type = objektek[i].constructor.name.toLowerCase() //Az objekt osztályának lekérése
          if(type == "lada") {
              let itemType = ""
@@ -1425,7 +1435,6 @@ function mentes(palyaNev) {
        
        for(i in objektek) {
         let obj = objektek[i]
-
             obj.x += offsetX;
             obj.y += offsetY
         }
@@ -1547,7 +1556,6 @@ function palyaKeszitesFajlbol(palyaText) {
     for(let obj of objektek) {
         obj.div.remove()
     }
-    console.log(objektek)
     objektek = []
     for(let obj of objektek) {
         if(!(obj instanceof Tile)) {
@@ -1561,8 +1569,14 @@ function palyaKeszitesFajlbol(palyaText) {
         let objAtr = obj.split("|");
         let objType = objAtr[0].split(",")
         let type = objType[0].trim()
-        let x =  parseInt(objType[1])+offsetX
-        let y =  parseInt(objType[2])+offsetY
+        console.log(`x:${objType[1]} y:${objType[2]}`)
+        let tmpx = Math.round(parseFloat(objType[1]))
+        let tmpy = Math.round(parseFloat(objType[2]))
+        if(tmpx % 60 != 0) {tmpx-= tmpx % 60;}
+        if(tmpy % 60 != 0) {tmpy-= tmpy % 60;}
+        let x =  tmpx+offsetX
+        let y =  tmpy+offsetY
+
         if(x - offsetX < 0 && y-offsetY < 0) {
             x = 0;
             y = 0;
@@ -1596,15 +1610,15 @@ function palyaKeszitesFajlbol(palyaText) {
         }
         if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus" || type=="tile") {   
             if(type=="wall") { 
-                //wall,500,100,|false,fal4.png
-                x = Math.round(x)
-                y = Math.round(y)
+          
                 let objParam = objAtr[1].split(",");
                 let titkos = objParam[0];
                 let textura = objParam[1];
-                objekt = new Wall(x,y,textura,titkos)}
+                objekt = new Wall(x,y,textura,titkos)
+            }
             if(type=="tile") {
                 let objParam = objAtr[1].split(",");
+            
                 let alap = objParam[0];
                 let mely = objParam[1];
                 let hang = objParam[2];
@@ -1640,11 +1654,11 @@ function palyaKeszitesFajlbol(palyaText) {
             }
             if(type=="exit") {
                 let objParam = objAtr[1].split(",")
-                let loc = parseInt(objParam[0]);
-                let id = parseInt(objParam[1]);
+                let loc = objParam[1];
+                let id = parseInt(objParam[0]);
                 let locDoor = parseInt(objParam[2]);
                 let textura = objParam[3];
-                objekt = new Exit(x,y,id,loc,locDoor,textura) 
+                objekt = new Exit(x,y,loc,id,locDoor,textura) 
             }
             if(type=="uzenet") {
                 //wall,500,100,|false,fal4.png

@@ -194,9 +194,15 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,540,60,|0,ds1-4,2,exit.png
+enemy,600,240,|Kidobó ember,7,45,0.6,3,../Sounds/default.mp3,,kidibi.webp
+wall,480,60,|false,fal4.png
+wall,480,120,|false,fal4.png
+wall,480,180,|false,fal4.png
+wall,480,240,|false,fal4.png
+wall,480,300,|false,fal4.png
+wall,540,360,|false,fal4.png
+wall,720,360,|false,fal4.png
+wall,780,360,|false,fal4.png
+enemy,120,60,|s Szmóuhg,20,70,1,3,../Sounds/default.mp3,,tposesmough.png
+enemy,60,60,|Ornsztín é,20,70,1,3,../Sounds/default.mp3,,orni.webp

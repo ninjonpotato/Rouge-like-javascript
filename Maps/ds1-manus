@@ -194,9 +194,6 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,420,60,|0,ds1-arti,1,exit.png
+exit,60,300,|1,ds1-dlcloot,0,exit.png
+enemy,420,240,|Manus. a Mumus,500,10464,2,3,../Sounds/default.mp3,manuskulcs,manus.jpg

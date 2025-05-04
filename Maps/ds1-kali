@@ -194,9 +194,16 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,780,300,|0,ds1-sanct,1,exit.png
+enemy,420,300,|Sötét Sárkány Kálámeet (nyalóka van),400,9647,1.5,3,../Sounds/default.mp3,kalikulcs,kalameeth.jpeg
+wall,660,120,|false,fal4.png
+wall,600,120,|false,fal4.png
+wall,600,180,|false,fal4.png
+wall,540,360,|false,fal4.png
+wall,600,360,|false,fal4.png
+wall,600,420,|false,fal4.png
+wall,120,300,|false,fal4.png
+wall,240,300,|false,fal4.png
+wall,180,300,|false,fal4.png
+wall,300,120,|false,fal4.png
+wall,180,180,|false,fal4.png

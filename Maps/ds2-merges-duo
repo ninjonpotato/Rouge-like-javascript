@@ -194,9 +194,17 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,780,360,|0,ds2-merges,1,exit.png
+enemy,300,180,|L~ ena (spanyol),20,250,1,3,../Sounds/default.mp3,demonkulcs,elana.webp
+enemy,540,300,|Velstádium,20,60,1.3,3,../Sounds/default.mp3,,velstad.jpeg
+enemy,120,120,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,240,420,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,480,420,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,660,420,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,720,300,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,480,180,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,720,60,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,420,60,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+enemy,120,240,|Csotváz (Béla),10,45,1.5,3,../Sounds/default.mp3,,fal.png
+lada,360,480,|true,[object Object],false,demonkulcs,lada.png,fegyver,|Démonölő tuskó,20,0,0,../Sounds/utes.wav,kard2.png,
+exit,240,60,|1,ds2-merges-sith,0,exit.png

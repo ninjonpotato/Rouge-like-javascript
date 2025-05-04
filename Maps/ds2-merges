@@ -194,9 +194,31 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,fal.png
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
+exit,660,60,|0,ds2-csiga,1,exit.png
+wall,600,60,|false,fal4.png
+wall,600,120,|false,fal4.png
+wall,540,120,|false,fal4.png
+wall,480,120,|false,fal4.png
+wall,360,120,|false,fal4.png
+wall,420,120,|false,fal4.png
+wall,300,120,|false,fal4.png
+wall,240,120,|false,fal4.png
+wall,180,120,|false,fal4.png
+wall,120,120,|false,fal4.png
+wall,120,180,|false,fal4.png
+wall,120,240,|false,fal4.png
+wall,180,240,|false,fal4.png
+wall,240,240,|false,fal4.png
+wall,300,240,|false,fal4.png
+wall,360,240,|false,fal4.png
+wall,420,240,|false,fal4.png
+wall,480,240,|false,fal4.png
+wall,540,240,|false,fal4.png
+wall,600,240,|false,fal4.png
+exit,60,360,|1,ds2-merges-duo,0,exit.png
+wall,600,300,|false,fal4.png
+wall,600,360,|false,fal4.png
+enemy,360,360,|Varga. aki köcsög,6,45,1.3,3,../Sounds/default.mp3,,fal.png
+enemy,180,300,|Ceruhzah,4,45,0.8,3,../Sounds/default.mp3,,fal.png
+enemy,660,480,|Hável,20,45,0.4,3,../Sounds/default.mp3,,fal.png
+ruha,180,180,|Az Asztalon Ellenőrizetlenül Hagyott Sötét Kindertojás *cryptic*,12,0,0,../Sounds/default.mp3,ruha.png

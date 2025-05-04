@@ -214,7 +214,7 @@ wall,600,420,|false,fal4.png
 wall,660,420,|false,fal4.png
 wall,720,420,|false,fal4.png
 wall,720,480,|false,fal4.png
-exit,60,180,|1,4,1,exit.png
+exit,60,180,|1,ds1-4,1,exit.png
 enemy,180,480,|Kicsi állású francia fazon,1,25,1,3,../Sounds/default.mp3,,fal.png
 wall,60,480,|false,fal4.png
 wall,60,240,|false,fal4.png
@@ -228,4 +228,4 @@ enemy,780,300,|Mohás Med,1,35,1,3,../Sounds/default.mp3,,fal.png
 enemy,600,120,|József Józsicsillag,1,40,1,3,../Sounds/default.mp3,,fal.png
 enemy,180,120,|Csillagpor Dzsotáró,1,15,1,3,../Sounds/default.mp3,,fal.png
 wall,360,60,|false,fal4.png
-exit,660,480,|0,2,1,exit.png
+exit,660,480,|0,ds1-2,1,exit.png

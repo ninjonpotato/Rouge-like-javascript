@@ -2,10 +2,10 @@
 class Karakter{
 		constructor(nev,x=0,y=0) {
 			this.nev = nev;
-			this.hp = 50;
+			this.hp = 10000;
 			this.penz = 0;
 			this.sebesseg = 2;
-			this.dmg = 3;
+			this.dmg = 1000;
 			this.tamad = false
 			this.x = x;
 			this.y = y;

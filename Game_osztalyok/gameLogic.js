@@ -5,19 +5,23 @@ let objektek = [];
 let enemyk = []
 let kari = null;
 let palyak = []
-let aktualPalya = 0;
+let aktualPalya = palyaNev;
+if(aktualPalya == undefined) {
+    aktualPalya = "spawn"
+}
 let uzenet = null;
 let arus_megjelenitve = false
-let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-5","ds1-6","ds1-7-1","ds1-7-2","ds1-7-3","ds1-7-4","ds1-7-5","ds2-1","ds2-2","ds2-3","ds2-4","ds2-5","ds2-6"]
-//    //Teendő:
-    //7. Láda kinyitásakor az item nem látszódik
+let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-4","ds2-5","ds2-6","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb"]
+    //Teendő:
+    //TODO: 
+    //Holnapra:Amikor egy boss droppol egy kulcsot, az ne a többihez kerüljön, hanem egy saját counterje legyen vaagy legyenek boss locekd ládák amig addig nem nyitodnak ki amig az adott enemy meg nem hallt.
 class Palya  {
     constructor(nev,palyaString) {
         this.nev = nev
         this.palyaObjekt = [];
         this.palyaEnemyk = []
         this.palyaString = palyaString;
-        palyak.push(this)
+        palyak[this.nev] = this
         this.palyaKeszitesFajlbol(palyaString)
         //beállítjuk a spawnt, de ez csak akkor kell ha ez az első szoba, utána ez legyen null, csak ajtóhoz dobjon.
     }
@@ -55,7 +59,8 @@ class Palya  {
 
                 let offset = (obj.width-50)/2
                 if(kari == null) {//kezdeti létrehozás
-                    if(obj.id == 0 && obj.location == 0) {
+                    if(obj.id == 0 && obj.location == "spawn" || obj.id == 0 && palyaNev != undefined) {
+                  
                         kari = new Karakter("Sándor",obj.x+offset, obj.y+offset)
                     }
                 }else {
@@ -101,6 +106,8 @@ class Palya  {
             let type = objType[0].trim()
             let x =  Math.ceil(parseFloat(objType[1]));//eredeti x
             let y =  Math.ceil(parseFloat(objType[2])); //eredeti y
+            if(x%60 != 0) {x-=x%60}
+            if(y%60 != 0) {y-=y%60}
             let w = 60;
             let h = 60;
             //valahogy számolja ki mekkora a pálya szélessége és magassága, 60x60 a négyzetek beégetett mérete
@@ -153,7 +160,7 @@ class Palya  {
                     let textura = objParam[3];
                         objekt = new Tile(x,y,isBedrock,textura,this,isVoid)}
                 if(type=="uzenet") {
-                    console.log(objAtr)
+                    
                         let objParam = objAtr[1].split(",");
                         let msg = ""
                         for(let i=0; i < objParam.length-1; i++) {
@@ -224,12 +231,13 @@ class Palya  {
 
                 if(type=="exit") {
                     let objParam = objAtr[1].split(",")
-                    let loc = parseInt(objParam[0]);
-                    let id = parseInt(objParam[1]);
+                  
+                    let loc = objParam[1];
+                    let id = parseInt(objParam[0]);
                     let locDoor = parseInt(objParam[2]);
                     let textura = objParam[3];
                     
-                    objekt = new Exit(x,y,id,loc,locDoor,textura,this)
+                    objekt = new Exit(x,y,loc,id,locDoor,textura,this)
                     }
                 if(type=="enemy") {
                         let objParam = objAtr[1].split(",")
@@ -439,7 +447,7 @@ const audioFiles = {
       audioBuffers[key] = buffer;
     }
   
-    console.log("Minden hang betöltve");
+    
   }
   
   function playSound(name, loop = false, volume = 0.1) {
@@ -543,12 +551,11 @@ if(e.key == "e" || e.key == "E") {
                         }
                     }
                     else if(obj.vanEkulcs(kari)) {
-                       // console.log("Kulcsal lett kinyitva")
                         obj.kinyit();
                         kari.infoUpdate();
                     }else {
                         playSound("cantOpen")
-                      //  console.log("nincs kulcsod")
+                     
                     }
                 }else {
                     obj.kinyit();
@@ -607,6 +614,7 @@ for(let enemy of enemyk) {
 },10)
 
 //Ajtók zárása
+
 setInterval(()=> {
     for(let e of objektek) {
         if(e instanceof Exit) {
@@ -650,8 +658,11 @@ async function betoltesEsMegjelenites(location, doorID) {
         }
             
         } finally{
+      
             palyak[aktualPalya].hide();
+            console.log("Aktuál:"+aktualPalya+" location:"+location)
             aktualPalya = location
+   
             palyak[aktualPalya].show(doorID); 
             lock.release();
         }

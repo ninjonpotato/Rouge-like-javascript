@@ -194,5 +194,3 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,360,420,|0,0,0,exit.png
-lada,360,300,|false,[object Object],false,,lada.png,fegyver,|asd,1,1,1,../Sounds/utes.wav,kard2.png,

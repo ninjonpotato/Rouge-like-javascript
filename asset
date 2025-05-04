@@ -1,1 +1,5 @@
 enemy,a|{"Név":"Béla1","Sebzés":"31","Hp":"151","Sebesség":"11","Pénz":"31","Hang":"../Sounds/default.mp3","Kulcsos":"1","Textúra":"fal.png"}
+ruha,poison|{"Név":"Méreg","Védelem":"-1","Sebesség növelés":0,"Méret növelés":0,"Hang":"../Sounds/default.mp3","Textúra":"poison.png"}
+enemy,csonti|{"Név":"Csotváz (Béla)","Sebzés":"10","Hp":"45","Sebesség":"1.5","Pénz":3,"Hang":"../Sounds/default.mp3","Kulcsos":"","Textúra":"fal.png"}
+enemy,gwyn|{"Név":"Plim plim plom","Sebzés":"20","Hp":"75","Sebesség":"2.5","Pénz":"3","Hang":"../Sounds/default.mp3","Kulcsos":"","Textúra":"fal.png"}
+enemy,guardian|{"Név":"A Szentély Örzője.","Sebzés":"150","Hp":"2500","Sebesség":"1","Pénz":"3","Hang":"../Sounds/default.mp3","Kulcsos":"true","Textúra":"fal.png"}

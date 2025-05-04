@@ -40,16 +40,27 @@ class Enemy {
 			this.box.style.position = "absolute"
 			this.box.style.zIndex = 3
 			this.vaszon.appendChild(this.box)
-
+			this.statD = document.createElement("div")
+			this.statD.style.width = 1000
+			
 			this.hpD = document.createElement("p");
 			this.nevD = document.createElement("p");
-			this.div.appendChild(this.hpD);
-			this.div.appendChild(this.nevD);
+			this.div.appendChild(this.statD);
+
+			this.statD.appendChild(this.hpD);
+			this.statD.appendChild(this.nevD);
+			this.statD.style.left = (this.width/2)-1000/2
+			this.statD.style.top = -0.5*this.height
+			this.statD.style.position = "absolute"
+			//this.statD.style.textAlign ="center"
+			this.statD.setAttribute("class","enemyStatDiv")
 			this.hpD.innerText = this.hp
-			this.hpD.setAttribute("class","enemy-hp")
 			this.nevD.innerText = this.nev
-			this.nevD.style.left = (this.width-1000)/2
-			this.nevD.setAttribute("class","enemy-nev")
+			//this.hpD.style.backgroundColor = "white"
+			this.hpD.style.width = "fit-content"
+			//this.nevD.style.backgroundColor = "white"
+			this.nevD.style.width = "fit-content"
+
 			this.sebesseg = sebesseg;
 			this.menetel = false
 			this.mozoghat = true;
@@ -387,7 +398,7 @@ class Enemy {
 			}
 			let log = document.getElementById("logContent")
      	   	let t = document.createElement("p")
-       		t.innerText = "Megölted: "+this.nev
+       		t.innerText = "Megölted: "+this.nev + "xd"
       		log.appendChild(t)
 			log.scrollTop = log.scrollHeight;
 			playSound("enemy_damaged")
