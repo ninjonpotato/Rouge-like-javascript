@@ -194,17 +194,6 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
-exit,420,480,|0,15,1,exit.png
-exit,780,120,|1,17,0,exit.png
-enemy,240,180,|Trón Védő,15,70,0.5,3,../Sounds/default.mp3,,fal.png
-enemy,600,240,|Trón stalkoló,15,70,1.6,3,../Sounds/default.mp3,watcherKulcs,fal.png
-wall,720,60,|false,fal4.png
-wall,780,60,|false,fal4.png
-wall,780,180,|false,fal4.png
-wall,720,180,|false,fal4.png
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,kard2.png
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
-ruha,-822,-479,|Árnyak Simogatása Elixír,50,2,0,../Sounds/default.mp3,../Sounds/default.mp3
-lada,60,180,|true,[object Object],false,watcherKulcs,lada.png,ruha,|Árnyak Simogatása Elixír,50,2,0,../Sounds/default.mp3,../Sounds/default.mp3,
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+exit,420,60,|0,ds3-dlc,2,exit.png
+exit,780,300,|1,ds3-lootroom,1,exit.png
+enemy,420,300,|Gale (nagyon menő köpenye van),40,600,1.5,3,../Sounds/default.mp3,,guts.webp

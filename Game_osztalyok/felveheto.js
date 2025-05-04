@@ -78,8 +78,9 @@
 	}
 
 	class Kulcs extends Item {
-		constructor(x,y,nev,texture,palya) {
+		constructor(x,y,nev,texture,palya,isBossKulcs=false) {
 			super(x,y,nev,texture,palya)
+			this.isBossKulcs = isBossKulcs
 		//	this.div.style.backgroundColor = "red"
 		//	this.div.style.border = "2px solid yellow"
 		}

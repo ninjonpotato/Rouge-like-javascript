@@ -30,7 +30,8 @@ class Lada {
 
     vanEkulcs(kari) {
        if(kari.kulcs > 0) {
-        kari.kulcs--;
+        if(this.kulcsId == "") {kari.kulcs--;}
+
         return true;
        }
        playSound("cantOpen")

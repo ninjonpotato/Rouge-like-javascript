@@ -7,6 +7,8 @@ class Enemy {
 			this.penz = penz;
 			this.width = 55;
 			this.height = 55;
+			this.collisionWidth = 55
+			this.collisionHeight = 55
 			this.agroRange = 300;
 			this.div = document.createElement("div")
 			this.div.style.width = this.width 
@@ -22,7 +24,6 @@ class Enemy {
 			this.hitlayer.style.backgroundColor = "white"
 			this.hitlayer.style.opacity = "0"
 			this.div.appendChild(this.hitlayer)
-			//this.div.innerText = this.nev;
 			this.vaszon =document.getElementById("canvas")
 			this.vaszon.appendChild(this.div)
 
@@ -35,7 +36,7 @@ class Enemy {
 			this.atkDelay = 600; //milisec lehessen editorban állítnani
 			this.box = document.createElement("div")
 			this.hitMeret = 25; //20
-			this.div.style.backgroundImage = `url(Textures/${this.texture})`
+			 this.div.style.backgroundImage = `url(Textures/${this.texture})`
 			//this.box.style.backgroundColor = "green"
 			this.box.style.position = "absolute"
 			this.box.style.zIndex = 3
@@ -237,6 +238,7 @@ class Enemy {
 			//left
 			irany == 1
 			for(let obj of this.palya.palyaObjekt) {
+				//Átadni az imaget
 				if(aabbCollision(this, obj)) {
 					if (obj instanceof Wall || (obj instanceof Enemy && obj != this)) {
 						if(lokes > 0) { 
@@ -394,7 +396,7 @@ class Enemy {
 				}
 			}
 			if(this.kulcsos != ""){
-				new Kulcs(this.x,this.y,this.kulcsos,"../Textures/kulcs.png",this.palya)
+				new Kulcs(this.x,this.y,this.kulcsos,"../Textures/kulcs.png",this.palya,true)
 			}
 			let log = document.getElementById("logContent")
      	   	let t = document.createElement("p")

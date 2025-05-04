@@ -11,10 +11,9 @@ if(aktualPalya == undefined) {
 }
 let uzenet = null;
 let arus_megjelenitve = false
-let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-4","ds2-5","ds2-6","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb"]
-    //Teendő:
-    //TODO: 
-    //Holnapra:Amikor egy boss droppol egy kulcsot, az ne a többihez kerüljön, hanem egy saját counterje legyen vaagy legyenek boss locekd ládák amig addig nem nyitodnak ki amig az adott enemy meg nem hallt.
+let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-3","ds2-throne","ds2-boss","ds2-jeges","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb","ds3-kezdo","ds3-cinder","ds3-gale","ds3-friza","ds3-placeholder","ds3-tancos","ds3-dlc","ds3-lootroom"]
+//TODO: MEGOLDANI HOGY A ENEMYKNEK LEGYEN 2 FÉLE DIVÜK, 1 A COLLISION, 1 A IMG ÉS HITBOX, legyen egy max méret képeknél(nagy meló hanyagold máskorrax)
+//Boss ládákra valami layer hogy tudassuk a játékossal nem elég sima kulcs hozzá,
 class Palya  {
     constructor(nev,palyaString) {
         this.nev = nev
@@ -34,8 +33,12 @@ class Palya  {
 
          }
         for (let obj of this.palyaObjekt) {
+        
             if(obj.div != null) {
                 obj.div.style.display = "none"
+                if(obj instanceof Ajto) {
+                    obj.boundDiv.style.display ="none"
+                }
             }
        
         }
@@ -53,6 +56,9 @@ class Palya  {
         for(let obj of this.palyaObjekt) {
             if(obj.div != null) {
                 obj.div.style.display = "block";
+                if(obj instanceof Ajto) {
+                    obj.boundDiv.style.display ="block"
+                }
             }
            
             if(obj instanceof Exit) {
@@ -80,20 +86,7 @@ class Palya  {
 
                 enemyk = this.palyaEnemyk
                 objektek = this.palyaObjekt
-                /*
-                if(obj.isSpawn) {
-                    this.spawn = obj
-                    let offset = (obj.width-50)/2
-                    if(kari == null) {
-                        kari = new Karakter("Sándor",15,this.spawn.x+offset, this.spawn.y+offset)
-                    }else {
-                       //átrakjuk a karaktert az exit helyére
-                        kari.atiranyit(this.spawn.x+offset, this.spawn.y+offset) //A spawn változzon meg, amikor átmegyünk egy ajtón
-                    }
-                    enemyk = this.palyaEnemyk
-                    objektek = this.palyaObjekt
-                    
-                }*/
+                
             }
         }
     }
@@ -146,12 +139,17 @@ class Palya  {
                 
             }
             
-            if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus" || type=="tile") {   
+            if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus" || type=="tile" || type=="ajto") {   
                 if(type=="wall") {
                     let objParam = objAtr[1].split(",");
                     let titkos = objParam[0];
                     let textura = objParam[1];
                     objekt = new Wall(x,y,titkos,textura,this)}
+                if(type=="ajto") {
+                    let objParam = objAtr[1].split(",");
+                    let kulcsId = objParam[0];
+                    let textura = objParam[1];
+                    objekt = new Ajto(x,y,kulcsId,textura,this)}
                  if(type=="tile") {
                     //tile,240,120,|false,false,padlo1.png
                     let objParam = objAtr[1].split(",");
@@ -416,6 +414,7 @@ const audioFiles = {
     coin: prefix+'pickupCoin.wav',
     hitEnemy: prefix+'hitEnemy.wav',
     player_damaged: prefix+'player_damaged.wav',
+    enemy_damaged: prefix+"enemy_damaged.wav",
     utes: prefix+'utes.wav',
     cantOpen:prefix+'cantOpen.wav',
     openChest:prefix+"openChest.wav",
@@ -533,6 +532,29 @@ if(e.key == "e" || e.key == "E") {
     }
     let canOpen = false
     for(let obj of objektek) {
+        if(obj instanceof Ajto) {
+            let ajtoBox = new Hitbox(obj.hitX, obj.hitY, obj.width, obj.height)
+            if(aabbCollision(ajtoBox, kari)) {
+                if(obj.kulcsId != "" && obj.nyitva == false) {
+                    for(let k of kari.kulcsok) {
+                        if(k.nev == obj.kulcsId) {
+                            canOpen = true
+                            console.log("Kinyitottam!!")
+                            obj.kinyit();
+                            break;
+    
+                        }
+                    }
+                    if(canOpen==false) {
+                        playSound("cantOpen")
+                        console.log("Nem sikerült!!")
+                    }
+                }
+            }
+            
+        }
+
+
     if(aabbCollision(obj, kari)) { 
         if(obj instanceof Lada) {
             if(obj.nyitva == false) {
@@ -541,9 +563,9 @@ if(e.key == "e" || e.key == "E") {
                         for(let k of kari.kulcsok) {
                             if(k.nev == obj.kulcsId) {
                                 canOpen = true
-                                kari.kulcs--;
+
                                 obj.kinyit();
-                                kari.infoUpdate();
+
                             }
                         }
                         if(canOpen==false) {

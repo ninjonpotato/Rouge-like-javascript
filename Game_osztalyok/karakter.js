@@ -2,10 +2,10 @@
 class Karakter{
 		constructor(nev,x=0,y=0) {
 			this.nev = nev;
-			this.hp = 10000;
+			this.hp = 20;
 			this.penz = 0;
 			this.sebesseg = 2;
-			this.dmg = 1000;
+			this.dmg = 1;
 			this.tamad = false
 			this.x = x;
 			this.y = y;
@@ -32,7 +32,7 @@ class Karakter{
 			this.karakter.style.width = this.width 
 			this.karakter.style.height = this.height 
 			this.karakter.style.position = "absolute"
-			//this.karakter.style.backgroundColor = "red"
+		//	this.karakter.style.backgroundColor = "red"
 			this.karakter.style.backgroundImage = "url(Textures/elore.png)"
 			this.lastIrany = "";
 			this.karakter.style.left = this.x
@@ -144,15 +144,27 @@ class Karakter{
 			let prevY = 0;
 			for(let i in objektek) {
 				let obj = objektek[i];
-				if(aabbCollision(this, obj)) {
-					if (obj instanceof Wall) {
-						if(obj.titkos) {
+				if(obj instanceof Ajto) {
+					let ajtoBox = new Hitbox(obj.x, obj.y, obj.boundHeight, obj.boundWidth)
+					if(aabbCollision(ajtoBox, kari) && obj.nyitva == false) {
+					
 						if(irany == 1) {this.y += this.sebesseg;} //fel
 						if(irany == 2) {this.x += this.sebesseg;} //bal
 						if(irany == 3) {this.y -= this.sebesseg;} //le
 						if(irany == 4) {this.x -= this.sebesseg;} //jobb
 					}
+				}
+
+				if(aabbCollision(this, obj)) {
+					if (obj instanceof Wall) {
+						if(obj.titkos || obj.nyitva == false) {
+						if(irany == 1) {this.y += this.sebesseg;} //fel
+						if(irany == 2) {this.x += this.sebesseg;} //bal
+						if(irany == 3) {this.y -= this.sebesseg;} //le
+						if(irany == 4) {this.x -= this.sebesseg;} //jobb
+						}
 					} 
+					
 					if(obj instanceof Felveheto) {
 						torol(objektek[i])
 					}
@@ -290,7 +302,7 @@ class Karakter{
 				let yy = parseInt(this.box.style.top.split("px")[0]);
 				let ww = parseInt(this.box.style.width.split("px")[0])
 				let hh =parseInt(this.box.style.height.split("px")[0])
-				let h = new Hitbox(xx,yy,ww,hh)
+				let h = new Hitbox(xx,yy,ww,hh) //Karakterünk ütés hitboxa
 				//ütés kezelése
 				for(let i in objektek) {
 					let obj = objektek[i];
@@ -369,7 +381,19 @@ class Karakter{
 			if(item instanceof Kulcs) {
 				playSound("pickupKey")
 				this.kulcsok.push(item)
-				this.kulcs++;
+				if(item.isBossKulcs) {
+					console.log(item)
+					let bkd = document.getElementById("bossKulcsokDiv");
+					let itemMasolat = document.createElement("div")
+					itemMasolat.style.width = item.width
+					itemMasolat.style.height = item.height
+					itemMasolat.style.backgroundImage = `url(${item.texture})`
+					itemMasolat.setAttribute("title",item.nev)
+					bkd.appendChild(itemMasolat)
+				}else {
+					this.kulcs++;
+				}
+			
 			}
 			if(item instanceof Coin) {
 					playSound("coin")

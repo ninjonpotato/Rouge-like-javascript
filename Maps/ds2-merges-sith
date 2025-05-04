@@ -208,5 +208,11 @@ wall,240,180,|false,fal4.png
 wall,300,180,|false,fal4.png
 wall,300,120,|false,fal4.png
 enemy,480,60,|Sith a bűvös sárkány ~ki senkitől se fél~,25,300,2,3,buyAru.wav,mergeskulcs,sith.webp
-fegyver,-572,-418,|Mérges Korona >:(,0,0,0,../Sounds/default.mp3,../Sounds/utes.wav
-lada,60,60,|true,[object Object],false,mergeskulcs,lada.png,ruha,|Mérges Korona >:(,100,0.3,0,../Sounds/utes.wav,ruha.png,
+fegyver,-822,-498,|Mérges Korona >:(,0,0,0,../Sounds/default.mp3,../Sounds/utes.wav
+ruha,-822,-498,|Mérges Korona >:(,100,0,0,../Sounds/default.mp3,../Sounds/utes.wav
+ruha,-822,-498,|Mérges Korona >:(,100,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+lada,60,60,|true,[object Object],false,mergeskulcs,lada.png,ruha,|Mérges Korona >:(,100,0,0,../Sounds/default.mp3,../Sounds/default.mp3,
+exit,60,240,|1,ds2-tuzes-trio3,2,exit.png
+ajto,120,240,|Frissen sült kulcs. (még forró),door.png
+wall,60,180,|false,fal4.png
+wall,60,300,|false,fal4.png

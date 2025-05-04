@@ -194,7 +194,7 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,420,480,|0,12,1,exit.png
+exit,420,480,|0,ds2-1,1,exit.png
 enemy,420,300,|Megfagyott csontváz,17,27,0.5,3,../Sounds/default.mp3,,fal.png
 wall,240,60,|false,fal4.png
 wall,300,60,|false,fal4.png
@@ -213,7 +213,7 @@ wall,660,420,|false,fal4.png
 wall,540,60,|false,fal4.png
 wall,540,120,|false,fal4.png
 wall,600,60,|false,fal4.png
-exit,420,60,|2,15,0,exit.png
+exit,420,60,|2,ds2-3,0,exit.png
 wall,600,120,|false,fal4.png
 wall,660,180,|false,fal4.png
 wall,720,180,|false,fal4.png
@@ -225,8 +225,9 @@ wall,720,360,|false,fal4.png
 wall,780,360,|true,fal4.png
 wall,600,180,|false,fal4.png
 wall,540,180,|false,fal4.png
-exit,780,240,|1,14,0,exit.png
-ruha,795,495,|Hp poti,10,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-808,-465,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,kard2.png
-lada,120,240,|false,[object Object],false,,lada.png,fegyver,|Fegyómegyó,0,0,0,../Sounds/default.mp3,kard2.png,
+exit,780,240,|1,ds2-jeges,0,exit.png
+ruha,780,480,|Hp poti,10,0,0,../Sounds/default.mp3,ruha.png
+fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,kard2.png
+fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+lada,120,240,|false,[object Object],false,,lada.png,fegyver,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3,

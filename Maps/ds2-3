@@ -194,35 +194,19 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,420,60,|0,a,0,exit.png
-wall,360,60,|false,fal4.png
-wall,360,120,|false,fal4.png
-wall,360,180,|false,fal4.png
-wall,360,240,|false,fal4.png
+fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+exit,240,480,|0,ds2-2,2,exit.png
+exit,240,60,|1,ds2-throne,0,exit.png
+wall,420,60,|false,fal4.png
+wall,420,120,|false,fal4.png
+wall,420,180,|false,fal4.png
 wall,420,240,|false,fal4.png
-wall,540,240,|false,fal4.png
-wall,480,240,|false,fal4.png
-wall,600,240,|false,fal4.png
-wall,720,240,|false,fal4.png
-wall,780,240,|false,fal4.png
-wall,600,300,|false,fal4.png
-wall,600,360,|false,fal4.png
-wall,600,420,|false,fal4.png
-wall,480,420,|false,fal4.png
-wall,540,420,|false,fal4.png
+wall,420,480,|false,fal4.png
 wall,420,420,|false,fal4.png
-wall,300,420,|false,fal4.png
-wall,240,420,|false,fal4.png
-wall,180,420,|false,fal4.png
-wall,120,420,|false,fal4.png
-wall,120,360,|false,fal4.png
-wall,120,300,|false,fal4.png
-wall,120,240,|false,fal4.png
-wall,120,180,|false,fal4.png
-wall,120,120,|false,fal4.png
-wall,180,120,|false,fal4.png
-wall,240,120,|false,fal4.png
-ajto,300,120,|kulcs2,door.png
-ajto,660,240,|kulcs1,door.png
-enemy,720,120,|Béla,3,15,1,3,../Sounds/default.mp3,kulcs1,fal.png
-enemy,60,240,|Béla,3,15,1,3,../Sounds/default.mp3,kulcs2,fal.png
+enemy,720,120,|ÓÓriási patkány kutyám majom izé,15,75,2,3,../Sounds/default.mp3,sajtKulcs,kutyaize.webp
+fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,kard2.png
+ruha,-822,-498,|Elasott sajt,25,1,0,../Sounds/default.mp3,../Sounds/default.mp3
+ruha,-822,-498,|Elasott sajt,25,1,0,../Sounds/default.mp3,../Sounds/default.mp3
+ruha,-822,-498,|Elasott sajt,25,1,0,../Sounds/default.mp3,../Sounds/default.mp3
+lada,780,480,|true,[object Object],false,sajtKulcs,lada.png,ruha,|Elasott sajt,25,1,0,../Sounds/default.mp3,../Sounds/default.mp3,

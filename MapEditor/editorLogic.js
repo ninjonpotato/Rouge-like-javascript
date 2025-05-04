@@ -21,6 +21,7 @@ let global_kulcs = "kulcs.png"
 let global_uzenet = "uzenet.png"
 let global_arus = "arus.png"
 let global_csempe = "padlo2.png"
+let global_ajto = "door.png"
 fajl_betoltes("glob_img")
 async function fajl_betoltes_run(fajl) {
   await fajl_betoltes(fajl)
@@ -624,6 +625,23 @@ class Lada extends Objekt{
         parent.appendChild(itemListaDiv);
     }
 
+}
+
+class Ajto extends Objekt {
+    constructor(x,y,kulcsId="",texture=global_ajto) {
+        super(x,y)
+        this.div.style.zIndex = 1
+        this.div.style.opacity = 1;
+        this.div.style.backgroundImage = `url(../Textures/${texture})`
+        this.kulcsId = kulcsId
+        this.texture = texture
+        this.atributumok = {
+            "kulcsId": this.kulcsId,
+            "Textúra": this.texture
+        }
+         
+        this.atribMeghiv()
+    }
 }
 
 class Arus extends Objekt {
@@ -1246,11 +1264,7 @@ if(kurzor == "cursor") {
 
 
 function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet ahova kattintunk
- /*   let o
-    if(last_obj != null) {
-        o = last_obj.atributumok
-    }
-*/
+
     switch(id) {
         case "Wall":
             if(isAsset) return obj = new Wall(x,y,o.texture,o.titkos)
@@ -1260,29 +1274,23 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
         case "Lada":
             return  obj = new Lada(x,y)
         case "Arus":
-            if(isAsset) return   obj = new Arus(x,y,o.items,o.nev,o.texture,o.selfImg)
             return  obj = new Arus(x,y)
         case "Kulcs":
-           
             return  obj = new Kulcs(x,y)
         case "Fegyver":
-           
             return  obj = new Fegyver(x,y)           
         case "Ruha":
-          
             return  obj = new Ruha(x,y)
          case "Exit":
-          
             return  obj = new Exit(x,y)
         case "Penz":
-           
             return  obj = new Penz(x,y)
         case "Uzenet":
-         
             return  obj = new Uzenet(x,y)
         case "Tile":
-        
             return  obj = new Tile(x,y,false);
+        case "Ajto":
+            return  obj = new Ajto(x,y)
         case "delete":
             return obj = "delete"
         default:
@@ -1608,13 +1616,20 @@ function palyaKeszitesFajlbol(palyaText) {
 
             vaszon.appendChild(objekt.div)
         }
-        if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus" || type=="tile") {   
+        if(type == "wall" || type=="lada" || type =="exit" || type=="enemy" || type=="uzenet" || type=="arus" || type=="tile" || type=="ajto") {   
             if(type=="wall") { 
           
                 let objParam = objAtr[1].split(",");
                 let titkos = objParam[0];
                 let textura = objParam[1];
                 objekt = new Wall(x,y,textura,titkos)
+            }
+            if(type=="ajto") { 
+          
+                let objParam = objAtr[1].split(",");
+                let kulcsId = objParam[0];
+                let textura = objParam[1];
+                objekt = new Ajto(x,y,kulcsId,textura)
             }
             if(type=="tile") {
                 let objParam = objAtr[1].split(",");
@@ -1781,7 +1796,11 @@ function palyaKeszitesFajlbol(palyaText) {
                     o = new Wall(100,100,atrib["Textúra"],atrib["Titkos"]);
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
-                
+                if(alap_adatok[0] == "ajto") {
+                   
+                    o = new Ajto(-1,-1,atrib["kulcsId"],atrib["Textúra"]);
+                     assets.push({"asset":o,"nev":alap_adatok[1]})
+                }
                 if(alap_adatok[0] == "exit") {
                     
                     o = new Exit(-1,-1,atrib["id"],atrib["location"],atrib["location-door"],atrib["Textúra"]);

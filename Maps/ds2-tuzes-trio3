@@ -197,3 +197,7 @@ wall,840,540,|false,fal4.png
 exit,480,60,|0,ds2-tuzes-trio2,1,exit.png
 exit,60,360,|1,ds2-tuzes-weeb,0,exit.png
 enemy,480,360,|Béla,60,150,1.5,3,../Sounds/default.mp3,,goon.webp
+wall,780,240,|false,fal4.png
+wall,780,360,|false,fal4.png
+exit,780,300,|2,ds2-merges-sith,1,exit.png
+ajto,720,300,|Frissen sült kulcs. (még forró),door.png

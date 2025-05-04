@@ -3,3 +3,8 @@ ruha,poison|{"Név":"Méreg","Védelem":"-1","Sebesség növelés":0,"Méret nö
 enemy,csonti|{"Név":"Csotváz (Béla)","Sebzés":"10","Hp":"45","Sebesség":"1.5","Pénz":3,"Hang":"../Sounds/default.mp3","Kulcsos":"","Textúra":"fal.png"}
 enemy,gwyn|{"Név":"Plim plim plom","Sebzés":"20","Hp":"75","Sebesség":"2.5","Pénz":"3","Hang":"../Sounds/default.mp3","Kulcsos":"","Textúra":"fal.png"}
 enemy,guardian|{"Név":"A Szentély Örzője.","Sebzés":"150","Hp":"2500","Sebesség":"1","Pénz":"3","Hang":"../Sounds/default.mp3","Kulcsos":"true","Textúra":"fal.png"}
+enemy,tesztkulkcs|{"Név":"Béla","Sebzés":"0","Hp":"1","Sebesség":"1","Pénz":"3","Hang":"../Sounds/default.mp3","Kulcsos":"asd","Textúra":"fal.png"}
+tile,void|{"Alapkő":false,"Mélység":"true","Hang":"../Sounds/default.mp3","Textúra":"void.png"}
+enemy,null|{"Név":"Nasándra","Sebzés":"30","Hp":"75","Sebesség":"0.5","Pénz":"3","Hang":"../Sounds/default.mp3","Kulcsos":"","Textúra":"fal.png"}
+tile,padlo|{"Alapkő":false,"Mélység":false,"Hang":"../Sounds/default.mp3","Textúra":"padlo1.png"}
+ajto,door|{"kulcsId":"asd","Textúra":"door.png"}

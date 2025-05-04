@@ -285,6 +285,38 @@ p:nth-child(1) {
 		right: 0;
 		color:white
 	}
+	#bossKulcsokOuterDiv {
+		position: absolute;
+		background-color: black;
+		border: 3px solid grey;
+		top: 250px;
+		width: 250px;
+		color: white;
+		display: flex;
+		flex-direction: column;
+		font-family: 'Courier New', Courier, monospace;
+		z-index: 4;
+		p {
+			text-align: center;
+			width: 100%;
+			border-bottom: 2px solid white;
+			margin: 0;
+		}
+		div {
+			display: flex;
+			flex-direction: row;
+			gap: 20px;
+			max-width: 250px;
+			max-height: 500px;
+			flex-wrap:wrap;	
+			div:hover {
+			cursor: pointer;
+			border: 2px solid white;
+			}
+		}
+		
+
+	}
 
 	</style>
 <body>
@@ -306,6 +338,10 @@ p:nth-child(1) {
 		<p>Pénzed: <span id="penz"></span><img id="penz_img" src="Textures/penz.png"></p>
 		<p>Kulcsok: <span id="kulcs"></span><img id="penz_img" src="Textures/kulcs.png"></p>
 	</div>
+	<div id="bossKulcsokOuterDiv">
+		<p>Boss kulcsok</p>
+		<div id="bossKulcsokDiv"></div>
+	</div>
 	<div id="canvas">
 	</div>
 	<div id="close">
@@ -315,6 +351,7 @@ p:nth-child(1) {
 	<script src="Game_osztalyok/felveheto.js"></script>
 	<script src="Game_osztalyok/wall.js"></script>
 	<script src="Game_osztalyok/tile.js"></script>
+	<script src="Game_osztalyok/ajto.js"></script>
 	<script src="Game_osztalyok/enemy.js"></script>
 	<script src="Game_osztalyok/lada.js"></script>
 	<script src="Game_osztalyok/exit.js"></script>
