@@ -5,7 +5,7 @@ class Uzenet {
     this.palya = palya
     this.texture = texture
     this.msg =msg;
-    console.log(msg)
+
     this.width = 60;
     this.height = 60;
     this.div = document.createElement("div")

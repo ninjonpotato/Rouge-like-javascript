@@ -268,17 +268,7 @@ ruha,420,300,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
 ruha,360,300,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
 ruha,300,300,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
 ruha,240,300,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
-fegyver,-822,-418,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-418,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-822,-418,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-418,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-822,-418,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-418,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-822,-418,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-418,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-822,-418,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-418,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-arus,180,300,|fegyver,Fegyver,3,0,0,../Sounds/default.mp3,kard2.png,10|ruha,Ruha,3,0,0,../Sounds/default.mp3,ruha.png,10|Marika néni,nagyi.png,../Sounds/default.mp3,arus.png
+arus,180,300,|ruha,ínycsiklandó Mocsári Gyümölcs,9,0,0,../Sounds/default.mp3,ruha.png,30,99|ruha,Moha,15,0,0,../Sounds/default.mp3,ruha.png,40,99|ruha,Gomba,-999,0,0,../Sounds/default.mp3,ruha.png,0,999|fegyver,Szénsavmentes kóla (fúúúj),3,0,0,../Sounds/default.mp3,kard2.png,45,6|fegyver,Kardnak kinéző fadarab (nagyon menő),5,0,0,../Sounds/default.mp3,kard2.png,40,1|fegyver,Plim Plim Plom használt fogpiszkálója,100,0,0,../Sounds/default.mp3,kard2.png,700,1|ruha,Ivory King GYÖNYÖRŰ szép nyakéke.,700,0,0,../Sounds/default.mp3,ruha.png,800,1|fegyver,Forever Alone Tartalék kendo kardja.,150,0,0,../Sounds/default.mp3,kard2.png,100,1|ruha,Dia páncél,999,0,0,../Sounds/default.mp3,ruha.png,1200,1|Gavlan a törp,nagyi.png,../Sounds/default.mp3,arus.png
 ruha,480,420,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
 ruha,540,420,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
 ruha,660,420,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
@@ -295,8 +285,8 @@ wall,360,480,|false,fal4.png
 wall,300,480,|false,fal4.png
 wall,180,480,|false,fal4.png
 ruha,600,420,|Méreg,-1,0,0,../Sounds/default.mp3,poison.png
-enemy,480,60,|It's wednesday my dudeees! (Hatalmas béka),10,18,1,3,../Sounds/default.mp3,,fal.png
-enemy,780,240,|Shrek,12,60,1,3,../Sounds/default.mp3,,fal.png
+enemy,480,60,|It's wednesday my dudeees! (Hatalmas béka),10,18,1,3,../Sounds/default.mp3,,frog.jpg
+enemy,780,240,|Shrek,12,60,1,3,../Sounds/default.mp3,,shrek.jpg
 tile,240,60,|false,false,../Sounds/default.mp3,padlo1.png
 tile,300,60,|false,false,../Sounds/default.mp3,padlo1.png
 penz,780,60,|1,penz.png
@@ -305,6 +295,6 @@ penz,780,60,|1,penz.png
 penz,780,60,|1,penz.png
 penz,780,60,|1,penz.png
 penz,780,60,|1,penz.png
-enemy,360,420,|Beszélő Tigris tank. ,1,100,1,3,../Sounds/default.mp3,,fal.png
-enemy,60,180,|Giganagy szúnyog. (zmzmzmzm),2,10,1,3,../Sounds/default.mp3,,fal.png
-enemy,600,240,|Ajtó,0,420,0,3,../Sounds/default.mp3,,exit.png
+enemy,360,420,|Beszélő Tigris tank. ,1,100,1,3,../Sounds/default.mp3,,tank.jpg
+enemy,60,180,|Giganagy szúnyog. (zmzmzmzm),2,10,1,3,../Sounds/default.mp3,,szunyog.jpg
+enemy,600,240,|Ajtó,0,420,0,3,../Sounds/default.mp3,,door.png

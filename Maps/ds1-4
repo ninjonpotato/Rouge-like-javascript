@@ -194,8 +194,8 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,780,60,|1,ds1-3,0,exit.png
-exit,780,420,|0,ds1-2,0,exit.png
+exit,780,60,|1,ds1-3,1,exit.png
+exit,780,420,|0,ds1-1,2,exit.png
 wall,720,360,|false,fal4.png
 wall,780,360,|false,fal4.png
 wall,660,300,|false,fal4.png
@@ -212,12 +212,8 @@ wall,600,360,|false,fal4.png
 wall,660,360,|false,fal4.png
 exit,120,480,|2,ds1-oands,0,exit.png
 exit,60,60,|3,ds1-6,0,exit.png
-enemy,360,120,|Pursuer,8,20,1.7,3,../Sounds/default.mp3,,fal.png
-enemy,240,360,|Blek Nájtő,17,26,0.45,3,../Sounds/default.mp3,Belépőjegy,fal.png
-fegyver,-822,-498,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-498,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-822,-498,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-498,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
+enemy,360,120,|Pursuer,8,20,1.7,3,../Sounds/default.mp3,,pursuer.webp
+enemy,240,360,|Blek Nájtő,17,26,0.45,3,../Sounds/default.mp3,,blackknight.jpg
 wall,540,120,|false,fal4.png
 wall,540,180,|false,fal4.png
 wall,240,240,|false,fal4.png
@@ -226,4 +222,4 @@ wall,420,360,|false,fal4.png
 wall,420,420,|false,fal4.png
 wall,60,480,|false,fal4.png
 wall,180,480,|false,fal4.png
-ajto,120,420,|Belépőjegy,door.png
+ajto,120,420,|WWE belépőjegy,door.png

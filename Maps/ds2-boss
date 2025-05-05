@@ -193,9 +193,7 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
-enemy,420,240,|Nasándra,30,75,0.5,3,../Sounds/default.mp3,,nasi.webp
-fegyver,-822,-479,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+enemy,420,240,|Nasándra,30,75,0.5,3,../Sounds/default.mp3,Nasikulcs,nasi.webp
 exit,60,240,|0,ds2-throne,1,exit.png
 wall,540,60,|false,fal4.png
 wall,600,120,|false,fal4.png

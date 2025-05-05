@@ -194,10 +194,18 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,pursuer.webp
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
-kulcs,255,135,|WWE belépőjegy,kulcs.png
+exit,420,60,|0,finale,1,exit.png
+enemy,120,360,|Végtelen fájdalom ököl mestere.,100,1000,2,3,../Sounds/default.mp3,,boss1.webp
+enemy,720,360,|Végtelen fájdalom ököl harcművészet kitalálója.,120,1500,2,3,../Sounds/default.mp3,,boss2.jpg
+exit,420,480,|1,ending,0,exit.png
+wall,240,180,|false,fal4.png
+wall,240,240,|false,fal4.png
+wall,720,180,|false,fal4.png
+wall,660,180,|false,fal4.png
+wall,540,300,|false,fal4.png
+wall,480,240,|false,fal4.png
+wall,480,300,|false,fal4.png
+wall,240,480,|false,fal4.png
+wall,240,420,|false,fal4.png
+wall,120,120,|false,fal4.png
+wall,540,420,|false,fal4.png

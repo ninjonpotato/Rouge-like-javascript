@@ -2,10 +2,10 @@
 class Karakter{
 		constructor(nev,x=0,y=0) {
 			this.nev = nev;
-			this.hp = 20;
-			this.penz = 0;
+			this.hp = 2; //2
+			this.penz = 3;//3
 			this.sebesseg = 2;
-			this.dmg = 1;
+			this.dmg = 1	; //1
 			this.tamad = false
 			this.x = x;
 			this.y = y;
@@ -168,6 +168,7 @@ class Karakter{
 					if(obj instanceof Felveheto) {
 						torol(objektek[i])
 					}
+		
 					if(obj instanceof Tile) {
 						if(obj.isVoid) {
 							this.atiranyit(obj.x, obj.y)
@@ -179,10 +180,7 @@ class Karakter{
 							this.zuhan = true
 							this.karakter.style.opacity = "0"
 							setTimeout(()=>{
-								if(irany == 1) {this.atiranyit(obj.x, obj.y+this.height+20)} //fel
-								if(irany == 2) {this.atiranyit(obj.x+this.width+40, obj.y)} //bal
-								if(irany == 3) {this.atiranyit(obj.x, obj.y-this.height-20)} //le
-								if(irany == 4) {this.atiranyit(obj.x-this.width-20, obj.y)} //jobb
+								this.atiranyit(kariLastX, kariLastY)
 								this.zuhan = false;
 									obj.div.style.backgroundImage="url(Textures/void.png)"
 									this.karakter.style.opacity = "100"
@@ -359,7 +357,7 @@ class Karakter{
 			if(item instanceof Ruha) {
 				playSound("pickupRuha")
 				this.hp += parseFloat(item.hp);
-				this.sebesseg += parseFloat(item.speed);
+				this.sebesseg += parseFloat(item.speed)/10;
 				//méretet lekezelni
 				if( this.hp <= 0) {
 					setTimeout(()=>{

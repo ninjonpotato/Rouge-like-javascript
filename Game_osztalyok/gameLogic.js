@@ -11,7 +11,7 @@ if(aktualPalya == undefined) {
 }
 let uzenet = null;
 let arus_megjelenitve = false
-let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-3","ds2-throne","ds2-boss","ds2-jeges","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb","ds3-kezdo","ds3-cinder","ds3-gale","ds3-friza","ds3-placeholder","ds3-tancos","ds3-dlc","ds3-lootroom"]
+let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-3","ds2-throne","ds2-boss","ds2-jeges","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb","ds3-kezdo","ds3-cinder","ds3-gale","ds3-friza","ds3-placeholder","ds3-tancos","ds3-dlc","ds3-lootroom","finale","boss","ending"]
 //TODO: MEGOLDANI HOGY A ENEMYKNEK LEGYEN 2 FÉLE DIVÜK, 1 A COLLISION, 1 A IMG ÉS HITBOX, legyen egy max méret képeknél(nagy meló hanyagold máskorrax)
 //Boss ládákra valami layer hogy tudassuk a játékossal nem elég sima kulcs hozzá,
 class Palya  {
@@ -54,15 +54,17 @@ class Palya  {
        
          }
         for(let obj of this.palyaObjekt) {
+  
             if(obj.div != null) {
                 obj.div.style.display = "block";
                 if(obj instanceof Ajto) {
                     obj.boundDiv.style.display ="block"
                 }
+               // $(".spawnexit").each(function(){$(this).css("z-index",100)})
             }
            
             if(obj instanceof Exit) {
-
+       
                 let offset = (obj.width-50)/2
                 if(kari == null) {//kezdeti létrehozás
                     if(obj.id == 0 && obj.location == "spawn" || obj.id == 0 && palyaNev != undefined) {
@@ -91,8 +93,9 @@ class Palya  {
         }
     }
 
-    palyaKeszitesFajlbol(palyaText) { 
-        let palyaTomb = palyaText.split("\n") //felszeleteljük sorokra
+    palyaKeszitesFajlbol(palyaText) {
+        if(palyaText != undefined){
+            let palyaTomb = palyaText.split("\n") //felszeleteljük sorokra
         for(let obj of palyaTomb) {
             let objAtr = obj.split("|");
             let objType = objAtr[0].split(",")
@@ -212,6 +215,7 @@ class Palya  {
                             let hang = aru[5]
                             let texture = aru[6]
                             let ar =  parseFloat(aru[7])
+                            let db =  parseFloat(aru[8])
                             let item = null;
                             if(tipus == "fegyver") {
                                 item = new Fegyver(-1,-1,nev,parseFloat(dmg),range,speed,texture,this)
@@ -220,7 +224,7 @@ class Palya  {
                                 item = new Ruha(-1,-1,nev,parseFloat(dmg),range,speed,texture,true,this)
                             }
                             if(item != null) {
-                                items.push({"item":item,"ar":ar})
+                                items.push({"item":item,"ar":ar,"db":db})
                             }
                     }
                 }
@@ -254,6 +258,8 @@ class Palya  {
             }
             this.hide()
         }
+        }
+        
     }
 }
 
@@ -389,9 +395,17 @@ function torol(obj,vasarolt = false) {
     }
 
     rendez();
+
         obj.div.remove(); //töröljük a divet
         if(!(objektek[0] instanceof Arus)){
-            objektek.shift()
+            for(let i = 0; i < objektek.length; i++) {
+                let o = objektek[i]
+                if(o.x == obj.x && o.y == obj.y) {
+                    objektek.splice(i,1)
+                }
+          
+            }
+            
         }
     
         kari.infoUpdate()
@@ -427,7 +441,9 @@ const audioFiles = {
     openUzenet: prefix+"openUzenet.wav",
     openArus:prefix+"openArus.wav",
     buyAru:prefix+"buyAru.wav",
-    cantBuy:prefix+"cantBuy.wav"
+    cantBuy:prefix+"cantBuy.wav",
+    win: prefix+"win.wav",
+    cheers:prefix+"cheers.wav"
 
   };
   let audioBuffers = {};
@@ -452,7 +468,7 @@ const audioFiles = {
   function playSound(name, loop = false, volume = 0.1) {
     const buffer = audioBuffers[name];
     if (!buffer) {
-      console.warn(`A(z) ${name} hang nincs betöltve.`);
+      console.warn(`A ${name} hang nincs betöltve.`);
       return;
     }
   
@@ -480,7 +496,8 @@ const audioFiles = {
   
   function stopSound(name) {
     if (activeSources[name]) {
-      activeSources[name].stop();
+        console.log(activeSources)
+      activeSources[name].source.stop();
       delete activeSources[name];
     } else {
       console.warn(`A(z) ${name} hang nincs aktív lejátszásban.`);
@@ -539,7 +556,7 @@ if(e.key == "e" || e.key == "E") {
                     for(let k of kari.kulcsok) {
                         if(k.nev == obj.kulcsId) {
                             canOpen = true
-                            console.log("Kinyitottam!!")
+                        
                             obj.kinyit();
                             break;
     
@@ -547,7 +564,7 @@ if(e.key == "e" || e.key == "E") {
                     }
                     if(canOpen==false) {
                         playSound("cantOpen")
-                        console.log("Nem sikerült!!")
+                
                     }
                 }
             }
@@ -613,17 +630,28 @@ if(e.key == "d" || e.key == "D") {
 }
 })
 //karakter mozgatás
+let kariLastX = 0
+let kariLastY = 0
 setInterval(()=>{
-    if(kari.iranyok[0] ||kari.iranyok[1] ||kari.iranyok[2]||kari.iranyok[3]){
+    if(kari.zuhan == false){
+        kariLastX = kari.x
+        kariLastY = kari.y
+    }
+
+},1000)
+setInterval(()=>{
+
+    if(kari != null && kari.zuhan == false&& (kari.iranyok[0] ||kari.iranyok[1] ||kari.iranyok[2]||kari.iranyok[3])){
     playSound("walk");}
+  
 },300)
 setInterval(function(){
-    if(kari != null && kari.zuhan == false) {   
+if(kari != null && kari.zuhan == false) {   
 if(kari.iranyok[0]) {kari.up(); if(kari.nezesNyomva == false) {kari.nezesIrany="ArrowUp";}}
 if(kari.iranyok[1]) {kari.left(); if(kari.nezesNyomva == false) {kari.nezesIrany="ArrowLeft";}}
 if(kari.iranyok[2]) {kari.down(); if(kari.nezesNyomva == false) {kari.nezesIrany="ArrowDown";}}
 if(kari.iranyok[3]) {kari.right(); if(kari.nezesNyomva == false){ kari.nezesIrany="ArrowRight";}}
-
+//Ha az ajtó rossz helyre dob megtörténhet hogy egy exit eltünik
 kari.look(kari.nezesIrany)
 
 }
@@ -680,12 +708,24 @@ async function betoltesEsMegjelenites(location, doorID) {
         }
             
         } finally{
-      
+            
+
+            if(location == "ending") {
+                $("#win").css("background-image","url(textures/victory.png)")
+                stopSound("gameMusic")
+                playSound("win")
+                playSound("cheers")
+                kari = null
+                source = activeSources["win"].source
+                setTimeout(()=>{window.location.href = "index.html"},source.buffer["duration"]*1000)
+                console.log(source)
+            
+            }else {
             palyak[aktualPalya].hide();
-            console.log("Aktuál:"+aktualPalya+" location:"+location)
             aktualPalya = location
-   
-            palyak[aktualPalya].show(doorID); 
+            palyak[aktualPalya].show(doorID);
+        }
+
             lock.release();
         }
 
@@ -713,7 +753,8 @@ async function palyaBeolvas(palyaNev) {
         palyaKeszito(palyaNev,palyaString); //Elkészítjük vele a pályát
     
     } catch(error) {
-        alert('Nincs elindítva a szerver! vagy valami más...' + error)
+        console.log('Nincs elindítva a szerver! vagy valami más...')
+        console.log(error)
 }
 }
 function palyaKeszito(palyaNev,palyaString) {

@@ -194,8 +194,8 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,420,|0,ds1-1,2,exit.png
-enemy,240,300,|Twitter felhasználó,3,15,1.4,0,../Sounds/default.mp3,,fal.png
+exit,60,420,|0,ds1-1,1,exit.png
+enemy,240,300,|Twitter felhasználó,3,15,1.4,0,../Sounds/default.mp3,,twitter.jpg
 wall,300,180,|false,fal4.png
 wall,360,180,|false,fal4.png
 wall,420,180,|false,fal4.png
@@ -225,5 +225,5 @@ penz,720,300,|1,penz.png
 penz,780,240,|1,penz.png
 penz,720,240,|1,penz.png
 penz,780,300,|1,penz.png
-enemy,480,60,|Elon Mászk,10,20,0.5,10,../Sounds/default.mp3,,fal.png
+enemy,480,60,|Elon Mászk,10,20,0.5,10,../Sounds/default.mp3,,elon.jpeg
 exit,600,60,|1,ds1-3,0,exit.png

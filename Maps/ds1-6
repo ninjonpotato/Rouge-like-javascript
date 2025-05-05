@@ -194,7 +194,7 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-enemy,240,180,|Plim plim plom,20,75,2.5,3,../Sounds/default.mp3,plimkulcs,gvin.jpg
+enemy,240,180,|Plim plim plom,20,75,2.5,3,../Sounds/default.mp3,Plimkulcs,gvin.jpg
 exit,780,420,|0,ds1-4,3,exit.png
 wall,420,120,|false,fal4.png
 wall,420,60,|false,fal4.png
@@ -216,6 +216,8 @@ penz,360,420,|1,penz.png
 penz,360,480,|1,penz.png
 penz,360,360,|1,penz.png
 penz,360,360,|1,penz.png
-lada,120,60,|true,[object Object],false,plimkulcs,lada.png,fegyver,|Plim Plim Plom Legendás Kardja.,10,0,0,../Sounds/utes.wav,kard2.png,
-ruha,75,75,|Bíbor páncél,25,0,0,../Sounds/default.mp3,ruha.png
-enemy,480,60,|Lajos bá a gondnok,69,20,0,3,../Sounds/default.mp3,,bela.jpg
+lada,120,60,|false,[object Object],false,,lada.png,fegyver,|Plim Plim Plom Legendás Kardja.,10,0,0,../Sounds/utes.wav,kard2.png,
+ruha,60,60,|Bíbor páncél,30,0,0,../Sounds/default.mp3,ruha.png
+enemy,480,60,|Lajos bá a gondnok,100,100,0,3,../Sounds/default.mp3,Szertár,bela.jpg
+ajto,120,120,|Plimkulcs,door.png
+wall,60,120,|false,fal4.png

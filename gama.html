@@ -19,11 +19,11 @@
 
 @keyframes arus-megjelen {
   	from {height: 0;}	
-  	to {height: 150px;}
+  	to {height: 300px;}
 }
 
 @keyframes arus-bezar {
-  	from {height: 150px;}
+  	from {height: 300px;}
   	to {height: 0;}
 }
 body {
@@ -36,7 +36,8 @@ body {
     }
 	.vasarloMenu {
 		height: 0;
-		max-height: 150px;
+		max-height: 300px;
+		max-width: 400px;
 		overflow: hidden;
 		position: absolute;
 		left: 40%;
@@ -206,8 +207,10 @@ p:nth-child(1) {
 			padding: 10px;
 		}
 	}
-	.obj {
+	.enemyDiv {
 		z-index: 20;
+		background-size:60px 60px;
+		background-repeat: no-repeat;
 	}
 	.fal {
 		background-size: cover;
@@ -289,7 +292,7 @@ p:nth-child(1) {
 		position: absolute;
 		background-color: black;
 		border: 3px solid grey;
-		top: 250px;
+		top: 300px;
 		width: 250px;
 		color: white;
 		display: flex;
@@ -317,9 +320,19 @@ p:nth-child(1) {
 		
 
 	}
+	#win{
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+		right: 0;
+		background-color: "red" !important;
+		position: absolute;
+	}
 
 	</style>
 <body>
+	<div id="win">
+	</div>
 	<div id="musicOff">
 		<label>Music:<button id="musicToggle">On</button></label>
 	</div>
@@ -347,6 +360,7 @@ p:nth-child(1) {
 	<div id="close">
 		<a href="index.html">Kilépés</a>
 	</div>
+	<script src="Game_osztalyok/jquery-3.7.1.min.js"></script>
 	<script src="Game_osztalyok/gameLogic.js"></script>
 	<script src="Game_osztalyok/felveheto.js"></script>
 	<script src="Game_osztalyok/wall.js"></script>

@@ -14,6 +14,7 @@ class Enemy {
 			this.div.style.width = this.width 
 			this.div.style.height = this.height 
 			this.div.style.position = "absolute"
+			this.div.setAttribute("class","enemyDiv")
 			this.div.style.backgroundColor = "transparent"
 			this.div.style.left = this.x;
 			this.div.style.top = this.y;
@@ -385,11 +386,12 @@ class Enemy {
 				b.hit.remove()
 				b.img.remove()
 			}
-			
-			if(this.penz == 0) {
-				for(let i = 0; i < 3; i++) {
+			//this.penz==0
+			if(true) {	
+				for(let i = 0; i < Math.max(10,Math.random()*100); i++) {
 					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
 				}
+			//	new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
 			}else {
 				for(let i = 0; i < this.penz; i++) {
 					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)

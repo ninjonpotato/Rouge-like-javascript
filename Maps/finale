@@ -194,10 +194,77 @@ tile,780,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
-exit,60,240,|0,spawn,2,exit.png
-exit,420,60,|1,ds2-2,0,exit.png
-exit,780,240,|2,ds2-csiga,0,exit.png
-exit,420,480,|3,ds2-tuzes,0,exit.png
-enemy,420,240,|PURSUER >:( (most nagyon dühös rád) ,8,27,2,3,../Sounds/default.mp3,,pursuer.webp
-uzenet,720,240,|VIGYÁZAT: Miyazaki itt járt!,uzenet.png
-kulcs,255,135,|WWE belépőjegy,kulcs.png
+exit,420,60,|0,spawn,4,exit.png
+exit,420,480,|1,boss,0,exit.png
+ajto,600,420,|Nasikulcs,door.png
+ajto,360,180,|Konyhakulcs,door.png
+wall,360,480,|false,fal4.png
+wall,300,480,|false,fal4.png
+wall,240,480,|false,fal4.png
+wall,180,480,|false,fal4.png
+wall,60,480,|false,fal4.png
+wall,120,480,|false,fal4.png
+wall,480,480,|false,fal4.png
+wall,540,480,|false,fal4.png
+wall,600,480,|false,fal4.png
+wall,660,480,|false,fal4.png
+wall,720,480,|false,fal4.png
+wall,780,480,|false,fal4.png
+wall,360,60,|false,fal4.png
+wall,360,120,|false,fal4.png
+wall,420,120,|false,fal4.png
+wall,480,120,|false,fal4.png
+wall,540,120,|false,fal4.png
+wall,600,120,|false,fal4.png
+wall,660,120,|false,fal4.png
+wall,720,120,|false,fal4.png
+wall,720,180,|false,fal4.png
+ajto,780,120,|Plimkulcs,door.png
+wall,660,180,|false,fal4.png
+wall,660,240,|false,fal4.png
+wall,660,300,|false,fal4.png
+wall,720,300,|false,fal4.png
+wall,720,360,|false,fal4.png
+wall,660,360,|false,fal4.png
+wall,600,360,|false,fal4.png
+lada,720,240,|false,[object Object],false,,lada.png,ruha,|Észveszejtően jó víz,250,0,0,../Sounds/default.mp3,../Sounds/utes.wav,
+wall,480,420,|false,fal4.png
+wall,480,360,|false,fal4.png
+wall,480,300,|false,fal4.png
+wall,480,240,|false,fal4.png
+wall,600,240,|false,fal4.png
+wall,420,240,|false,fal4.png
+wall,360,240,|false,fal4.png
+wall,600,300,|false,fal4.png
+lada,600,180,|false,[object Object],false,,lada.png,fegyver,|BFH 2000 (Bazi füstös hús,200,0,0,../Sounds/default.mp3,../Sounds/utes.wav,
+uzenet,180,120,|Ez utad vége innen nincs tovább kivéve ha ezzel a kulcssal visszamész az első pályarészre.,uzenet.png
+kulcs,60,60,|Abyss nyaklánc,kulcs.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+penz,60,180,|1,penz.png
+wall,300,240,|false,fal4.png
+wall,240,240,|false,fal4.png
+wall,240,180,|false,fal4.png
+wall,180,180,|false,fal4.png
+wall,120,180,|false,fal4.png
+wall,120,240,|false,fal4.png
+wall,120,360,|false,fal4.png
+wall,180,360,|false,fal4.png
+wall,240,360,|false,fal4.png
+wall,300,360,|false,fal4.png
+wall,360,360,|false,fal4.png
+wall,360,420,|false,fal4.png
+wall,60,360,|false,fal4.png
+wall,60,420,|false,fal4.png
+wall,120,420,|false,fal4.png
+wall,240,420,|false,fal4.png
+wall,300,420,|false,fal4.png
+wall,180,420,|false,fal4.png
+wall,180,240,|false,fal4.png

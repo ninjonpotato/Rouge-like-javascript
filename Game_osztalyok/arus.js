@@ -26,6 +26,7 @@ class Arus {
 
         //Arus menu
         this.vasarloMenu = document.createElement("div")
+        this.vasarloMenumaxHeight = 300
         this.vasarloMenu.style.display = "none"
         this.vasarloMenu.setAttribute("class","vasarloMenu")
         this.arusMenu()
@@ -46,17 +47,20 @@ class Arus {
 
          let aruDiv = document.createElement("div")
          arusP = document.createElement("p")
-         arusP.innerText = "Áruk"
+         arusP.innerText = "Áruk"  
          aruDiv.appendChild(arusP)
          //Áruk felsorolása
+         console.log("Árus"+ this.nev)
          if(this.items.length > 0) {
         for(let aru in this.items) {
             let item = this.items[aru].item
-            console.log(item)
+          
             let ar = this.items[aru].ar
+            let db = this.items[aru].db
             
            let aruP = document.createElement("p")
-           aruP.innerText = item.nev + "\n"
+           aruP.innerText = item.nev + "\n" //maga a teljes áru
+           aruP.setAttribute("class","aru")
            let aruStat =  document.createElement("p")
            if(item instanceof Fegyver) {
             aruStat.innerText += `Sebzés: ${item.dmg}\n`
@@ -75,10 +79,17 @@ class Arus {
             let buy = document.createElement("button")
             buy.innerText = "Vásárlás"
             buy.setAttribute("id",aru) 
+          
+            buy.setAttribute("class","button") 
             buy.addEventListener("click",()=>{
-                this.vasarlas(buy.getAttribute("id"))
+                console.log("Kiválaszottad: "+buy.getAttribute("id"))
+                this.vasarlas(buy.getAttribute("id"),aruDiv)
             })
+            let dbP = document.createElement("p")
+            dbP.innerHTML = "Készleten:"+db+" db";
+            dbP.setAttribute("class","db")
             aruP.appendChild(aruStat)
+            aruP.appendChild(dbP)
             aruDiv.appendChild(aruP)
             aruStat.appendChild(buy)
         }
@@ -96,7 +107,7 @@ class Arus {
         this.vasarloMenu.style.display = "flex"
          this.vasarloMenu.style.animationName = "arus-megjelen"
          this.vasarloMenu.style.animationDuration = "1s"
-         this.vasarloMenu.style.height = 150
+         this.vasarloMenu.style.height = this.vasarloMenumaxHeight
   
     }
     hideAru() {
@@ -120,21 +131,50 @@ class Arus {
 
    aruHozzaadas(index) {
     let item = this.items[index]
-    item.item.x = kari.x;
-    item.item.y = kari.y
+    item.db--
     torol(item.item)
    }
 
-   vasarlas(index) {
+   vasarlas(index,div) {
     let item = this.items[index]
     if(kari.penz >= item.ar) 
         {
             playSound("buyAru")
             this.aruHozzaadas(index)
             kari.vasarol(item.ar)
-            this.items.splice(index,1)
-            this.vasarloMenu.innerHTML = "";
-            this.arusMenu()
+            if(item.db <=0) {
+                this.items.splice(index,1)
+                if(this.items.length <= 0) {
+                        this.vasarloMenu.innerHTML = "";
+                        this.arusMenu()
+                      }else {
+                        let d = $(div).children(".aru")
+                    d.each(function(i){if(i == index) {$(this).remove();
+                        let dbut = $(div).find(".aru p button")
+                        console.log(dbut)
+                        dbut.each(function(i){
+                            console.log(i)
+                          $(this).attr("id",i)
+                        })
+                     }})
+                        
+                      }
+                     
+
+        
+                
+            }else {
+                let dbP = $(div).children(".aru").children(".db")
+                dbP.each(function(i){
+                    if(i == index) {
+                        $(this).text("Készleten: "+item.db+" db")}
+                    })
+            }
+               
+            
+
+            //this.vasarloMenu.innerHTML = "";
+           // this.arusMenu()
         }else{
             playSound("cantBuy")
         //alert("Sajnos nincs elég pénzed")

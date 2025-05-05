@@ -27,6 +27,7 @@ app.post('/mentes',(req,res) => { //Erre a végpontra érkező kérést fogadjuk
         }else if(j == "aruk") {
            palyaString +=`|`
            let it = 0;
+           let dbC = 0;
            let aruk = i[j]
           for(let aru in aruk) {
             let elem = aruk[aru]
@@ -40,7 +41,14 @@ app.post('/mentes',(req,res) => { //Erre a végpontra érkező kérést fogadjuk
                 palyaString +=`${elem}`
               }else {
                 if(typeof elem == "number") {
-                  palyaString +=`${elem}|`
+                  dbC++
+                  if(dbC > 1) {
+                     palyaString +=`${elem}|`
+                     dbC = 0
+                  }else {
+                  palyaString +=`${elem},`
+                  }
+                 
                 }else {
                    palyaString +=`${elem},`
                 }

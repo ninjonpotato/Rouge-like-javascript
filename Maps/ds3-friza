@@ -87,7 +87,6 @@ tile,180,240,|true,false,../Sounds/default.mp3,padlo1.png
 tile,240,240,|true,false,../Sounds/default.mp3,padlo1.png
 tile,300,240,|true,false,../Sounds/default.mp3,padlo1.png
 tile,360,240,|true,false,../Sounds/default.mp3,padlo1.png
-tile,420,240,|true,false,../Sounds/default.mp3,padlo1.png
 tile,480,240,|true,false,../Sounds/default.mp3,padlo1.png
 tile,540,240,|true,false,../Sounds/default.mp3,padlo1.png
 tile,600,240,|true,false,../Sounds/default.mp3,padlo1.png
@@ -194,9 +193,7 @@ wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
 exit,420,480,|0,ds3-tancos,2,exit.png
-fegyver,-822,-479,|Fegyver,3,0,0,../Sounds/default.mp3,kard2.png
-ruha,-822,-479,|Ruha,3,0,0,../Sounds/default.mp3,ruha.png
-arus,420,60,|fegyver,Fegyver,3,0,0,../Sounds/default.mp3,kard2.png,10|ruha,Ruha,3,0,0,../Sounds/default.mp3,ruha.png,10|Marika néni,nagyi.png,../Sounds/default.mp3,arus.png
+arus,420,60,|ruha,Estus leves (még forró),300,0,0,../Sounds/default.mp3,ruha.png,100,10|fegyver,Acél Kanál,23,0,0,../Sounds/default.mp3,kard2.png,80,2|fegyver,Ostor,75,0,0,../Sounds/default.mp3,kard2.png,400,1|ruha,Torta szelet (nem hazugság),400,0,0,../Sounds/default.mp3,ruha.png,300,8|fegyver,Varázs por(piros),15,0,10,../Sounds/default.mp3,kard2.png,100,10|ruha,Varázs por(kék),30,0.1,0,../Sounds/default.mp3,ruha.png,100,10|Onion bro,nagyi.png,../Sounds/default.mp3,arus.png
 wall,300,60,|false,fal4.png
 wall,300,120,|false,fal4.png
 wall,300,180,|false,fal4.png
@@ -208,13 +205,13 @@ tile,720,240,|false,false,../Sounds/default.mp3,padlo2.png
 tile,780,240,|false,false,../Sounds/default.mp3,padlo2.png
 tile,720,240,|false,false,../Sounds/default.mp3,padlo1.png
 tile,780,240,|false,false,../Sounds/default.mp3,padlo1.png
-enemy,420,300,|Fríza. van egy nagyon cool kaszája is.,30,450,1,3,../Sounds/default.mp3,100huf,friza.avif
+enemy,415,244,|Fríza. van egy nagyon cool kaszája is.,30,450,1,3,../Sounds/default.mp3,100huf,friza.avif
 lada,780,300,|true,[object Object],false,100huf,lada.png,ruha,|Kárhozatos Espresso Elixír,200,0,0,../Sounds/utes.wav,ruha.png,
 wall,360,180,|false,fal4.png
 wall,480,180,|false,fal4.png
-penz,795,75,|1,penz.png
-penz,810,90,|1,penz.png
-penz,810,90,|1,penz.png
-penz,795,75,|1,penz.png
-penz,795,75,|1,penz.png
-penz,795,75,|1,penz.png
+penz,780,60,|1,penz.png
+penz,780,60,|1,penz.png
+penz,780,60,|1,penz.png
+penz,780,60,|1,penz.png
+penz,780,60,|1,penz.png
+penz,780,60,|1,penz.png

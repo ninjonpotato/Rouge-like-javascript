@@ -195,7 +195,7 @@ wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
 exit,420,60,|1,ds1-1,0,exit.png
-exit,420,480,|4,ds4-1,0,exit.png
+exit,420,480,|4,finale,0,exit.png
 exit,60,240,|3,ds3-kezdo,0,exit.png
 exit,780,240,|2,ds2-1,0,exit.png
 wall,300,60,|false,fal4.png

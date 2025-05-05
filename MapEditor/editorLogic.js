@@ -112,7 +112,7 @@ class Objekt {
         this.selectDiv.style.height = this.height
         this.div.appendChild(this.selectDiv);
         this.selectDiv.setAttribute("class","tile")
-        if(isLadaItem==false) {objektek.push(this)}
+        if(isLadaItem==false && x > 0 && y > 0) {objektek.push(this);}
 
 
         this.div.addEventListener("click",()=>{ //A rácsoknak adunk kattintás eventet 
@@ -310,7 +310,7 @@ class Enemy extends Objekt{
 
 class Lada extends Objekt{ 
 
-    constructor(x,y,item = new Fegyver(0,0,0,0,0,"Fegyómegyó",global_fegyver,false,"",true),texture = global_lada,kulcsos = false, isRandom = false,kulcsId="") {
+    constructor(x,y,item = new Fegyver(-1,-1,0,0,0,"Fegyómegyó",global_fegyver,false,"",true),texture = global_lada,kulcsos = false, isRandom = false,kulcsId="") {
         super(x,y)
         //this.div.style.backgroundColor = "gray"
         this.div.style.zIndex = 1
@@ -552,6 +552,7 @@ class Lada extends Objekt{
                 input.setAttribute("id",atr)
                 if(!isNaN(item.atributumok[atr])) {
                     input.setAttribute("type","number")
+                    input.setAttribute("value",0)
                 }else {
                     console.log(input.id)
                     if(atr =="Textúra") {
@@ -645,7 +646,7 @@ class Ajto extends Objekt {
 }
 
 class Arus extends Objekt {
-    constructor(x,y,items = [{"item":new Fegyver(),"ar":10},{"item":new Ruha(),"ar":10}],nev="Marika néni", texture = global_arus, selfImg="nagyi.png",hang="../Sounds/default.mp3") {
+    constructor(x,y,items = [{"item":new Fegyver(-1,-1),"ar":10,"db":1},{"item":new Ruha(-1,-1),"ar":10,"db":1}],nev="Marika néni", texture = global_arus, selfImg="nagyi.png",hang="../Sounds/default.mp3") {
         super(x,y)
         this.items = items;
         this.nev = nev
@@ -685,10 +686,10 @@ class Arus extends Objekt {
         div.setAttribute("class","add_item_selector")
         let item = null;
         if(tipus == "fegyver") {
-            item = new Fegyver();
+            item = new Fegyver(-1,-1);
         }
         if(tipus == "ruha") {
-            item = new Ruha();
+            item = new Ruha(-1,-1);
         }
 
         for(let atr in item.atributumok) {
@@ -724,6 +725,14 @@ class Arus extends Objekt {
             
             div.append(p)
         }
+        let dbText = document.createElement("label")
+        dbText.innerText ="Készleten:"
+        let dbInput = document.createElement("input")
+        dbInput.setAttribute("type","number");
+        dbText.appendChild(dbInput)
+        div.append(dbText)
+
+
         let arText = document.createElement("label")
         arText.innerText ="Ár:"
         let arInput = document.createElement("input")
@@ -738,6 +747,7 @@ class Arus extends Objekt {
                 texture = document.getElementById("Textúra").files[0].name;
             }
             let ar = arInput.value
+            let db = dbInput.value
              if(tipus == "fegyver") {
                 if(document.getElementById("Textúra").files == undefined) {
                     texture = global_fegyver
@@ -761,7 +771,7 @@ class Arus extends Objekt {
                 console.log(item)
                
              }
-             this.items.push({item,ar})
+             this.items.push({item,ar,db})
              this.menuLista();
         })
         save.innerText="Hozzáad"
@@ -845,6 +855,7 @@ class Arus extends Objekt {
                     for(let termek of this.items) {
                         let item = termek.item
                         let ar = termek.ar
+                        let db = termek.db
                         let pNev = document.createElement("p")
                         pNev.innerText = item.nev + ": "
                         if(item instanceof Fegyver) {
@@ -855,10 +866,17 @@ class Arus extends Objekt {
                         }
                         let span = document.createElement("span")
                         span.style.display = "block"
-                        
-                        pNev.appendChild(span)
+                    
                         span.innerText = `Ára: ${ar} `
+                        pNev.appendChild(span)
                         this.ermeIkon(span)
+                        span = document.createElement("span")
+                        span.style.display = "block"
+                    
+                        span.innerText = `Készleted: ${db} `
+                        pNev.appendChild(span)
+                       
+                        
                         let torol = document.createElement("span")
                         torol.innerText = "-"
                         torol.setAttribute("class","torolButton")
@@ -1008,8 +1026,8 @@ class Exit extends Objekt {
 
 class Item extends Objekt{
     constructor(x = 0,y = 0,nev = "Item",manual = true, texture  = "nincs",isLadaItem = false) {
-        if(x == 0 && y == 0) {
-            super(0,0,0,0,"",isLadaItem)
+        if(x <= 0 && y <= 0) {
+            super(-1,-1,0,0,"",isLadaItem)
         }else { //850 0
             if(manual) {
                 super(x+30/2,y+30/2,30,30)
@@ -1274,6 +1292,7 @@ function kivalaszott(id,x,y) { //Ez felellős azért hogy oda tegyen új elemet 
         case "Lada":
             return  obj = new Lada(x,y)
         case "Arus":
+            if(isAsset) return new Arus(x,y,last_obj.items,last_obj.nev,last_obj.texture,last_obj.selfImg,"")
             return  obj = new Arus(x,y)
         case "Kulcs":
             return  obj = new Kulcs(x,y)
@@ -1345,7 +1364,7 @@ for(let j = 0; j < gridw; j++) {
     let tile =  new Tile(x,y,"true","padlo1.png");
     if(i == 0 || j == 0 || i == gridh-1 || j == gridw-1) { //szélére falak
         let wall = new Wall(x,y)
-        console.log(`Üres pálya x:${x} y:${y}`)
+
         vaszon.appendChild(wall.div)
        }
    vaszon.appendChild(tile.div)
@@ -1405,12 +1424,18 @@ function mentes(palyaNev) {
                     let aru = aruTomb[i]
                     let item = aru.item
                     let ar = parseFloat(aru.ar)
+                    let db = parseFloat(aru.db)
                     let tipus = "";
+                    console.log(item)
                     if(item instanceof Fegyver) {tipus ="fegyver"}
                     if(item instanceof Ruha) {tipus ="ruha"}
+                    if(tipus == "") {
+                        if(item.atributumok["Sebzés"] != undefined) {tipus = "fegyver"}else {tipus="ruha"}
+                    }
                     elem["aruk"].push(tipus)
                     elem["aruk"].push(item.atributumok)
                     elem["aruk"].push(ar)
+                    elem["aruk"].push(db)
 
                 }
               
@@ -1656,12 +1681,14 @@ function palyaKeszitesFajlbol(palyaText) {
                     let dmg = parseInt(itemParam[1]);
                     let range = parseInt(itemParam[2]);
                     let speed = parseInt(itemParam[3]);
-                    let item_textura = itemParam[4];
+                    let item_textura = itemParam[5];
+                    let hang = itemParam[4];
+                    console.log(itemParam)
                     if(itemType == "fegyver") {
-                        item = new Fegyver(0,0,dmg,range,speed,nev,item_textura,true)
+                        item = new Fegyver(0,0,dmg,range,speed,nev,item_textura,true,hang,true)
                     }
                     if(itemType == "ruha") {
-                        item = new Ruha(0,0,dmg,range,speed,nev,item_textura,true)
+                        item = new Ruha(0,0,dmg,range,speed,nev,item_textura,true,hang,true)
                     }
                     objekt = new Lada(x,y,item,texture,kulcsos,random,kulcsid)
                 }
@@ -1718,17 +1745,18 @@ function palyaKeszitesFajlbol(palyaText) {
                         let hang = aru[5]
                         let texture = aru[6]
                         let ar =  parseFloat(aru[7])
+                        let db =  parseFloat(aru[8])
                         let item = null;
 
 
                         if(tipus == "fegyver") {
-                            item = new Fegyver(0,0,parseFloat(dmg),speed,range,nev,texture,true,hang)
+                            item = new Fegyver(-1,-1,parseFloat(dmg),speed,range,nev,texture,true,hang)
                         }
                         if(tipus == "ruha") {
-                            item = new Ruha(0,0,parseFloat(dmg),speed,range,nev,texture,true,hang)
+                            item = new Ruha(-1,-1,parseFloat(dmg),speed,range,nev,texture,true,hang)
                         }
                         if(item != null) {
-                            items.push({"item":item,"ar":ar})
+                            items.push({"item":item,"ar":ar,"db":db})
                         }
                 }
             }
@@ -1857,21 +1885,21 @@ function palyaKeszitesFajlbol(palyaText) {
                     for(let aru_dict of aruk) {
                         let aru = aru_dict["item"]
                         let ar = aru_dict["ar"]
+                        let db = aru_dict["db"]
 
                         let itemAtrib = aru["atributumok"]
                         let type = itemAtrib["Sebzés"]
                         let item = null;
                         if(type != undefined) {
                             
-                            item = new Fegyver(-1,-1,itemAtrib["Név"],itemAtrib["Sebzés"],itemAtrib["Range növelés"],itemAtrib["Ütés sebesség"],itemAtrib["Textúra"]);
+                            item = new Fegyver(-1,-1,itemAtrib["Sebzés"],itemAtrib["Range növelés"],itemAtrib["Ütés sebesség"],itemAtrib["Név"],itemAtrib["Textúra"]);
                         }else {
-                            item = new Ruha(-1,-1,itemAtrib["Név"],itemAtrib["Védelem"],itemAtrib["Sebesség növelés"],itemAtrib["Méret növelés"],itemAtrib["Textúra"]);
+                            item = new Ruha(-1,-1,itemAtrib["Védelem"],itemAtrib["Sebesség növelés"],itemAtrib["Méret növelés"],itemAtrib["Név"],itemAtrib["Textúra"]);
                         }
-                        items.push({"item":item,"ar":ar})
+                        items.push({"item":item,"ar":ar,"db":db})
                     }
                     
-                    o = new Arus(-1,-1,items,atrib["Név"],atrib["Textúra"],atrib["Önarckép"]);
-                    console.log(o)
+                    o = new Arus(-1,-1,items,atrib["Név"],atrib["Textúra"],atrib["Önarckép"],"");
                      assets.push({"asset":o,"nev":alap_adatok[1]})
                 }
                 

@@ -195,7 +195,7 @@ wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
 exit,420,480,|0,ds2-1,1,exit.png
-enemy,420,300,|Megfagyott csontváz,17,27,0.5,3,../Sounds/default.mp3,,fal.png
+enemy,420,300,|Megfagyott csontváz,17,27,0.5,3,../Sounds/default.mp3,,csonti.jpg
 wall,240,60,|false,fal4.png
 wall,300,60,|false,fal4.png
 wall,300,120,|false,fal4.png
@@ -203,7 +203,7 @@ wall,300,180,|false,fal4.png
 wall,300,240,|false,fal4.png
 wall,300,300,|false,fal4.png
 wall,300,360,|false,fal4.png
-wall,300,420,|false,fal4.png
+wall,300,420,|true,fal4.png
 wall,300,480,|false,fal4.png
 wall,240,480,|false,fal4.png
 wall,600,480,|false,fal4.png
@@ -215,19 +215,15 @@ wall,540,120,|false,fal4.png
 wall,600,60,|false,fal4.png
 exit,420,60,|2,ds2-3,0,exit.png
 wall,600,120,|false,fal4.png
-wall,660,180,|false,fal4.png
-wall,720,180,|false,fal4.png
-wall,780,180,|false,fal4.png
+wall,660,120,|false,fal4.png
+wall,720,120,|false,fal4.png
+wall,780,120,|false,fal4.png
 wall,600,360,|false,fal4.png
 wall,600,420,|false,fal4.png
 wall,660,360,|false,fal4.png
 wall,720,360,|false,fal4.png
 wall,780,360,|true,fal4.png
-wall,600,180,|false,fal4.png
-wall,540,180,|false,fal4.png
-exit,780,240,|1,ds2-jeges,0,exit.png
-ruha,780,480,|Hp poti,10,0,0,../Sounds/default.mp3,ruha.png
-fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
-fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,kard2.png
-fegyver,-822,-498,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3
-lada,120,240,|false,[object Object],false,,lada.png,fegyver,|Fegyómegyó,0,0,0,../Sounds/default.mp3,../Sounds/default.mp3,
+exit,780,180,|1,ds2-jeges,0,exit.png
+ruha,780,480,|Hp poti,30,0,0,../Sounds/default.mp3,ruha.png
+lada,120,240,|true,[object Object],false,Szertár,lada.png,ruha,|Pihe puha kőkabát,30,0.1,0,../Sounds/utes.wav,ruha.png,
+uzenet,780,240,|FIGYELEM! Az állatkert hónapok óta küszköd és az álaltok nem kaptak enni csak óvatosan.,uzenet.png

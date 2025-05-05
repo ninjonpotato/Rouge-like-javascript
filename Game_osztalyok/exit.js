@@ -13,6 +13,7 @@ class Exit {
 			this.div.style.width = this.width;
 			this.div.style.height = this.height
 			this.div.style.position = "absolute"
+			this.div.setAttribute("class",palya.nev+"exit")
 			this.div.style.backgroundImage=`url(Textures/${this.texture})`
 			this.lockdownLayer = document.createElement("div")
 			this.lockdownLayer.style.width = this.width
