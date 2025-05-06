@@ -392,17 +392,13 @@ class Enemy {
 					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
 				}
 			//	new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
-			}else {
-				for(let i = 0; i < this.penz; i++) {
-					new Coin(this.x+Math.floor(Math.random()*30)+10,this.y+Math.floor(Math.random()*30)+10,1,this.palya)
-				}
 			}
 			if(this.kulcsos != ""){
 				new Kulcs(this.x,this.y,this.kulcsos,"../Textures/kulcs.png",this.palya,true)
 			}
 			let log = document.getElementById("logContent")
      	   	let t = document.createElement("p")
-       		t.innerText = "Megölted: "+this.nev + "xd"
+       		t.innerText = "Megölted: "+this.nev
       		log.appendChild(t)
 			log.scrollTop = log.scrollHeight;
 			playSound("enemy_damaged")

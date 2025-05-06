@@ -60,7 +60,7 @@ class Palya  {
                 if(obj instanceof Ajto) {
                     obj.boundDiv.style.display ="block"
                 }
-               // $(".spawnexit").each(function(){$(this).css("z-index",100)})
+
             }
            
             if(obj instanceof Exit) {
@@ -712,6 +712,7 @@ async function betoltesEsMegjelenites(location, doorID) {
 
             if(location == "ending") {
                 $("#win").css("background-image","url(textures/victory.png)")
+                $("#win").css("z-index","100")
                 stopSound("gameMusic")
                 playSound("win")
                 playSound("cheers")

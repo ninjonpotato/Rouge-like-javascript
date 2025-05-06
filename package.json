@@ -16,7 +16,7 @@
     "url": "https://github.com/ninjonpotato/Rouge-like-javascript/issues"
   },
   "homepage": "https://github.com/ninjonpotato/Rouge-like-javascript#readme",
-  "description": "",
+  "description": "A játék node.js-t használ ezért indításhoz a node paranccsal el kell indítani a gameServer.js-t(elötte a függőségeket npm install-al telepíteni), utána meg localhost-ról a megadott címen el lehet érni. Tesztelve: Mac és Windows, Macen lett készítve ezért ott fut a legjobban, Windowson vannak ismert teljesítmény problémák.",
   "dependencies": {
     "body-parser": "^1.20.3",
     "cros": "^1.0.1",
