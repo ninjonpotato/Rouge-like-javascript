@@ -195,13 +195,7 @@ wall,780,540,|false,fal4.png
 tile,840,540,|true,false,../Sounds/default.mp3,padlo1.png
 wall,840,540,|false,fal4.png
 exit,780,300,|0,ds2-tuzes-trio3,1,exit.png
-enemy,120,360,|Sir weeb,80,200,5,3,../Sounds/default.mp3,tuzeskulcs,weev.webp
-ruha,-572,-418,|4000 Éves Kínai Szeretet,200,0,0,../Sounds/default.mp3,../Sounds/utes.wav
-ruha,-572,-418,|4000 Éves Kínai Szeretet,200,0,0,../Sounds/default.mp3,../Sounds/default.mp3
+enemy,120,360,|Sir weeb,80,200,3,3,../Sounds/default.mp3,tuzeskulcs,weev.webp
 lada,120,180,|true,[object Object],false,tuzeskulcs,lada.png,ruha,|4000 Éves Kínai Szeretet,200,0,0,../Sounds/default.mp3,../Sounds/default.mp3,
-fegyver,-572,-418,|Káosz Pengéjének egy darabja.,25,0,0,../Sounds/default.mp3,../Sounds/utes.wav
-fegyver,-572,-418,|Káosz Pengéjének egy darabja.,25,0,0,../Sounds/default.mp3,../Sounds/default.mp3
 lada,120,180,|true,[object Object],false,tuzeskulcs,lada.png,fegyver,|Káosz Pengéjének egy darabja.,25,0,0,../Sounds/default.mp3,../Sounds/default.mp3,
-ruha,-572,-418,|Káosz pengélyének egy darabja beleállt a kezedbe (áucs),-25,0,0,../Sounds/default.mp3,../Sounds/utes.wav
-ruha,-572,-418,|Káosz pengélyének egy darabja beleállt a kezedbe (áucs),-25,0,0,../Sounds/default.mp3,../Sounds/default.mp3
 lada,120,180,|true,[object Object],false,tuzeskulcs,lada.png,ruha,|Káosz pengélyének egy darabja beleállt a kezedbe (áucs),-25,0,0,../Sounds/default.mp3,../Sounds/default.mp3,

@@ -35,6 +35,7 @@ olvas() {
     this.textBox.style.width = "80%"
     this.textBox.style.animationName = "uzenet-megjelen"
     this.textBox.style.animationDuration = "1s"
+    this.textBox.style.border = "3px solid white"
     this.textBox.appendChild(this.text)
     let exit = document.createElement("p")
     exit.innerText = "Exit [E]"
@@ -46,6 +47,7 @@ bezar() {
         this.textBox.style.animationName = "uzenet-bezar"
         this.textBox.style.animationDuration = "1s"
         this.textBox.style.width = "0px"
+        this.textBox.style.border = "none"
         
 }
 }

@@ -11,7 +11,7 @@ if(aktualPalya == undefined) {
 }
 let uzenet = null;
 let arus_megjelenitve = false
-let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-3","ds2-throne","ds2-boss","ds2-jeges","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb","ds3-kezdo","ds3-cinder","ds3-gale","ds3-friza","ds3-placeholder","ds3-tancos","ds3-dlc","ds3-lootroom","finale","boss","ending"]
+let palyanevek = ["spawn","ds1-1","ds1-2","ds1-3","ds1-4","ds1-oands","ds1-6","ds1-sanct","ds1-kali","ds1-arti","ds1-manus","ds1-dlcloot","ds2-1","ds2-2","ds2-csiga","ds2-3","ds2-throne","ds2-boss","ds2-jeges","ds2-merges","ds2-merges-duo","ds2-merges-sith","ds2-tuzes","ds2-tuzes-trio1","ds2-tuzes-trio2","ds2-tuzes-trio3","ds2-tuzes-weeb","ds3-kezdo","ds3-cinder","ds3-gale","ds3-friza","ds3-placeholder","ds3-tancos","ds3-dlc","ds3-lootroom","finale","boss"]
 //TODO: MEGOLDANI HOGY A ENEMYKNEK LEGYEN 2 FÉLE DIVÜK, 1 A COLLISION, 1 A IMG ÉS HITBOX, legyen egy max méret képeknél(nagy meló hanyagold máskorrax)
 //Boss ládákra valami layer hogy tudassuk a játékossal nem elég sima kulcs hozzá,
 class Palya  {

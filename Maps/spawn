@@ -247,3 +247,4 @@ wall,240,480,|false,fal4.png
 wall,240,420,|false,fal4.png
 uzenet,420,240,|Észak:Az út sötét és rejtélyes ahol minden lépés kockázat s a bukások mély sebekként fognak emlékeidbe vésődni a végső győzelemért folytatott küzdelmed során.<br>Kelet:Ez utad második megpróbáltatása: DankLék.<br>Dél:Az utad erre ér véget. A gyenge itt gyorsan elhullik.<br>Nyugat:Sötét Lelkek 3,uzenet.png
 exit,480,360,|0,spawn,0,spawn.png
+uzenet,360,240,|Tutoriál:<br><img src="Textures/tutorial.png">,uzenet.png

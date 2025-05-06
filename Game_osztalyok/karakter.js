@@ -2,7 +2,7 @@
 class Karakter{
 		constructor(nev,x=0,y=0) {
 			this.nev = nev;
-			this.hp = 2; //2
+			this.hp = 20; //20
 			this.penz = 3;//3
 			this.sebesseg = 2;
 			this.dmg = 1	; //1

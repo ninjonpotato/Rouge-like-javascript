@@ -191,11 +191,12 @@ p:nth-child(1) {
 	#textbox {
 		background-color: black;
 		position: absolute;
-		overflow: hidden;
+		overflow: scroll;
 		top: 10px;
 		left: 260px;
 		width: 80%;
-		height: 100px;
+		min-height: 100px;
+		
 		z-index: 100;
 		animation-name: uzenet-megjelen;
 		animation-duration: 1s;
@@ -205,6 +206,11 @@ p:nth-child(1) {
 		p {
 			color: white;	
 			padding: 10px;
+		}
+		img {
+			max-height: 500px;
+			max-width: 1000px;
+			overflow: scroll;
 		}
 	}
 	.enemyDiv {
@@ -328,9 +334,15 @@ p:nth-child(1) {
 		background-color: "red" !important;
 		position: absolute;
 	}
-
+	#azon {
+		color:white;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+	}
 	</style>
 <body>
+	<p id="azon">Készítette: Laurinyecz István, XHSCD0</p>
 	<div id="win">
 	</div>
 	<div id="musicOff">

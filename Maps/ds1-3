@@ -197,7 +197,7 @@ wall,840,540,|false,fal4.png
 wall,180,180,|false,fal4.png
 wall,240,180,|false,fal4.png
 wall,300,180,|false,fal4.png
-wall,360,180,|false,fal4.png
+wall,360,180,|true,fal4.png
 wall,480,180,|false,fal4.png
 wall,420,180,|false,fal4.png
 wall,540,180,|false,fal4.png
@@ -211,7 +211,7 @@ wall,420,420,|false,fal4.png
 wall,540,420,|false,fal4.png
 wall,480,420,|false,fal4.png
 wall,600,420,|false,fal4.png
-wall,660,420,|false,fal4.png
+wall,660,420,|true,fal4.png
 wall,720,420,|false,fal4.png
 wall,720,480,|false,fal4.png
 exit,60,180,|1,ds1-4,1,exit.png

@@ -218,7 +218,7 @@ wall,600,240,|false,fal4.png
 exit,60,360,|1,ds2-merges-duo,0,exit.png
 wall,600,300,|false,fal4.png
 wall,600,360,|false,fal4.png
-enemy,360,360,|Varga. aki köcsög,6,45,1.3,3,../Sounds/default.mp3,,fal.png
-enemy,180,300,|Ceruhzah,4,45,0.8,3,../Sounds/default.mp3,,fal.png
-enemy,660,480,|Hável,20,45,0.4,3,../Sounds/default.mp3,,fal.png
-ruha,180,180,|Az Asztalon Ellenőrizetlenül Hagyott Sötét Kindertojás *cryptic*,12,0,0,../Sounds/default.mp3,ruha.png
+enemy,360,360,|Varga. aki egy köcsög,6,45,1.3,3,../Sounds/default.mp3,,varga.jpg
+enemy,180,300,|Ceruhzah,4,45,0.8,3,../Sounds/default.mp3,,cerka.jpg
+enemy,660,480,|Hável,20,45,0.4,3,../Sounds/default.mp3,,havel.webp
+ruha,180,180,|Az Asztalon Ellenőrizetlenül Hagyott Sötét Kindertojás *cryptic*,12,0.6,0,../Sounds/default.mp3,ruha.png
